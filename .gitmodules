@@ -1,0 +1,3 @@
+[submodule "mipt_web_2015"]
+	path = mipt_web_2015
+	url = https://github.com/vmarkovtsev/mipt_web_2015.git
