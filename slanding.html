@@ -1,32 +1,24 @@
 <!DOCTYPE html>
 <html>
-<style>
-body {
-  margin: 0;
-  overflow: hidden;
-}
-nav {
-  position: fixed;
-  height: 100vh;
-  width: 8em;
-  background: linear-gradient(to right, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
-}
-img {
-  width: 4em;
-  height: 4em;
-  object-fit: contain;
-}
-#jenkins {
-  margin-top: -1em;
-}
-</style>
+<head>
+  <link rel="stylesheet" href="slanding.css">
+</head>
 <body>
   <nav>
-    <img src="octocat.svg">
-    <img src="diffy.svg">
-    <img src="jenkins.svg" id="jenkins">
-    <img src="forge.svg">
-    <img src="manual.svg">
+    <div id="links">
+      <a id="link-github" class="toplink" href="https://github.com/samsung/veles"><img src="octocat.svg"></a>
+      <a id="link-gerrit" class="toplink" href="https://velesnet.ml/gerrit"><img src="diffy.svg"></a>
+      <a id="link-jenkins" class="toplink" href="https://velesnet.ml/jenkins"><img src="jenkins.svg"></a>
+      <a id="link-forge" class="toplink" href="https://velesnet.ml/forge"><img src="forge.svg"></a>
+      <a id="link-docs" class="toplink" href="https://velesnet.ml/docs"><img src="manual.svg"></a>
+    </div>
   </nav>
+  <div id="title">
+    <h1>The VELES</h1>
+    <h2>Distributed Machine Learning Platform for HPC</h2>
+    <br><br>
+    <h3 class="infinity">Easy deep learning is a dream. A dream never comes true.<br>
+    Developed by <img src="samsung.svg" id="samsung"></h3>
+  </div>
 </body>
 </html>
