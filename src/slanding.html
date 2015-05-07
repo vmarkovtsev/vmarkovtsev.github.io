@@ -38,9 +38,9 @@
       {% endif %}</h2>
       <br><br>
       <h3 {% if lang == "en" %}
-          class="infinity"
+          class="boast-content"
       {% else %}
-          class="fabrica"
+          class="boast-content fabrica"
       {% endif %}
       >
         {% macro samsung() %}
@@ -65,11 +65,33 @@
       </h3>
     </div>
   </section>
-  <section id="long-description">
-    Lorem ipsum.
+  <section class="details">
+    <div>
+      Lorem ipsum.
+    </div>
   </section>
-  <section id="subprojects" class="parallax">
-      Our subprojects.
+  <section id="doneright" class="parallax">
+    <div class="boast">
+      <h2>Neural networks done right.</h2>
+      <p>veles.znicz plugin focuses on performance and hackability. It has little hard-coded entities and enables training
+        all the widely recognized topologies, such as fully connected nets, convolutional nets, reccurent nets.</p>
+      <p>In-depth introspection and rich debugging facilities help developing nets fast and predictable.</p>
+    </div>
+  </section>
+  <section class="details">
+    <div>
+      Lorem ipsum.
+    </div>
+  </section>
+  <section id="contributions" class="parallax">
+    <div class="boast">
+      <h2>Contributions are welcome.</h2>
+
+      <p>Send pull requests on GitHub, which get automatically converted into Gerrit patchsets. Watch nightly tests run
+        on Jenkins. Upload your experiments to Forge.</p>
+
+      <p>Veles is written in Python, OpenCL and CUDA, web parts are built with Gulp and use SASS, ES6 and Node.js.</p>
+    </div>
   </section>
   <!-- build:js js/jquery.min.js -->
   <script src="libs/jquery/dist/jquery.min.js"></script>

@@ -40,9 +40,7 @@ gulp.task("sass", ["bower"], function () {
       precision: 8,
       includePaths: ["src/libs/bootstrap-sass/assets/stylesheets"]
     }))
-    .on("error", function (err) {
-      console.log(err);
-    })
+    .on("error", plugins.util.log)
     .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest("build/css"));
 });

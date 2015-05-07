@@ -1,10 +1,14 @@
 @import "bootstrap";
 
+$navicon_height: 4em;
+$front_title_offset: 12em;
+$section-padding: 4em;
+
 body {
   margin: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  font-size: 16px;
+  font-size: 0.8658vw;
   line-height: 1;
 }
 
@@ -15,41 +19,97 @@ body {
   margin-top: 0;
 }
 
+h1 {
+  font-size: 8em;
+}
+
+.title > h1 {
+  margin: 0;
+}
+
+h2 {
+  font-size: 4em;
+}
+
+.title > h2 {
+  margin-top: 0.5em;
+}
+
 h3 {
-  font-size: 1.17em;
+  font-size: 2em;
 }
 
 #promo {
-  background: #808080 url("../../../img/background.jpg");
+  background: #404040 url("../../../img/background.jpg");
   background-size: cover;
   background-blend-mode: multiply;
   width: 100vw;
   height: 95vh;
+  min-height: 50vw;
 }
 
-#long-description {
-  height: 100vh;
+section {
+  color: white;
+  position: relative;
+  max-height: 50vw;
+  width: 100vw;
+}
+
+.boast {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0 0 $section-padding $section-padding;
+  width: 50%;
+}
+
+.boast h2 {
+  @extend .fabrica;
+  margin-bottom: 1em;
+}
+
+.boast p {
+  @extend .boast-content;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.boast-content {
+  color: #b7b7b7;
+  @extend .infinity;
 }
 
 .parallax {
-  height: 600px;
-  background: #808080 url("../../../../python.jpeg") fixed;
-  background-size: cover;
+  height: 90vh;
+  background-attachment: fixed !important;
   background-blend-mode: multiply;
+}
+
+.details {
+  background-color: white;
+  height: 600px;
+}
+
+#doneright {
+  background: #404040 url("../../../img/weights.png")
+}
+
+#contributions {
+  background: #404040 url("../../../img/contributions.png")
 }
 
 nav {
   position: fixed;
   width: 100vw;
-  height: 8em;
+  height: $navicon_height * 2;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
-  line-height: 4em;
+  line-height: $navicon_height;
   z-index: 10;
 }
 
 #links {
   position: absolute;
-  right: 12em;
+  right: $front_title_offset;
 }
 
 .toplink {
@@ -57,8 +117,8 @@ nav {
 }
 
 .toplink > img  {
-  width: 4em;
-  height: 4em;
+  width: $navicon_height;
+  height: $navicon_height;
   object-fit: contain;
   opacity: 0.6;
   display: inline-block;
@@ -122,9 +182,9 @@ nav {
 
 #title {
   position: absolute;
-  left: 12em;
+  left: $front_title_offset;
   top: 50%;
-  width: calc(100vw - 12em * 2);
+  width: calc(100vw - #{$front_title_offset} * 2);
   color: white;
 }
 
@@ -135,15 +195,6 @@ nav {
 .infinity {
   font-family: 'Infinity', arial, sans-serif;
   letter-spacing: 0.075em;
-}
-
-h1 {
-  font-size: 80pt;
-  margin: 0;
-}
-h2 {
-  font-size: 40pt;
-  margin-top: 0.5em;
 }
 
 #svg-samsung {
