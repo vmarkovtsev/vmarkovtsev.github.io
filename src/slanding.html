@@ -48,11 +48,11 @@
         {% endmacro %}
 
         {% if lang not in ["ru", "ko"] %}
-        You change model parameters. Veles takes the rest.
+        You change parameters. Veles takes the rest.
         {% elif lang == "ko" %}
         당신은 모델 매개 변수를 변경합니다. VELES 모든 나머지합니다.
         {% elif lang == "ru" %}
-        Вы изменяете параметры модели. VELES позаботится об остальном.
+        Вы изменяете параметры. VELES позаботится об остальном.
         {% endif %}
         <br>
         {% if lang not in ["ru", "ko"] %}
@@ -73,7 +73,7 @@
   <section id="doneright" class="parallax">
     <div class="boast">
       <h2>Neural networks done right.</h2>
-      <p>veles.znicz plugin focuses on performance and hackability. It has little hard-coded entities and enables training
+      <p>veles.znicz NN engine focuses on performance and hackability. It has little hard-coded entities and enables training
         all the widely recognized topologies, such as fully connected nets, convolutional nets, reccurent nets.</p>
       <p>In-depth introspection and rich debugging facilities help developing nets fast and predictable.</p>
     </div>
@@ -87,12 +87,61 @@
     <div class="boast">
       <h2>Contributions are welcome.</h2>
 
-      <p>Send pull requests on GitHub, which get automatically converted into Gerrit patchsets. Watch nightly tests run
-        on Jenkins. Upload your experiments to Forge.</p>
+      <p>Send pull requests on GitHub which get automatically converted into Gerrit patchsets. Watch nightly tests run
+        on Jenkins.</p>
 
-      <p>Veles is written in Python, OpenCL and CUDA, web parts are built with Gulp and use SASS, ES6 and Node.js.</p>
+      <p>Veles is written in Python, OpenCL and CUDA (Jinja2 templated), web parts are built with Gulp and use SASS, ES6 and Node.js.</p>
+
+      <p>There is plenty of work to do: port to Windows and Mac OS X, add CuDNN and other engines, add more reporting options, improve the distributed operation, etc. etc.</p>
     </div>
   </section>
+  <section class="details">
+    <div>
+      Chart: lines of code.
+    </div>
+  </section>
+  <section id="velesforge" class="parallax">
+    <div class="boast">
+      <h2>Share your experiments.</h2>
+
+      <p>Upload your workflows to Forge. Access others' work. See what Veles is capable of.</p>
+    </div>
+  </section>
+
+  <section class="details">
+    <div>
+      Units, architechture.
+    </div>
+  </section>
+
+  <section id="publish" class="parallax">
+    <div class="boast">
+      <h2>Publish the results.</h2>
+
+      <p>Receive automatic reports when the training ends.</p>
+    </div>
+  </section>
+
+  <section class="details">
+    <div>
+      Automatic datasets stats. Loader reports.
+    </div>
+  </section>
+
+  <section id="bboxer" class="parallax">
+    <div class="boast">
+      <h2>Create your own image datasets, fast.</h2>
+
+      <p>Veles includes "bboxer", a collaborative tool for image dataset markup.</p>
+    </div>
+  </section>
+
+  <section class="details">
+    <div>
+      Use Veles within IPython or IPython Notebook.
+    </div>
+  </section>
+
   <!-- build:js js/jquery.min.js -->
   <script src="libs/jquery/dist/jquery.min.js"></script>
   <!-- endbuild -->
