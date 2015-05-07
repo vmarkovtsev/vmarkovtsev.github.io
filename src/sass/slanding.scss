@@ -1,0 +1,153 @@
+@import "bootstrap";
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 1.17em;
+}
+
+#promo {
+  background: #808080 url("../../../img/background.jpg");
+  background-size: cover;
+  background-blend-mode: multiply;
+  width: 100vw;
+  height: 95vh;
+}
+
+#long-description {
+  height: 100vh;
+}
+
+.parallax {
+  height: 600px;
+  background: #808080 url("../../../../python.jpeg") fixed;
+  background-size: cover;
+  background-blend-mode: multiply;
+}
+
+nav {
+  position: fixed;
+  width: 100vw;
+  height: 8em;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
+  line-height: 4em;
+  z-index: 10;
+}
+
+#links {
+  position: absolute;
+  right: 12em;
+}
+
+.toplink {
+  color: rgba(255, 255, 255, 0);
+}
+
+.toplink > img  {
+  width: 4em;
+  height: 4em;
+  object-fit: contain;
+  opacity: 0.6;
+  display: inline-block;
+}
+
+.toplink > img:hover {
+  opacity: 1.0;
+}
+
+#link-gerrit {
+  margin-left: 0.5em;
+}
+
+#link-forge {
+  margin-left: -0.5em;
+}
+
+.toplink:hover::after {
+  display: inline-block;
+  position: absolute;
+  left: 26em;
+  top: 0;
+  vertical-align: middle;
+  color: white;
+  font-family: 'Fabrica', arial, sans-serif;
+}
+
+#link-github:hover::after {
+  content: "GitHub";
+}
+
+#link-gerrit:hover::after {
+  content: "Gerrit";
+}
+
+#link-jenkins:hover::after {
+  content: "Jenkins\0000a0CI";
+}
+
+#link-forge:hover::after {
+  content: "VelesForge";
+}
+
+#link-benchmarks:hover::after {
+  content: "Benchmarks";
+}
+
+#link-docs:hover::after {
+  content: "Documentation";
+}
+
+@font-face {
+  font-family: 'Fabrica';
+  src: url('../../../fonts/Fabrica.otf');
+}
+
+@font-face {
+  font-family: 'Infinity';
+  src: url('../../../fonts/Infinity.ttf');
+}
+
+#title {
+  position: absolute;
+  left: 12em;
+  top: 50%;
+  width: calc(100vw - 12em * 2);
+  color: white;
+}
+
+.fabrica {
+  font-family: 'Fabrica', arial, sans-serif;
+}
+
+.infinity {
+  font-family: 'Infinity', arial, sans-serif;
+  letter-spacing: 0.075em;
+}
+
+h1 {
+  font-size: 80pt;
+  margin: 0;
+}
+h2 {
+  font-size: 40pt;
+  margin-top: 0.5em;
+}
+
+#svg-samsung {
+  width: 6em;
+  display: inline-block;
+  vertical-align: middle;
+}

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <!-- build:css css/slanding.min.css -->
+  <link rel="stylesheet" type="text/css" href="../build/css/slanding.css"/>
+  <!-- endbuild -->
+</head>
+
+{% macro svg(id) %}
+<img src="img/{{ id }}.svg" id="svg-{{ id }}">
+{% endmacro %}
+
+<body>
+  <nav>
+    <div id="links">
+      <a id="link-github" class="toplink" href="https://github.com/samsung/veles">{{ svg("octocat") }}</a>
+      <a id="link-gerrit" class="toplink" href="https://velesnet.ml/gerrit">{{ svg("diffy") }}</a>
+      <a id="link-jenkins" class="toplink" href="https://velesnet.ml/jenkins">{{ svg("jenkins") }}</a>
+      <a id="link-forge" class="toplink" href="https://velesnet.ml/forge">{{ svg("forge") }}</a>
+      <a id="link-benchmarks" class="toplink" href="https://velesnet.ml/benchmarks">{{ svg("chart") }}</a>
+      <a id="link-docs" class="toplink" href="https://velesnet.ml/docs">{{ svg("manual") }}</a>
+    </div>
+  </nav>
+  <section id="promo">
+    <div id="title">
+      <h1 class="fabrica">{% if lang == "en" %}
+        The VELES
+        {% else %}
+        VELES
+        {% endif %}
+      </h1>
+      <h2>{% if lang not in ["ru", "ko"] %}
+        Distributed Machine Learning Platform for HPC
+      {% elif lang == "ko" %}
+        분산 기계 학습 플랫폼
+      {% elif lang == "ru" %}
+        Высокопроизводительная распределённая платформа для машинного обучения
+      {% endif %}</h2>
+      <br><br>
+      <h3 {% if lang == "en" %}
+          class="infinity"
+      {% else %}
+          class="fabrica"
+      {% endif %}
+      >
+        {% macro samsung() %}
+        {{ svg("samsung") }}
+        {% endmacro %}
+
+        {% if lang not in ["ru", "ko"] %}
+        You change model parameters. Veles takes the rest.
+        {% elif lang == "ko" %}
+        당신은 모델 매개 변수를 변경합니다. VELES 모든 나머지합니다.
+        {% elif lang == "ru" %}
+        Вы изменяете параметры модели. VELES позаботится об остальном.
+        {% endif %}
+        <br>
+        {% if lang not in ["ru", "ko"] %}
+        Developed by {{ samsung() }}
+        {% elif lang == "ko" %}
+        {{ samsung() }}에 의해 개발.
+        {% elif lang == "ru" %}
+        Разработано в {{ samsung() }}
+        {% endif %}
+      </h3>
+    </div>
+  </section>
+  <section id="long-description">
+    Lorem ipsum.
+  </section>
+  <section id="subprojects" class="parallax">
+      Our subprojects.
+  </section>
+  <!-- build:js js/jquery.min.js -->
+  <script src="libs/jquery/dist/jquery.min.js"></script>
+  <!-- endbuild -->
+  <!-- build:js js/slanding.min.js -->
+  <script src="../build/js/scroll.js"></script>
+  <!-- endbuild -->
+</body>
+</html>
