@@ -6,19 +6,21 @@
   <!-- endbuild -->
 </head>
 
-{% macro svg(id) %}
-<img src="img/{{ id }}.svg" id="svg-{{ id }}">
+{% macro toplink(id, hint, href, img) %}
+<a id="link-{{ id }}" class="toplink" hint="{{ hint }}" href="{{ href }}">
+  <img src="img/{{ img }}.svg" id="svg-{{ img }}">
+</a>
 {% endmacro %}
 
 <body>
   <nav>
     <div id="links">
-      <a id="link-github" class="toplink" href="https://github.com/samsung/veles">{{ svg("octocat") }}</a>
-      <a id="link-gerrit" class="toplink" href="https://velesnet.ml/gerrit">{{ svg("diffy") }}</a>
-      <a id="link-jenkins" class="toplink" href="https://velesnet.ml/jenkins">{{ svg("jenkins") }}</a>
-      <a id="link-forge" class="toplink" href="https://velesnet.ml/forge">{{ svg("forge") }}</a>
-      <a id="link-benchmarks" class="toplink" href="https://velesnet.ml/benchmarks">{{ svg("chart") }}</a>
-      <a id="link-docs" class="toplink" href="https://velesnet.ml/docs">{{ svg("manual") }}</a>
+      {{ toplink("github", "GitHub", "", "octocat") }}
+      {{ toplink("gerrit", "Gerrit Code Review", "https://velesnet.ml/gerrit", "diffy") }}
+      {{ toplink("jenkins", "Jenkins&nbsp;CI", "https://velesnet.ml/jenkins", "jenkins") }}
+      {{ toplink("forge", "VelesForge", "https://velesnet.ml/forge", "forge") }}
+      {{ toplink("benchmarks", "Benchmarks", "https://velesnet.ml/benchmarks", "chart")}}
+      {{ toplink("docs", "Documentation", "https://velesnet.ml/docs", "manual") }}
     </div>
   </nav>
   <section id="promo">
@@ -44,7 +46,7 @@
       {% endif %}
       >
         {% macro samsung() %}
-        {{ svg("samsung") }}
+        <img src="img/samsung.svg" id="svg-samsung">
         {% endmacro %}
 
         {% if lang not in ["ru", "ko"] %}
@@ -56,11 +58,11 @@
         {% endif %}
         <br>
         {% if lang not in ["ru", "ko"] %}
-        Developed by {{ samsung() }}
+        Developed by {{ samsung() }} Now open source.
         {% elif lang == "ko" %}
         {{ samsung() }}에 의해 개발.
         {% elif lang == "ru" %}
-        Разработано в {{ samsung() }}
+        Разработано в {{ samsung() }} Теперь код открыт.
         {% endif %}
       </h3>
     </div>
@@ -80,6 +82,15 @@
   </section>
   <section class="details">
     <div>
+      <div id="loc-pie">
+        <h4>Lines of Code</h4>
+        <div id="loc-pie-container">
+          <div class="pie" data-start="0" data-value="30"></div>
+          <div class="pie" data-start="30" data-value="30"></div>
+          <div class="pie" data-start="60" data-value="40"></div>
+          <div class="pie pie-180" data-start="100" data-value="260"></div>
+        </div>
+      </div>
       Veles platform is built on top of many open source projects.<br>
       The core engine depends on
       <ul>
@@ -128,7 +139,7 @@
   </section>
   <section class="details">
     <div>
-      Chart: lines of code.
+      Units, architechture.
     </div>
   </section>
   <section id="velesforge" class="parallax">
@@ -141,7 +152,7 @@
 
   <section class="details">
     <div>
-      Units, architechture.
+      Automatic datasets stats. Loader reports.
     </div>
   </section>
 
@@ -155,7 +166,7 @@
 
   <section class="details">
     <div>
-      Automatic datasets stats. Loader reports.
+      100500 plotting units provide comprehensive insight on the training process.
     </div>
   </section>
 
@@ -195,10 +206,10 @@
   </section>
 
   <!-- build:js js/jquery.min.js -->
-  <script src="libs/jquery/dist/jquery.min.js"></script>
+  <script defer src="libs/jquery/dist/jquery.min.js"></script>
   <!-- endbuild -->
   <!-- build:js js/slanding.min.js -->
-  <script src="../build/js/scroll.js"></script>
+  <script defer src="../build/js/scroll.js"></script>
   <!-- endbuild -->
 </body>
 </html>

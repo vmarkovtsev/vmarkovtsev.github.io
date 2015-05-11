@@ -2,7 +2,9 @@
 
 $navicon_height: 4em;
 $front_title_offset: 12em;
-$section-padding: 4em;
+$section_padding: 4em;
+$loc_chart_size: 20vw;
+$loc_chart_colors: blue green red orange;
 
 body {
   margin: 0;
@@ -60,7 +62,7 @@ section {
   position: absolute;
   left: 0;
   bottom: 0;
-  padding: 0 0 $section-padding $section-padding;
+  padding: 0 0 $section_padding $section_padding;
   width: 50%;
 }
 
@@ -90,6 +92,9 @@ section {
 .details {
   background-color: white;
   height: 600px;
+  padding: $section_padding;
+  color: black;
+  font-size: 2em;
 }
 
 #doneright {
@@ -144,36 +149,13 @@ nav {
 }
 
 .toplink:hover::after {
+  content: attr(hint);
   display: inline-block;
   position: absolute;
   left: 26em;
   top: 0.25em;
   color: white;
   font-family: 'Fabrica', arial, sans-serif;
-}
-
-#link-github:hover::after {
-  content: "GitHub";
-}
-
-#link-gerrit:hover::after {
-  content: "Gerrit";
-}
-
-#link-jenkins:hover::after {
-  content: "Jenkins\0000a0CI";
-}
-
-#link-forge:hover::after {
-  content: "VelesForge";
-}
-
-#link-benchmarks:hover::after {
-  content: "Benchmarks";
-}
-
-#link-docs:hover::after {
-  content: "Documentation";
 }
 
 @font-face {
@@ -212,3 +194,102 @@ nav {
 a:hover {
   color: white;
 }
+
+#loc-pie {
+  float: right;
+  margin-left: $section_padding;
+  margin-bottom: $section_padding;
+}
+
+#loc-pie > h4 {
+  @extend .fabrica;
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+#loc-pie-container {
+  position: relative;
+  width: $loc_chart_size;
+  height: $loc_chart_size;
+}
+
+.pie {
+	position:absolute;
+	width: $loc_chart_size / 2;
+	height: $loc_chart_size;
+	overflow: hidden;
+	left: $loc_chart_size / 2;
+	transform-origin: left center;
+}
+
+.pie.pie-180 {
+	width: $loc_chart_size;
+	height: $loc_chart_size;
+	left: 0px;
+	transform-origin: center center;
+}
+
+.pie::before {
+	content: "";
+	position: absolute;
+	width: $loc_chart_size / 2;
+	height: $loc_chart_size;
+	left: -$loc_chart_size / 2;
+	border-radius: $loc_chart_size / 2 0 0 $loc_chart_size / 2;
+	transform-origin: right center;
+
+}
+
+.pie.pie-180::before {
+	left: 0px;
+}
+
+.pie.pie-180::after {
+	content: "";
+	position: absolute;
+	width: $loc_chart_size / 2;
+	height: $loc_chart_size;
+	left: $loc_chart_size / 2;
+	border-radius: 0 $loc_chart_size / 2 $loc_chart_size / 2 0;
+}
+
+@for $i from 1 through length($loc_chart_colors) {
+  .pie:nth-of-type(#{$i})::before,
+  .pie:nth-of-type(#{$i})::after {
+  	background-color: nth($loc_chart_colors, $i);
+  }
+}
+
+.pie[data-start="30"] {
+	transform: rotate(30deg);
+}
+.pie[data-start="60"] {
+	transform: rotate(60deg);
+}
+.pie[data-start="100"] {
+	transform: rotate(100deg);
+}
+
+.pie[data-value="30"]::before {
+	transform: rotate(31deg);
+}
+.pie[data-value="40"]::before {
+	transform: rotate(41deg);
+}
+.pie[data-value="260"]::before {
+	transform: rotate(260deg);
+}
+/*
+NOTE: you could also apply custom classes (i.e. .s0 .v30)
+but if the CSS3 attr() function proposal ever gets implemented,
+then all the above custom piece rules could be replaced with
+the following:
+
+.pie[data-start] {
+   transform:rotate(attr(data-start,deg,0);
+}
+.pie[data-value]::before {
+   transform:rotate(attr(data-value,deg,0);
+}
+*/
