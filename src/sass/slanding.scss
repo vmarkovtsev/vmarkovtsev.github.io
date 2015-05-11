@@ -84,6 +84,7 @@ section {
   height: 90vh;
   background-attachment: fixed !important;
   background-blend-mode: multiply;
+  background-size: cover !important;
 }
 
 .details {
@@ -96,7 +97,11 @@ section {
 }
 
 #contributions {
-  background: #404040 url("../../../img/contributions.png")
+  background: #404040 url("../../../img/constellation.jpg")
+}
+
+#hadoop {
+  background: #404040 url("../../../img/elephants.jpg")
 }
 
 nav {
@@ -115,6 +120,7 @@ nav {
 
 .toplink {
   color: rgba(255, 255, 255, 0);
+  display: inline-block;
 }
 
 .toplink > img  {
@@ -141,8 +147,7 @@ nav {
   display: inline-block;
   position: absolute;
   left: 26em;
-  top: 0;
-  vertical-align: middle;
+  top: 0.25em;
   color: white;
   font-family: 'Fabrica', arial, sans-serif;
 }
@@ -202,4 +207,8 @@ nav {
   width: 6em;
   display: inline-block;
   vertical-align: middle;
+}
+
+a:hover {
+  color: white;
 }

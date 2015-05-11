@@ -80,19 +80,50 @@
   </section>
   <section class="details">
     <div>
-      Lorem ipsum.
+      Veles platform is built on top of many open source projects.<br>
+      The core engine depends on
+      <ul>
+        <li>Twisted, PyZMQ, Paramiko</li>
+        <li>SciPy stack: Numpy, SciPy, Matplotlib</li>
+        <li>OpenCV</li>
+        <li>opencl4py, cuda4py</li>
+        <li>Jinja2</li>
+        <li>Graphviz</li>
+      </ul>
+      opencl4py and cuda4py are homegrown "written from scratch" bindings
+      powered by CFFI. Web subsystem depends on
+      <ul>
+        <li>Tornado, Motor</li>
+        <li>node.js stack</li>
+        <li>viz.js</li>
+      </ul>
+      Native executor depends on
+      <ul>
+        <li>Boost</li>
+        <li>libarchive</li>
+        <li>JsonCpp</li>
+        <li>libsimd</li>
+      </ul>
+      Java integration uses
+      <ul>
+        <li>JZMQ</li>
+        <li>Pyrolite</li>
+        <li>Maven stack</li>
+      </ul>
+      <cite>If I have seen further it is by standing on the shoulders of giants.</cite>
     </div>
   </section>
   <section id="contributions" class="parallax">
     <div class="boast">
       <h2>Contributions are welcome.</h2>
 
-      <p>Send pull requests on GitHub which get automatically converted into Gerrit patchsets. Watch nightly tests run
-        on Jenkins.</p>
+      <p>Send pull requests on GitHub, they will be automatically converted into
+        <a href="https://velesnet.ml/gerrit">Gerrit patchsets</a>.
+        Watch how nightly tests run in <a href="https://velesnet.ml/jenkins">Jenkins</a>.</p>
 
-      <p>Veles is written in Python, OpenCL and CUDA (Jinja2 templated), web parts are built with Gulp and use SASS, ES6 and Node.js.</p>
-
-      <p>There is plenty of work to do: port to Windows and Mac OS X, add CuDNN and other engines, add more reporting options, improve the distributed operation, etc. etc.</p>
+      <p>There is plenty of work to do: port to Windows and Mac OS X, add CuDNN
+        support, extend reporting options, improve the distributed operation and
+        many, many more.</p>
     </div>
   </section>
   <section class="details">
@@ -139,6 +170,27 @@
   <section class="details">
     <div>
       Use Veles within IPython or IPython Notebook.
+    </div>
+  </section>
+
+  <section id="hadoop" class="parallax">
+    <div class="boast">
+      <h2>Veles and Hadoop are friends.</h2>
+
+      <p>Veles is bundled with Mastodon, a subproject which integrates it with
+      any Java application. Mastodon includes a simple load balancer between Java
+      nodes and Veles slaves.</p>
+
+      <p>Extract features in Hadoop and classify objects in Veles. Analyze data
+      in Veles and pass the results next through the pipeline.</p>
+    </div>
+  </section>
+
+  <section class="details">
+    <div>
+      Veles is cluster friendly. Deploy the exported tarball, initialize the pyenv
+      environment and you are ready to go - with just 2 simple commands.
+      Docker.
     </div>
   </section>
 
