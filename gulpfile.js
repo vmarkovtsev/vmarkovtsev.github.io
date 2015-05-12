@@ -133,7 +133,7 @@ gulp.task("landing-en", ["sass", "browserify"], function () {
       .pipe(plugins.if(["**/*.js", "!**/jquery.min.js"],
           plugins.uglify({ie_proof: false}).on("error", plugins.util.log)))
       .pipe(plugins.if("*.css", lazypipe()
-        //.pipe(plugins.shorthand)
+          //.pipe(plugins.shorthand)
           .pipe(plugins.autoprefixer)
           .pipe(plugins.minifyCss,
           {roundingPrecision: -1, keepSpecialComments: 0})()))

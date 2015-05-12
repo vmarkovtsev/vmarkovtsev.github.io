@@ -4,7 +4,8 @@ $navicon_height: 4em;
 $front_title_offset: 12em;
 $section_padding: 4em;
 $loc_chart_size: 20vw;
-$loc_chart_colors: blue green red orange;
+$shade: #505050;
+$border_radius: 0.25em;
 
 body {
   margin: 0;
@@ -25,24 +26,20 @@ h1 {
   font-size: 8em;
 }
 
-.title > h1 {
-  margin: 0;
-}
-
 h2 {
   font-size: 4em;
-}
-
-.title > h2 {
-  margin-top: 0.5em;
 }
 
 h3 {
   font-size: 2em;
 }
 
+#title > h3 {
+  margin-bottom: 1em;
+}
+
 #promo {
-  background: #404040 url("../../../img/background.jpg");
+  background: $shade url("../img/background.jpg");
   background-size: cover;
   background-blend-mode: multiply;
   width: 100vw;
@@ -91,26 +88,27 @@ section {
 
 .details {
   background-color: white;
-  height: 80vh;
+  max-height: none;
   padding: $section_padding;
   color: black;
   font-size: 2em;
+  @extend .fabric;
 }
 
 #doneright {
-  background: #404040 url("../../../img/weights.png")
+  background: $shade url("../img/weights.png")
 }
 
 #contributions {
-  background: #404040 url("../../../img/constellation.jpg")
+  background: $shade url("../img/constellation.jpg")
 }
 
 #hadoop {
-  background: #404040 url("../../../img/elephants.jpg")
+  background: $shade url("../img/elephants.jpg")
 }
 
 #velesforge {
-  background: #404040 url("../../../img/collaboration.svg")
+  background: $shade url("../img/collaboration.svg")
 }
 
 nav {
@@ -132,7 +130,7 @@ nav {
   display: inline-block;
 }
 
-.toplink > img  {
+.toplink > img {
   width: $navicon_height;
   height: $navicon_height;
   object-fit: contain;
@@ -164,12 +162,12 @@ nav {
 
 @font-face {
   font-family: 'Fabrica';
-  src: url('../../../fonts/Fabrica.otf');
+  src: url('../fonts/Fabrica.otf');
 }
 
 @font-face {
   font-family: 'Infinity';
-  src: url('../../../fonts/Infinity.ttf');
+  src: url('../fonts/Infinity.ttf');
 }
 
 #title {
@@ -199,101 +197,126 @@ a:hover {
   color: white;
 }
 
-#loc-pie {
-  float: right;
-  margin-left: $section_padding;
-  margin-bottom: $section_padding;
+.download {
+  @extend .fabrica;
+  font-size: 1.75em;
+  display: inline-block;
+  border: 2px white solid;
+  border-radius: $border_radius;
+  padding: 0.5em 1em 0.4em 1em;
+  color: white;
 }
 
-#loc-pie > h4 {
+.download:hover {
+  background-color: white;
+  color: black;
+  text-decoration: none;
+}
+
+.ubuntu-download {
+  background: none;
+  color: white;
+  font-size: 1.5em;
+  border-radius: $border_radius;
+  display: inline-block;
+}
+
+#locpie-container {
+  float: right;
+  max-width: 20vw;
+  margin-left: $section_padding;
+  margin-bottom: $section_padding;
+  text-align: center;
+}
+
+#locpie-container > h4 {
   @extend .fabrica;
   font-size: 1em;
   text-align: center;
   margin-bottom: 1em;
 }
 
-#loc-pie-container {
+#locpie {
   position: relative;
   width: $loc_chart_size;
   height: $loc_chart_size;
+  margin-bottom: 1em;
 }
 
-.pie {
-	position:absolute;
-	width: $loc_chart_size / 2;
-	height: $loc_chart_size;
-	overflow: hidden;
-	left: $loc_chart_size / 2;
-	transform-origin: left center;
-}
-
-.pie.pie-180 {
-	width: $loc_chart_size;
-	height: $loc_chart_size;
-	left: 0px;
-	transform-origin: center center;
-}
-
-.pie::before {
-	content: "";
-	position: absolute;
-	width: $loc_chart_size / 2;
-	height: $loc_chart_size;
-	left: -$loc_chart_size / 2;
-	border-radius: $loc_chart_size / 2 0 0 $loc_chart_size / 2;
-	transform-origin: right center;
+.pie-tip {
+  position: absolute;
+  float: left;
+  min-width: 30px;
+  max-width: 300px;
+  padding: 5px 18px 6px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .97);
+  color: #444;
+  font-size: 19px;
+  text-shadow: 0 1px 0 #fff;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: .06em;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5);
+  transform: all .3s;
+  pointer-events: none;
 
 }
 
-.pie.pie-180::before {
-	left: 0px;
+.pie-tip:after {
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  content: "";
+  height: 0;
+  margin: 0 0 0 -6px;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-top: 6px solid rgba(255, 255, 255, .95);
+  line-height: 0;
 }
 
-.pie.pie-180::after {
-	content: "";
-	position: absolute;
-	width: $loc_chart_size / 2;
-	height: $loc_chart_size;
-	left: $loc_chart_size / 2;
-	border-radius: 0 $loc_chart_size / 2 $loc_chart_size / 2 0;
+#locpie-legend {
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid black;
+  border-radius: $border_radius;
+  padding: 0 0.25em 0.25em 0.25em;
+  display: inline-block;
+  text-align: left;
 }
 
-@for $i from 1 through length($loc_chart_colors) {
-  .pie:nth-of-type(#{$i})::before,
-  .pie:nth-of-type(#{$i})::after {
-  	background-color: nth($loc_chart_colors, $i);
+.locpie-legend-record::before {
+  content: "";
+  position: absolute;
+  top: 0.25em;
+  bottom: 0.25em;
+  left: 0.1em;
+  width: 1em;
+}
+
+$colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
+@for $i from 1 through length($colors) {
+  .lp#{$i}::before {
+    background-color: nth($colors, $i);
   }
 }
 
-.pie[data-start="30"] {
-	transform: rotate(30deg);
-}
-.pie[data-start="60"] {
-	transform: rotate(60deg);
-}
-.pie[data-start="100"] {
-	transform: rotate(100deg);
+.locpie-legend-record {
+  padding: 0.125em 0 0.125em 1.5em;
+  font-size: 0.5em;
+  position: relative;
+  display: inline-block;
 }
 
-.pie[data-value="30"]::before {
-	transform: rotate(31deg);
+#bottom {
+  background-color: black;
 }
-.pie[data-value="40"]::before {
-	transform: rotate(41deg);
-}
-.pie[data-value="260"]::before {
-	transform: rotate(260deg);
-}
-/*
-NOTE: you could also apply custom classes (i.e. .s0 .v30)
-but if the CSS3 attr() function proposal ever gets implemented,
-then all the above custom piece rules could be replaced with
-the following:
 
-.pie[data-start] {
-   transform:rotate(attr(data-start,deg,0);
+#deps {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  width: 55vw;
+  object-fit: cover;
 }
-.pie[data-value]::before {
-   transform:rotate(attr(data-value,deg,0);
-}
-*/

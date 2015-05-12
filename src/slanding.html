@@ -58,18 +58,19 @@
         {% endif %}
         <br>
         {% if lang not in ["ru", "ko"] %}
-        Developed by {{ samsung() }} Now open source.
+        An open source project developed by {{ samsung() }}
         {% elif lang == "ko" %}
         {{ samsung() }}에 의해 개발.
         {% elif lang == "ru" %}
-        Разработано в {{ samsung() }} Теперь код открыт.
+        Открытый проект, разработанный в {{ samsung() }}
         {% endif %}
       </h3>
+      <a class="download" href="https://github.com/samsung/veles/releases">Download</a>
     </div>
   </section>
   <section class="details">
     <div>
-      Lorem ipsum.
+      Very long and interesting descriptiion of Veles which will be written by Gennady.
     </div>
   </section>
   <section id="doneright" class="parallax">
@@ -82,46 +83,21 @@
   </section>
   <section class="details">
     <div>
-      <div id="loc-pie">
+      <div id="locpie-container">
         <h4>Lines of Code</h4>
-        <div id="loc-pie-container">
-          <div class="pie" data-start="0" data-value="30"></div>
-          <div class="pie" data-start="30" data-value="30"></div>
-          <div class="pie" data-start="60" data-value="40"></div>
-          <div class="pie pie-180" data-start="100" data-value="260"></div>
+        <div id="locpie"></div>
+        <div id="locpie-legend">
+          {% for name in ["Java", "SASS", "HTML", "OpenCL/CUDA", "Javascript", "C/C++", "Python (tests)", "Python (platform)"] %}
+            <div class="lp{{ loop.index }} locpie-legend-record">{{ name }}</div><br>
+          {% endfor %}
         </div>
       </div>
       Veles platform is built on top of many open source projects.<br>
-      The core engine depends on
-      <ul>
-        <li>Twisted, PyZMQ, Paramiko</li>
-        <li>SciPy stack: Numpy, SciPy, Matplotlib</li>
-        <li>OpenCV</li>
-        <li>opencl4py, cuda4py</li>
-        <li>Jinja2</li>
-        <li>Graphviz</li>
-      </ul>
-      opencl4py and cuda4py are homegrown "written from scratch" bindings
-      powered by CFFI. Web subsystem depends on
-      <ul>
-        <li>Tornado, Motor</li>
-        <li>node.js stack</li>
-        <li>viz.js</li>
-      </ul>
-      Native executor depends on
-      <ul>
-        <li>Boost</li>
-        <li>libarchive</li>
-        <li>JsonCpp</li>
-        <li>libsimd</li>
-      </ul>
-      Java integration uses
-      <ul>
-        <li>JZMQ</li>
-        <li>Pyrolite</li>
-        <li>Maven stack</li>
-      </ul>
-      <cite>If I have seen further it is by standing on the shoulders of giants.</cite>
+      <img id="deps" src="img/deps.png">
+      <blockquote id="newton">
+        <p>If I have seen further it is by standing on the shoulders of giants.</p>
+        <footer>Isaac Newton</footer>
+      </blockquote>
     </div>
   </section>
   <section id="contributions" class="parallax">
@@ -206,11 +182,18 @@
     </div>
   </section>
 
+  <footer id="bottom">
+    <a class="download" href="https://github.com/samsung/veles/releases">Download</a>
+  </footer>
+
   <!-- build:js js/jquery.min.js -->
   <script defer src="libs/jquery/dist/jquery.min.js"></script>
   <!-- endbuild -->
   <!-- build:js js/slanding.min.js -->
   <script defer src="../build/js/scroll.js"></script>
+  <script defer src="../build/js/download.js"></script>
+  <script defer src="../build/js/jquery.drawPieChart.js"></script>
+  <script defer src="../build/js/locpie.js"></script>
   <!-- endbuild -->
 </body>
 </html>
