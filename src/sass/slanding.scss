@@ -91,7 +91,7 @@ section {
 
 .details {
   background-color: white;
-  height: 600px;
+  height: 80vh;
   padding: $section_padding;
   color: black;
   font-size: 2em;
@@ -107,6 +107,10 @@ section {
 
 #hadoop {
   background: #404040 url("../../../img/elephants.jpg")
+}
+
+#velesforge {
+  background: #404040 url("../../../img/collaboration.svg")
 }
 
 nav {
