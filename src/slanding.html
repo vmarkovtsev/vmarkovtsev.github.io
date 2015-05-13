@@ -127,10 +127,56 @@
     </div>
   </section>
 
-  <section class="details">
-    <div>
-      Automatic datasets stats. Loader reports.
+  <section class="details" id ="loader-stats">
+    <div id="loader-stats-boast">
+      Veles loaders provide automatic dataset analysis.<br>
+      Solve your task without having to write how to load the data.
     </div>
+    <pre id ="loader-sample">
+<div class="log-annotation">Requires no data preprocessing</div><span class="log-info">INFO</span>:MnistLoader:Loading from original MNIST files...
+<span class="log-info">INFO</span>:MnistLoader:Minibatch size is set to 88
+<div class="log-annotation">See the number of samples in each set</div><span class="log-info">INFO</span>:MnistLoader:Samples number: test: 0, validation: 10000, train: 60000
+<span class="log-debug">DEBUG:MnistLoader:Shuffling, remaining limit is 4294967294</span>
+<span class="log-debug">DEBUG:MnistLoader:Shuffled train set</span>
+<div class="log-annotation">Various data normalization algorithms</div><span class="log-info">INFO</span>:MnistLoader:Normalizing to linear...
+<span class="log-debug">DEBUG:MnistLoader:Data range: (0.000000, 255.000000), </span>
+<span class="log-debug">DEBUG:MnistLoader:Normalized data range: (-1.000000, 1.000000), </span>
+<div class="log-annotation">The number of classes in the raw data</div><span class="log-info">INFO</span>:MnistLoader:There are 10 unique labels
+<span class="log-info">INFO</span>:MnistLoader:train label cardinalities: min: 5421 (&quot;5&quot;), max: 6742 (&quot;1&quot;), avg: 6000, σ: 322 (5%)
+<span class="log-debug">DEBUG:MnistLoader:Detailed train label stats:
++-------+-------------+------+---------------------------+
+| Label | Cardinality |    % | Histogram                 |
++-------+-------------+------+---------------------------+
+|   0   |        5923 |  9.9 | *********************     |
+|   1   |        6742 | 11.2 | ************************* |
+|   2   |        5958 |  9.9 | **********************    |
+|   3   |        6131 | 10.2 | **********************    |
+|   4   |        5842 |  9.7 | *********************     |
+|   5   |        5421 |  9.0 | ********************      |
+|   6   |        5918 |  9.9 | *********************     |
+|   7   |        6265 | 10.4 | ***********************   |
+|   8   |        5851 |  9.8 | *********************     |
+|   9   |        5949 |  9.9 | **********************    |
++-------+-------------+------+---------------------------+</span>
+<div class="log-annotation">Calculates the cardinality standard deviation to reflect the balance</div><span class="log-info">INFO</span>:MnistLoader:validation label cardinalities: min: 892 (&quot;5&quot;), max: 1135 (&quot;1&quot;), avg: 1000, σ: 59 (5%)
+<span class="log-debug">DEBUG:MnistLoader:Detailed validation label stats:
++-------+-------------+------+---------------------------+
+| Label | Cardinality |    % | Histogram                 |
++-------+-------------+------+---------------------------+
+|   0   |         980 |  9.8 | *********************     |
+|   1   |        1135 | 11.3 | ************************* |
+|   2   |        1032 | 10.3 | **********************    |
+|   3   |        1010 | 10.1 | **********************    |
+|   4   |         982 |  9.8 | *********************     |
+|   5   |         892 |  8.9 | *******************       |
+|   6   |         958 |  9.6 | *********************     |
+|   7   |        1028 | 10.3 | **********************    |
+|   8   |         974 |  9.7 | *********************     |
+|   9   |        1009 | 10.1 | **********************    |
++-------+-------------+------+---------------------------+</span>
+<div class="log-annotation">Does a simple test on mutual set balance</div><span class="log-info">INFO</span>:MnistLoader:<span class="log-success">OK: train and validation labels have the same distributions (Χ-square test's p-value is 1.000)</span>
+<span class="log-info">INFO</span>:MnistLoader:Will try to store the entire dataset on the device
+<span class="log-debug">DEBUG:MnistLoader:Used the cached fullbatch_loader for engine &quot;ocl&quot;</span></pre>
   </section>
 
   <section id="publish" class="parallax">
@@ -194,6 +240,7 @@
   <script defer src="../build/js/download.js"></script>
   <script defer src="../build/js/jquery.drawPieChart.js"></script>
   <script defer src="../build/js/locpie.js"></script>
+  <script defer src="../build/js/offset_log_annotations.js"></script>
   <!-- endbuild -->
 </body>
 </html>

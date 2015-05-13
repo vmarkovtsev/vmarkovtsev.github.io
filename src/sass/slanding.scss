@@ -44,8 +44,9 @@ h3 {
   background-blend-mode: multiply;
   width: 100vw;
   height: 95vh;
-  min-height: 40vw;
+  min-height: 30vw;
   max-height: 95vh;
+  position: relative;
 }
 
 section {
@@ -92,7 +93,7 @@ section {
   padding: $section_padding;
   color: black;
   font-size: 2em;
-  @extend .fabric;
+  @extend .fabrica;
 }
 
 #doneright {
@@ -170,10 +171,18 @@ nav {
   src: url('../fonts/Infinity.ttf');
 }
 
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu Mono'), local('UbuntuMono-Regular'), url(http://fonts.gstatic.com/s/ubuntumono/v6/ViZhet7Ak-LRXZMXzuAfkY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
 #title {
   position: absolute;
   left: $front_title_offset;
-  top: 50%;
+  bottom: 1em;
   width: calc(100vw - #{$front_title_offset} * 2);
   color: white;
 }
@@ -185,6 +194,10 @@ nav {
 .infinity {
   font-family: 'Infinity', arial, sans-serif;
   letter-spacing: 0.075em;
+}
+
+.ubuntu-mono {
+  font-family: 'Ubuntu Mono', monospace;
 }
 
 #svg-samsung {
@@ -319,4 +332,74 @@ $colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
   margin-bottom: 2em;
   width: 55vw;
   object-fit: cover;
+}
+
+#loader-sample {
+  font-size: 0.4em;
+  @extend .ubuntu-mono;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  position: relative;
+  overflow: visible;
+  margin: 0;
+}
+
+.log-info {
+  color: #34e2e2;
+  font-weight: bold;
+}
+
+.log-debug {
+  color: #d3d7cf;
+}
+
+.log-success {
+  color: #8ae234;
+  font-weight: bold;
+}
+
+#loader-stats {
+  display: flex;
+  flex-direction: row;
+}
+
+#loader-stats-boast {
+  flex: auto;
+  margin-top: 8em;
+  margin-right: 1em;
+  line-height: 1.2;
+  width: 50%;
+}
+
+.log-annotation {
+  position: absolute;
+  right: calc(100% + 1em);
+  color: black;
+  @extend .infinity;
+  font-weight: bold;
+  font-size: 1.5em;
+  padding-right: 0.2em;
+  border-width: 0 2px 0 0;
+  border-style: solid;
+  border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 50%,
+                                rgba(0, 0, 0, 1) 100%) 1 100%;
+}
+
+.log-annotation::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  height: 2px;
+  width: calc(100% + 2px);
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, #000 100%);
+}
+
+.log-annotation::after {
+  content: "";
+  position: absolute;
+  background-image: linear-gradient(to right, #000 0%, #000 75%, #fff 75.001%, #fff 100%);
+  width: 1.2em;
+  height: 2px;
+  top: calc(50% - 1px);
+  margin-left: 0.3em;
 }
