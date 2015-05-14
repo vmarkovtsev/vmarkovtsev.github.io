@@ -84,7 +84,13 @@ gulp.task("pack-svg", function () {
     .pipe(gulp.dest(dist + "img"));
 });
 
-gulp.task("media", ["pack-svg"], function () {
+gulp.task("video", function () {
+    return gulp.src("src/video/*")
+        .pipe(plugins.newer(dist + "video"))
+        .pipe(gulp.dest(dist + "video"));
+});
+
+gulp.task("media", ["pack-svg", "video"], function () {
   return gulp.src(["src/img/*.png", "src/img/*.jpg"])
     .pipe(plugins.newer(dist + "img"))
     .pipe(plugins.imagemin({

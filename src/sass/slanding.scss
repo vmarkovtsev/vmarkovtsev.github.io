@@ -36,12 +36,11 @@ h3 {
 
 #title > h3 {
   margin-bottom: 1em;
+  font-weight: bold;
 }
 
 #promo {
-  background: $shade url("../img/background.jpg");
-  background-size: cover;
-  background-blend-mode: multiply;
+  background: #282828;
   width: 100vw;
   height: 95vh;
   min-height: 30vw;
@@ -49,9 +48,17 @@ h3 {
   position: relative;
 }
 
+video {
+  mix-blend-mode: overlay;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
 section {
   color: white;
   position: relative;
+  min-height: 30vw;
   max-height: 50vw;
   width: 100vw;
 }
@@ -80,20 +87,67 @@ section {
   @extend .infinity;
 }
 
+section {
+  height: 90vh;
+}
+
+.parallax {
+  position: absolute;
+  clip: rect(auto, auto, auto, auto);
+  width: 100%;
+  height: 100%;
+}
+
+.parallax::after {
+  content: "";
+  background-blend-mode: multiply;
+  background-size: cover !important;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+#doneright > .parallax::after {
+  background: $shade url("../img/weights.png")
+}
+
+#contributions > .parallax::after {
+  background: $shade url("../img/constellation.jpg");
+}
+
+#hadoop > .parallax::after {
+  background: $shade url("../img/elephants.jpg")
+}
+
+#velesforge > .parallax::after {
+  background: $shade url("../img/collaboration.svg")
+}
+
+#publish > .parallax::after {
+  background: $shade url("../img/confluence.png")
+}
+
+#bboxer > .parallax::after {
+  background: $shade url("../img/fish.jpg")
+}
+
+#packed-features > .parallax::after {
+  background: $shade url("../img/cubes.jpg");
+}
+
+/*
+Fucking https://code.google.com/p/chromium/issues/detail?id=354096 prevents from
+
+<section id="..." class="parallax">
+  ...
+</section
+
 .parallax {
   height: 90vh;
   background-attachment: fixed !important;
   background-blend-mode: multiply;
   background-size: cover !important;
-}
-
-.details {
-  background-color: white;
-  max-height: none;
-  padding: $section_padding;
-  color: black;
-  font-size: 2em;
-  @extend .fabrica;
 }
 
 #doneright {
@@ -120,13 +174,41 @@ section {
   background: $shade url("../img/fish.jpg")
 }
 
+#packed-features {
+  background: $shade url("../img/cubes.jpg");
+}
+*/
+
+.details {
+  background-color: white;
+  max-height: none;
+  padding: $section_padding;
+  color: black;
+  font-size: 2em;
+  @extend .fabrica;
+}
+
+section.details {
+  height: auto;
+}
+
+#packed-features::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 1) 100%);
+}
+
 nav {
   position: fixed;
   width: 100vw;
   height: $navicon_height * 2;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 100%);
   line-height: $navicon_height;
-  z-index: 10;
+  z-index: 1;
 }
 
 #links {
@@ -190,7 +272,7 @@ nav {
 #title {
   position: absolute;
   left: $front_title_offset;
-  bottom: 1em;
+  bottom: 10vh;
   width: calc(100vw - #{$front_title_offset} * 2);
   color: white;
 }
@@ -240,6 +322,7 @@ a:hover {
   font-size: 1.5em;
   border-radius: $border_radius;
   display: inline-block;
+  margin: 0;
 }
 
 #locpie-container {
@@ -278,9 +361,8 @@ a:hover {
   text-transform: uppercase;
   text-align: center;
   line-height: 1.3;
-  letter-spacing: .06em;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5);
-  transform: all .3s;
+  transition: all .3s;
   pointer-events: none;
 
 }
@@ -333,6 +415,7 @@ $colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
 
 #bottom {
   background-color: black;
+  padding: 1em;
 }
 
 #deps {
