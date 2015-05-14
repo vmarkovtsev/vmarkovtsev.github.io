@@ -2,7 +2,9 @@
 <html lang="{{ lang }}">
 <head>
   <!-- build:css css/slanding.min.css -->
+  <link rel="stylesheet" type="text/css" href="libs/github-fork-ribbon-css/gh-fork-ribbon.css"/>
   <link rel="stylesheet" type="text/css" href="../build/css/slanding.css"/>
+  <link rel="stylesheet" type="text/css" href="../build/css/ipython.css"/>
   <!-- endbuild -->
 </head>
 
@@ -12,10 +14,12 @@
 </a>
 {% endmacro %}
 
+{% set github = "https://github.com/samsung/veles" %}
+
 <body>
   <nav>
     <div id="links">
-      {{ toplink("github", "GitHub", "", "octocat") }}
+      {{ toplink("github", "GitHub", "{{ github }}", "octocat") }}
       {{ toplink("gerrit", "Gerrit&nbsp;Code&nbsp;Review", "https://velesnet.ml/gerrit", "diffy") }}
       {{ toplink("jenkins", "Jenkins&nbsp;CI", "https://velesnet.ml/jenkins", "jenkins") }}
       {{ toplink("forge", "VelesForge", "https://velesnet.ml/forge", "forge") }}
@@ -23,6 +27,11 @@
       {{ toplink("docs", "Documentation", "https://velesnet.ml/docs", "manual") }}
     </div>
   </nav>
+  <div class="github-fork-ribbon-wrapper right" style="visibility: hidden; opacity: 0;">
+      <div class="github-fork-ribbon">
+          <a href="{{ github }}">Fork me on GitHub</a>
+      </div>
+  </div>
   <section id="promo">
     <div id="title">
       <h1 class="fabrica">{% if lang == "en" %}
@@ -65,7 +74,7 @@
         Открытый проект, разработанный в {{ samsung() }}
         {% endif %}
       </h3>
-      <a class="download" href="https://github.com/samsung/veles/releases">Download</a>
+      <a class="download" href="{{ github }}/releases">Download</a>
     </div>
   </section>
   <section class="details">
@@ -204,7 +213,448 @@
 
   <section class="details">
     <div>
-      Use Veles within IPython or IPython Notebook.
+      Veles is usable from IPython or IPython Notebook.
+      <div tabindex="-1" id="notebook" class="border-box-sizing">
+        <div class="container" id="notebook-container">
+
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[1]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="kn">import</span> <span class="nn">veles</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[2]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">launcher</span><span class="o">=</span><span class="n">veles</span><span
+                          class="p">(</span><span
+                          class="s">&quot;veles/znicz/samples/MnistSimple/mnist.py&quot;</span><span class="p">,</span> <span
+                          class="n">stealth</span><span class="o">=</span><span class="bp">True</span><span
+                          class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s">&quot;ocl&quot;</span><span
+                          class="p">,</span> <span class="n">matplotlib_backend</span><span class="o">=</span><span
+                          class="s">&quot;WebAgg&quot;</span><span class="p">)</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="output_wrapper">
+              <div class="output">
+
+
+                <div class="output_area">
+                  <div class="prompt"></div>
+                  <div class="output_subarea output_stream output_stdout output_text">
+<pre class="ipython">
+<span class="ansigreen"> _   _ _____ _     _____ _____  </span>
+<span class="ansigreen">| | | |  ___| |   |  ___/  ___| </span> Version <span class="ansicyan">0.8.9</span> Tue, 12 May 2015 11:51:57 +0300
+<span class="ansigreen">| | | | |__ | |   | |__ \ &#96;--.  </span><span class="ansigrey"> Copyright © 2013 Samsung Electronics Co., Ltd.</span>
+<span class="ansigreen">| | | |  __|| |   |  __| &#96;--. \ </span><span class="ansigrey"> All rights reserved. Any unauthorized use of</span>
+<span class="ansigreen">\ \_/ / |___| |___| |___/\__/ / </span><span class="ansigrey"> this software is strictly prohibited and is</span>
+<span class="ansigreen"> \___/\____/\_____|____/\____/  </span><span class="ansigrey"> a subject of your country&apos;s laws.</span>
+
+<span class="ansicyan">INFO</span>:Main:Loading workflow &quot;/.../veles/znicz/samples/MnistSimple/mnist.py&quot;...
+<span class="ansicyan">INFO</span>:Main:Applying the configuration from /.../veles/znicz/samples/MnistSimple/mnist_config.py...
+<span class="ansicyan">INFO</span>:Launcher:My Python is CPython 3.4.1
+<span class="ansicyan">INFO</span>:Launcher:My PID is 32514
+<span class="ansicyan">INFO</span>:Launcher:My time is 2015-05-14 09:52:16.789127
+<span class="ansicyan">INFO</span>:Launcher:My ID is 7bc792aa-e93e-4819-88f9-53c64a970ec5
+<span class="ansicyan">INFO</span>:Launcher:My log ID is 7bc792aa-e93e-4819-88f9-53c64a970ec5
+<span class="ansicyan">INFO</span>:Main:Created &lt;MnistSimple.mnist.MnistWorkflow object at 0x7f8fc4f18f60&gt; with 21 units
+<span class="ansicyan">INFO</span>:GraphicsServer:Publishing to inproc://veles-plots; ipc:///tmp/veles-ipc-plots-ws2s7i8s; epgm://eth2;239.192.1.1:16080; epgm://vmnet1;239.192.1.1:9052; epgm://vmnet8;239.192.1.1:47888
+<span class="ansicyan">INFO</span>:OpenCLDevice:Selected the following OpenCL configuration:
++-------------------------------------------+--------+--------+------------+---------+
+| device                                    |  dtype | rating | BLOCK_SIZE | version |
++-------------------------------------------+--------+--------+------------+---------+
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | double | 1.000  |     27     |   1.1   |
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | float  | 1.000  |     30     |   1.1   |
++-------------------------------------------+--------+--------+------------+---------+
+<span class="ansicyan">INFO</span>:MnistWorkflow:Initializing units in MnistWorkflow...
+<span class="ansicyan">INFO</span>:MnistLoader:Loading from original MNIST files...
+<span class="ansicyan">INFO</span>:MnistLoader:Minibatch size is set to 88
+<span class="ansicyan">INFO</span>:MnistLoader:Samples number: test: 0, validation: 10000, train: 60000
+<span class="ansicyan">INFO</span>:MnistLoader:Normalizing to linear...
+<span class="ansicyan">INFO</span>:MnistLoader:There are 10 unique labels
+<span class="ansicyan">INFO</span>:MnistLoader:train label cardinalities: min: 5421 (&quot;5&quot;), max: 6742 (&quot;1&quot;), avg: 6000, σ: 322 (5%)
+<span class="ansicyan">INFO</span>:MnistLoader:validation label cardinalities: min: 892 (&quot;5&quot;), max: 1135 (&quot;1&quot;), avg: 1000, σ: 59 (5%)
+<span class="ansicyan">INFO</span>:MnistLoader:<span class="ansigreen">OK: train and validation labels have the same distributions (Χ-square test&apos;s p-value is 1.000)</span>
+<span class="ansicyan">INFO</span>:MnistLoader:Will try to store the entire dataset on the device
+100% |#####################| 21 units were initialized
+<span class="ansicyan">INFO</span>:Launcher:<span class="ansigreen">Reactor is running</span>
+<span class="ansicyan">INFO</span>:Main:<span class="ansipurple">Returned the control</span>
+<span class="ansicyan">INFO</span>:MnistLoader:Served 88 samples (0 epochs, 0.1% current); jobs failed: 0/pending: 1
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 0
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 0 class validation n_err 8718 (87.18%) in 0.11 sec
+INFO:GraphicsClient:Launching WebAgg instance on port 8081
+INFO:GraphicsClient:Graphics client is running in process 32641
+<span class="ansicyan">INFO</span>:Launcher:Found out the WebAgg port: 8081
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 1
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 1 class train n_err 8126 (13.54%) in 1.28 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 1
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 1 class validation n_err 951 (9.51%) in 0.13 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 2
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 2 class train n_err 5467 (9.11%) in 1.15 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 2
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 2 class validation n_err 858 (8.58%) in 0.12 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 3
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 3 class train n_err 4937 (8.23%) in 1.17 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 3
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 3 class validation n_err 764 (7.64%) in 0.12 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 4
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 4 class train n_err 4462 (7.44%) in 1.13 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 4
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 4 class validation n_err 787 (7.87%) in 0.12 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 5
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 5 class train n_err 3993 (6.66%) in 1.18 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 5
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 5 class validation n_err 628 (6.28%) in 0.12 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 6
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 6 class train n_err 3659 (6.10%) in 1.18 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 6
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 6 class validation n_err 612 (6.12%) in 0.12 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 7
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 7 class train n_err 3309 (5.51%) in 1.22 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 7
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 7 class validation n_err 533 (5.33%) in 0.12 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 8
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 8 class train n_err 2999 (5.00%) in 1.12 sec
+<span class="ansicyan">INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 8
+<span class="ansicyan">INFO</span>:DecisionGD:Epoch 8 class validation n_err 523 (5.23%) in 0.12 sec
+
+</pre>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[3]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">launcher</span><span class="o">.</span><span class="n">pause</span><span
+                          class="p">()</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="output_wrapper">
+              <div class="output">
+
+
+                <div class="output_area">
+                  <div class="prompt"></div>
+                  <div class="output_subarea output_stream output_stdout output_text">
+<pre class="ipython">
+<span class="ansicyan">INFO</span>:ThreadPool:ThreadPool with 2 threads has been suspended
+
+</pre>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[4]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[5]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">launcher</span><span class="o">.</span><span class="n">workflow</span><span
+                          class="o">.</span><span class="n">units</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="output_wrapper">
+              <div class="output">
+
+
+                <div class="output_area">
+                  <div class="prompt output_prompt">
+                    Out[5]:
+                  </div>
+
+
+                  <div class="output_text output_subarea output_pyout">
+<pre class="ipython">
+[veles.plumbing.StartPoint &quot;Start of MnistWorkflow&quot;,
+ veles.plumbing.EndPoint &quot;End of MnistWorkflow&quot;,
+ &lt;veles.plumbing.Repeater object at 0x7f8fc4f1def0&gt;,
+ &lt;MnistSimple.loader_mnist.MnistLoader object at 0x7f8ff17c20f0&gt;,
+ &lt;veles.znicz.all2all.All2AllTanh object at 0x7f8fc4f28ac8&gt;,
+ &lt;veles.znicz.all2all.All2AllSoftmax object at 0x7f8fc4f38358&gt;,
+ &lt;veles.znicz.evaluator.EvaluatorSoftmax object at 0x7f8fc4f28320&gt;,
+ &lt;veles.znicz.decision.DecisionGD object at 0x7f8fc4f38e48&gt;,
+ &lt;veles.znicz.nn_units.NNSnapshotter object at 0x7f8fc4ec6198&gt;,
+ &lt;veles.interaction.Shell object at 0x7f8fc4ec67f0&gt;,
+ &lt;veles.znicz.gd.GDSoftmax object at 0x7f8fc4f38978&gt;,
+ &lt;veles.znicz.gd.GDTanh object at 0x7f8fc4ed32e8&gt;,
+ veles.plotting_units.SlaveStats &quot;Slave Iteration Timings&quot;,
+ veles.plotting_units.AccumulatingPlotter &quot;Errors&quot;,
+ veles.plotting_units.AccumulatingPlotter &quot;Errors&quot;,
+ veles.plotting_units.AccumulatingPlotter &quot;Errors&quot;,
+ veles.plotting_units.MatrixPlotter &quot;Validation matrix&quot;,
+ veles.plotting_units.MatrixPlotter &quot;Train matrix&quot;,
+ veles.plotting_units.AccumulatingPlotter &quot;Last layer max gradient sum&quot;,
+ veles.plotting_units.AccumulatingPlotter &quot;Last layer max gradient sum&quot;,
+ veles.plotting_units.AccumulatingPlotter &quot;Last layer max gradient sum&quot;]
+</pre>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[10]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">plotter</span> <span class="o">=</span> <span class="n">launcher</span><span
+                          class="o">.</span><span class="n">workflow</span><span class="p">[</span><span class="s">&quot;Validation matrix&quot;</span><span
+                          class="p">]</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[11]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">plotter</span><span class="o">.</span><span class="n">set_matplotlib</span><span
+                          class="p">(</span><span class="n">plotter</span><span class="o">.</span><span class="n">import_matplotlib</span><span
+                          class="p">())</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[12]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">plotter</span><span class="o">.</span><span class="n">redraw</span><span
+                          class="p">()</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="output_wrapper">
+              <div class="output">
+
+
+                <div class="output_area">
+                  <div class="prompt output_prompt">
+                    Out[12]:
+                  </div>
+
+
+                  <div class="output_png output_subarea output_pyout">
+                    <img class="ipython" src="img/matrix.png">
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[13]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">launcher</span><span class="o">.</span><span class="n">workflow</span><span
+                          class="p">[</span><span class="mi">4</span><span class="p">]</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="output_wrapper">
+              <div class="output">
+
+
+                <div class="output_area">
+                  <div class="prompt output_prompt">
+                    Out[13]:
+                  </div>
+
+
+                  <div class="output_text output_subarea output_pyout">
+<pre class="ipython">
+&lt;veles.znicz.all2all.All2AllTanh object at 0x7f8fc4f28ac8&gt;
+</pre>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[14]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">launcher</span><span class="o">.</span><span class="n">workflow</span><span
+                          class="p">[</span><span class="mi">4</span><span class="p">]</span><span
+                          class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">map_read</span><span
+                          class="p">()</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="input">
+              <div class="prompt input_prompt">
+                In&nbsp;[15]:
+              </div>
+              <div class="inner_cell">
+                <div class="input_area">
+                  <div class="highlight"><pre class="ipython"><span class="n">launcher</span><span class="o">.</span><span class="n">workflow</span><span
+                          class="p">[</span><span class="mi">4</span><span class="p">]</span><span
+                          class="o">.</span><span class="n">weights</span><span class="o">.</span><span
+                          class="n">mem</span>
+</pre>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="output_wrapper">
+              <div class="output">
+
+
+                <div class="output_area">
+                  <div class="prompt output_prompt">
+                    Out[15]:
+                  </div>
+
+
+                  <div class="output_text output_subarea output_pyout">
+<pre class="ipython">
+array([[ 0.01985305,  0.04555232, -0.00427397, ..., -0.03428014,
+        -0.01746353, -0.02500474],
+       [-0.044922  , -0.04528784, -0.0008402 , ..., -0.00028497,
+         0.00180022, -0.029078  ],
+       [-0.05103011,  0.02148511, -0.02060127, ...,  0.0284697 ,
+        -0.02565062,  0.03231564],
+       ...,
+       [ 0.00910947,  0.04012665,  0.02957316, ...,  0.00426198,
+        -0.04464243,  0.03306964],
+       [-0.00470487,  0.00943439,  0.00882221, ...,  0.00947015,
+         0.00919432, -0.00080211],
+       [-0.02244768,  0.02433176, -0.03893734, ..., -0.02918781,
+         0.00433979, -0.02979604]])
+</pre>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="cell border-box-sizing code_cell rendered">
+            <div class="cell border-box-sizing code_cell rendered">
+              <div class="input">
+                <div class="prompt input_prompt">
+                  In&nbsp;[]:
+                </div>
+                <div class="inner_cell">
+                  <div class="input_area">
+                    <div class="highlight"><pre class="ipython">
+
+</pre>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -230,7 +680,7 @@
   </section>
 
   <footer id="bottom">
-    <a class="download" href="https://github.com/samsung/veles/releases">Download</a>
+    <a class="download" href="{{ github }}/releases">Download</a>
   </footer>
 
   <!-- build:js js/jquery.min.js -->

@@ -1,0 +1,288 @@
+img.ipython {
+  max-width: 100%;
+  width: auto \9;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+
+.container {
+  width: 940px;
+  margin-right: auto;
+  margin-left: auto;
+  *zoom: 1;
+}
+
+.container:before,
+.container:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+
+.container:after {
+  clear: both;
+}
+
+pre.ipython {
+  font-family: monospace;
+  color: #333;
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  background-color: #f5f5f5;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .container {
+    width: 724px;
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: auto;
+  }
+}
+
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+.border-box-sizing {
+  box-sizing: border-box;
+}
+
+.ansigreen {
+  color: #006400;
+}
+
+.ansipurple {
+  color: #9400d3;
+}
+
+.ansicyan {
+  color: #4682b4;
+}
+
+div.cell {
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+div.cell {
+  width: 100%;
+  padding: 5px 5px 5px 0;
+  margin: 0;
+  outline: none;
+}
+
+div.prompt {
+  min-width: 11ex;
+  padding: .4em;
+  margin: 0;
+  font-family: monospace;
+  text-align: right;
+  line-height: 1.21429em;
+}
+
+@media (max-width: 480px) {
+  div.prompt {
+    text-align: left;
+  }
+}
+
+div.inner_cell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+}
+
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+div.input {
+  page-break-inside: avoid;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+@media (max-width: 480px) {
+  div.input {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+div.input_prompt {
+  color: #000080;
+  border-top: 1px solid transparent;
+}
+
+div.input_area > div.highlight {
+  margin: .4em;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+}
+
+div.input_area > div.highlight > pre {
+  margin: 0;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+}
+
+div.output_wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+div.output_prompt {
+  color: #8b0000;
+}
+
+div.output_area {
+  padding: 0;
+  page-break-inside: avoid;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.output {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+@media (max-width: 480px) {
+  div.output_area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: #000;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+div.output_subarea {
+  padding: .4em .4em 0 .4em;
+  flex: 1;
+}
+
+div.output_text {
+  text-align: left;
+  color: #000;
+  line-height: 1.21429em;
+}
+
+div#notebook {
+  font-size: 14px;
+  line-height: 20px;
+  overflow-y: scroll;
+  overflow-x: auto;
+  width: 100%;
+  padding: 1em 0 1em 0;
+  border: 1px solid #ababab;
+  outline: none;
+  box-sizing: border-box;
+  margin: 1em 0 0 0;
+}
+
+pre.ipython {
+  white-space: pre-wrap;
+}
+
+.highlight {
+  background: #f8f8f8;
+}
+
+.highlight .k {
+  color: #008000;
+  font-weight: bold;
+}
+
+.highlight .o {
+  color: #666666;
+}
+
+.highlight .kn {
+  color: #008000;
+  font-weight: bold;
+}
+
+.highlight .s {
+  color: #BA2121;
+}
+
+.highlight .nn {
+  color: #0000FF;
+  font-weight: bold;
+}
+
+.highlight .bp {
+  color: #008000;
+}
+
+div#notebook {
+  overflow: auto;
+  height: 80vh;
+}
+
+@media print {
+  div.cell {
+    display: block;
+    page-break-inside: avoid;
+  }
+
+  div.output_wrapper {
+    display: block;
+    page-break-inside: avoid;
+  }
+
+  div.output {
+    display: block;
+    page-break-inside: avoid;
+  }
+}

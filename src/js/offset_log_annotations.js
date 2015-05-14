@@ -8,5 +8,4 @@ la.each(function() {
     var new_top = top - (la_height - line_height) / 2;
     var new_top_pt = new_top / parent_height * 100;
     $(this).css({top: new_top_pt + "%"});
-    console.log(new_top_pt);
 });

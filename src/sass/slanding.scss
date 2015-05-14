@@ -411,3 +411,11 @@ $colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
   top: calc(50% - 1px);
   margin-left: 0.3em;
 }
+
+.github-fork-ribbon-wrapper {
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: visibility 0.5s linear 0.5s, opacity 0.5s linear;
+  transition-delay: 0s;
+}
