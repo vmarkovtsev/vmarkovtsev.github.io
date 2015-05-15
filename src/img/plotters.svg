@@ -121,7 +121,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -215,10 +215,10 @@
          id="tspan4182"
          x="409.82288"
          y="342.22498"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;font-family:Fabrica;-inkscape-font-specification:Fabrica;text-align:center;text-anchor:middle;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none">ØMQ EPGM broadcast</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;font-family:Fabrica;-inkscape-font-specification:Fabrica;text-align:center;text-anchor:middle;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none">ØMQ EPGM/IPC broadcast</tspan><tspan
          sodipodi:role="line"
          x="409.82288"
-         y="360.97498"
+         y="359.72498"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;font-family:Fabrica;-inkscape-font-specification:Fabrica;text-align:center;text-anchor:middle;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
          id="tspan5353">of serialized objects</tspan></text>
     <text

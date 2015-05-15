@@ -90,17 +90,19 @@ gulp.task("video", function () {
         .pipe(gulp.dest(dist + "video"));
 });
 
-gulp.task("media", ["pack-svg", "video"], function () {
-  return gulp.src(["src/img/*.png", "src/img/*.jpg"])
-    .pipe(plugins.newer(dist + "img"))
-    .pipe(plugins.imagemin({
-      multipass: true,
-      progressive: true,
-      optimizationLevel: 6,
-      use: [pngquant()]
-    }))
-    .pipe(gulp.dest(dist + "img"));
+gulp.task("images", function () {
+    return gulp.src(["src/img/*.png", "src/img/*.jpg"])
+        .pipe(plugins.newer(dist + "img"))
+        .pipe(plugins.imagemin({
+            multipass: true,
+            progressive: true,
+            optimizationLevel: 6,
+            use: [pngquant()]
+        }))
+        .pipe(gulp.dest(dist + "img"));
 });
+
+gulp.task("media", ["images", "pack-svg", "video"]);
 
 gulp.task("watch-media", function () {
   gulp.watch(["src/img/*"], ["media"]);
@@ -129,7 +131,43 @@ gulp.task("watch-browserify", function () {
   gulp.watch(["src/js/*.js"], ["default"]);
 });
 
-var deps = ["fonts", "media", "landing-en"];
+gulp.task("viewerjs-images", ["bower"], function () {
+    return gulp.src("src/libs/viewerjs/images/*")
+        .pipe(plugins.newer(dist + "viewerjs/images"))
+        .pipe(gulp.dest(dist + "viewerjs/images"));
+});
+
+gulp.task("viewerjs-html", ["bower"], function () {
+    return gulp.src("src/libs/viewerjs/index.html")
+        .pipe(plugins.newer(dist + "viewerjs"))
+        .pipe(plugins.minifyHtml({empty: true, loose: true}))
+        .pipe(gulp.dest(dist + "viewerjs"));
+});
+
+gulp.task("viewerjs-css", ["bower"], function () {
+    return gulp.src("src/libs/viewerjs/*.css")
+        .pipe(plugins.newer(dist + "viewerjs"))
+        .pipe(plugins.minifyCss())
+        .pipe(gulp.dest(dist + "viewerjs"));
+});
+
+gulp.task("viewerjs-js", ["bower"], function () {
+    return gulp.src("src/libs/viewerjs/*.js")
+        .pipe(plugins.newer(dist + "viewerjs"))
+        .pipe(plugins.uglify({ie_proof: false}))
+        .pipe(gulp.dest(dist + "viewerjs"));
+});
+
+gulp.task("samplepdf", function () {
+    return gulp.src("src/sample.pdf")
+        .pipe(plugins.newer(dist))
+        .pipe(gulp.dest(dist));
+});
+
+gulp.task("viewerjs", ["viewerjs-images", "viewerjs-html", "viewerjs-css",
+                       "viewerjs-js", "samplepdf"]);
+
+var deps = ["fonts", "media", "landing-en", "viewerjs"];
 
 gulp.task("landing-en", ["sass", "browserify"], function () {
   var assets = plugins.useref.assets({}, assets_pipeline);

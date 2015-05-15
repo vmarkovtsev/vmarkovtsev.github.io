@@ -129,8 +129,16 @@
     </div>
   </section>
   <section class="details">
-    <div>
-      Units, architechture.
+    <div id="arch-container">
+      <div id="arch">
+      <p>Machine learning model execution goes in a <em>workflow</em>, which consists of <em>units</em> and child workflows.
+      Units represent logically independent and integral algorithm parts. E.g. single network layer is a unit; the
+      gradient descent step is another unit.</p>
+      <p>Veles uses a typical data driven approach, where control flow is ruled by data processing though control flow links
+      between units.</p>
+      <p>Such architecture allows easily manageable data parallel and model parallel execution of models.</p>
+      </div>
+      <object type="image/svg+xml" data="img/workflow.svg" id="workflow"></object>
     </div>
   </section>
   <section id="velesforge">
@@ -205,7 +213,10 @@
   <section class="details">
     <div>
       Tens of plotting units provide comprehensive insight into the training process.
-      <img id="plotters" src="img/plotters.svg">
+      <div id="plotters-container">
+        <object type="image/svg+xml" data="img/plotters.svg" id="plotters"></object>
+        <iframe id="viewerjs" src="/viewerjs/#../sample.pdf" allowfullscreen  webkitallowfullscreen></iframe>
+      </div>
     </div>
   </section>
   <section id="bboxer">
@@ -271,9 +282,9 @@
 <span class="ansigreen"> _   _ _____ _     _____ _____  </span>
 <span class="ansigreen">| | | |  ___| |   |  ___/  ___| </span> Version <span class="ansicyan">0.8.9</span> Tue, 12 May 2015 11:51:57 +0300
 <span class="ansigreen">| | | | |__ | |   | |__ \ &#96;--.  </span><span class="ansigrey"> Copyright © 2013 Samsung Electronics Co., Ltd.</span>
-<span class="ansigreen">| | | |  __|| |   |  __| &#96;--. \ </span><span class="ansigrey"> All rights reserved. Any unauthorized use of</span>
-<span class="ansigreen">\ \_/ / |___| |___| |___/\__/ / </span><span class="ansigrey"> this software is strictly prohibited and is</span>
-<span class="ansigreen"> \___/\____/\_____|____/\____/  </span><span class="ansigrey"> a subject of your country&apos;s laws.</span>
+<span class="ansigreen">| | | |  __|| |   |  __| &#96;--. \ </span><span class="ansigrey"> Released under Apache 2.0 license.</span>
+<span class="ansigreen">\ \_/ / |___| |___| |___/\__/ / </span><span class="ansigrey"> https://velesnet.ml</span>
+<span class="ansigreen"> \___/\____/\_____|____/\____/  </span><span class="ansigrey"> https://github.com/samsung/veles/issues</span>
 
 <span class="ansicyan">INFO</span>:Main:Loading workflow &quot;/.../znicz/samples/MnistSimple/mnist.py&quot;...
 <span class="ansicyan">INFO</span>:Main:Applying the configuration from /.../znicz/samples/MnistSimple/mnist_config.py...
@@ -674,9 +685,9 @@ array([[ 0.01985305,  0.04555232, -0.00427397, ..., -0.03428014,
 <span class="ansigreen"> _   _ _____ _     _____ _____  </span>
 <span class="ansigreen">| | | |  ___| |   |  ___/  ___| </span> Version <span class="ansicyan">0.8.9</span> Thu, 14 May 2015 11:24:59 +0300
 <span class="ansigreen">| | | | |__ | |   | |__ \ &#96;--.  </span><span class="ansigrey"> Copyright © 2013 Samsung Electronics Co., Ltd.</span>
-<span class="ansigreen">| | | |  __|| |   |  __| &#96;--. \ </span><span class="ansigrey"> All rights reserved. Any unauthorized use of</span>
-<span class="ansigreen">\ \_/ / |___| |___| |___/\__/ / </span><span class="ansigrey"> this software is strictly prohibited and is</span>
-<span class="ansigreen"> \___/\____/\_____|____/\____/  </span><span class="ansigrey"> a subject of your country&apos;s laws.</span>
+<span class="ansigreen">| | | |  __|| |   |  __| &#96;--. \ </span><span class="ansigrey"> Released under Apache 2.0 license.</span>
+<span class="ansigreen">\ \_/ / |___| |___| |___/\__/ / </span><span class="ansigrey"> https://velesnet.ml</span>
+<span class="ansigreen"> \___/\____/\_____|____/\____/  </span><span class="ansigrey"> https://github.com/samsung/veles/issues</span>
 
 <span class="ansicyan">INFO</span>:Main:Loading workflow &quot;/.../Development/Veles/veles/znicz/samples/YaleFaces/yale_faces.py&quot;...
 <span class="ansicyan">INFO</span>:Main:Applying the configuration from /.../Development/Veles/veles/znicz/samples/YaleFaces/yale_faces_config.py...

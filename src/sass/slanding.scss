@@ -26,6 +26,10 @@ h1 {
   font-size: 8em;
 }
 
+#title > h1 {
+  line-height: 1.1;
+}
+
 h2 {
   font-size: 4em;
 }
@@ -74,6 +78,7 @@ section {
 .boast h2 {
   @extend .fabrica;
   margin-bottom: 1em;
+  line-height: 1.2;
 }
 
 .boast p {
@@ -192,7 +197,7 @@ section.details {
   height: auto;
 }
 
-#packed-features::after {
+section:last-of-type::after {
   content: "";
   position: absolute;
   left: 0;
@@ -206,7 +211,7 @@ nav {
   position: fixed;
   width: 100vw;
   height: $navicon_height * 2;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0) 100%);
   line-height: $navicon_height;
   z-index: 1;
 }
@@ -503,7 +508,41 @@ $colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
   transition-delay: 0s;
 }
 
-#plotters {
-  height: 50vh;
+#arch-container {
+  display: flex;
+  height: 80vh;
+  flex-direction: row;
+}
+
+#arch {
+  flex: 1.0;
+}
+
+#arch > p {
+  margin-bottom: 1em;
+}
+
+#arch > p:last-of-type {
+  margin-bottom: 0;
+}
+
+#workflow {
+  flex: 1.5;
+  margin-left: 1em;
+}
+
+#plotters-container {
+  display: flex;
+  flex-direction: row;
   margin-top: 4em;
+  height: 50vh;
+}
+
+#plotters {
+  flex: 3;
+  margin-right: 2em;
+}
+
+#viewerjs {
+  flex: auto;
 }
