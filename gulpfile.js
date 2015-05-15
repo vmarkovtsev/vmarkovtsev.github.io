@@ -78,7 +78,7 @@ gulp.task("fonts", ["fonts-bootstrap", "fonts-custom"]);
 gulp.task("pack-svg", function () {
   return gulp.src(["src/img/*.svg"])
     .pipe(plugins.newer(dist + "img"))
-    .pipe(plugins.if(["**/*.svg", "!**/diffy.svg"], plugins.svgmin()))
+    .pipe(plugins.if(["**/*.svg", "!**/diffy.svg", "!**/ms.svg"], plugins.svgmin()))
     //.pipe(plugins.svgstore())
     //.pipe(plugins.rename("all.svg"))
     .pipe(gulp.dest(dist + "img"));

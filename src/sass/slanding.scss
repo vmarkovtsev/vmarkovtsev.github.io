@@ -508,27 +508,28 @@ $colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
   transition-delay: 0s;
 }
 
-#arch-container {
+.details > .with-picture {
   display: flex;
   height: 80vh;
   flex-direction: row;
 }
 
-#arch {
+.with-picture > .description {
   flex: 1.0;
 }
 
-#arch > p {
+.with-picture > .description > p {
   margin-bottom: 1em;
 }
 
-#arch > p:last-of-type {
+.with-picture > .description > p:last-of-type {
   margin-bottom: 0;
 }
 
-#workflow {
+.with-picture > .picture {
   flex: 1.5;
   margin-left: 1em;
+  position: relative;
 }
 
 #plotters-container {
@@ -545,4 +546,88 @@ $colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
 
 #viewerjs {
   flex: auto;
+}
+
+#ms {
+  animation: spin 15s linear infinite;
+  width: 100%;
+  height: 80vh;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+$ms-size-x: 5.4em;
+$ms-size-y: 3.1177em;  /* 5.4 / sqrt(3)*/
+$ms-size-z: 2 * 3.1177em;
+
+#message1 {
+  animation: msg1anim 2s linear infinite alternate;
+}
+
+#message2 {
+  animation: msg2anim 2.9s ease-out infinite alternate;
+}
+
+#message3 {
+  animation: msg3anim 2.3333s linear infinite alternate;
+}
+
+#message4 {
+  animation: msg4anim 2.6666s ease-out infinite alternate;
+}
+
+#message5 {
+  animation: msg5anim 1.8888s linear infinite alternate;
+}
+
+#message6 {
+  animation: msg6anim 2.4444s ease-out infinite alternate;
+}
+
+@keyframes msg1anim {
+  100% {
+    transform: translateX($ms-size-x) translateY($ms-size-y);
+  }
+}
+
+@keyframes msg2anim {
+  100% {
+    transform: translateX($ms-size-x) translateY(-$ms-size-y);
+  }
+}
+
+@keyframes msg3anim {
+  100% {
+    transform: translateY(-$ms-size-z);
+  }
+}
+
+@keyframes msg4anim {
+  100% {
+    transform: translateX(-$ms-size-x) translateY(-$ms-size-y);
+  }
+}
+
+@keyframes msg5anim {
+  100% {
+    transform: translateX(-$ms-size-x) translateY($ms-size-y);
+  }
+}
+
+@keyframes msg6anim {
+  100% {
+    transform: translateY($ms-size-z);
+  }
+}
+
+#king {
+  position: absolute;
+  margin: auto;
+  width: 4%;
+  left: 48%;
+  top: 48%;
 }

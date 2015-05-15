@@ -129,8 +129,8 @@
     </div>
   </section>
   <section class="details">
-    <div id="arch-container">
-      <div id="arch">
+    <div class="with-picture">
+      <div class="description">
       <p>Machine learning model execution goes in a <em>workflow</em>, which consists of <em>units</em> and child workflows.
       Units represent logically independent and integral algorithm parts. E.g. single network layer is a unit; the
       gradient descent step is another unit.</p>
@@ -138,7 +138,7 @@
       between units.</p>
       <p>Such architecture allows easily manageable data parallel and model parallel execution of models.</p>
       </div>
-      <object type="image/svg+xml" data="img/workflow.svg" id="workflow"></object>
+      <object type="image/svg+xml" data="img/workflow.svg" id="workflow" class="picture"></object>
     </div>
   </section>
   <section id="velesforge">
@@ -1020,9 +1020,15 @@ INFO:GraphicsClient:Graphics client is running in process 11915
   </section>
 
   <section class="details">
-      <div>
-          ZeroMQ-based star topology of distributed operation handles up to 100 nodes, depending on the task.
-          Optionally, some compression can be applied. The state of things is sent to the Web Status Server.
+      <div class="with-picture">
+        <div class="description">
+          <p>ZeroMQ-based star topology of distributed operation handles up to 100 nodes, depending on the task.
+          Optionally, some compression can be applied. The state of things is sent to the Web Status Server.</p>
+        </div>
+        <div class="picture">
+          <object type="image/svg+xml" data="img/ms.svg" data-src="img/ms.svg" id="ms"></object>
+          <object type="image/svg+xml" data="img/king.svg" id="king"></object>
+        </div>
       </div>
   </section>
 
@@ -1035,7 +1041,7 @@ INFO:GraphicsClient:Graphics client is running in process 11915
       environment and you are ready to go - with just 2 simple commands.</p>
       <p>Manhole feature allows to execute an interactive IPython session in the running process context at any time.</p>
       <p>Live reload feature allows changing the Python code without restarting the process.</p>
-          <p>And many, many more...</p>
+      <p>And many, many more...</p>
     </div>
   </section>
 
@@ -1044,14 +1050,16 @@ INFO:GraphicsClient:Graphics client is running in process 11915
   </footer>
 
   <!-- build:js js/jquery.min.js -->
-  <script defer src="libs/jquery/dist/jquery.min.js"></script>
+  <script src="libs/jquery/dist/jquery.min.js"></script>
   <!-- endbuild -->
   <!-- build:js js/slanding.min.js -->
-  <script defer src="../build/js/scroll.js"></script>
-  <script defer src="../build/js/download.js"></script>
-  <script defer src="../build/js/jquery.drawPieChart.js"></script>
-  <script defer src="../build/js/locpie.js"></script>
-  <script defer src="../build/js/offset_log_annotations.js"></script>
+  <script src="../build/js/scroll.js"></script>
+  <script src="../build/js/download.js"></script>
+  <script src="../build/js/jquery.drawPieChart.js"></script>
+  <script src="../build/js/locpie.js"></script>
+  <script src="../build/js/offset_log_annotations.js"></script>
+  <script src="libs/svg-injector/svg-injector.js"></script>
+  <script src="../build/js/svg_inject.js"></script>
   <!-- endbuild -->
 </body>
 </html>
