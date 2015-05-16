@@ -1,5 +1,5 @@
 SVGInjector(document.querySelectorAll('#ms'), {
-    evalScripts: 'once',
+    evalScripts: false,
     each: function (svg) {
        svg.removeAttribute("width");
        svg.removeAttribute("height");

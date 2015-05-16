@@ -172,7 +172,10 @@ var deps = ["fonts", "media", "landing-en", "viewerjs"];
 gulp.task("landing-en", ["sass", "browserify"], function () {
   var assets = plugins.useref.assets({}, assets_pipeline);
   return gulp.src("src/slanding.html")
-      .pipe(plugins.nunjucksHtml({locals: {lang: "en"}}).on("error", plugins.util.log))
+      .pipe(plugins.nunjucksHtml({
+        locals: {lang: "en"},
+        searchPaths: ["src"]
+      }).on("error", plugins.util.log))
       .pipe(assets)
       .pipe(plugins.if(["**/*.js", "!**/jquery.min.js"],
           plugins.uglify({ie_proof: false}).on("error", plugins.util.log)))
@@ -196,7 +199,10 @@ for (var li in languages) {
   (function(lang) {
     gulp.task("landing-" + lang, ["sass", "browserify", "landing-en"], function () {
       return gulp.src("src/slanding.html")
-          .pipe(plugins.nunjucksHtml({locals: {lang: lang}}).on("error", plugins.util.log))
+          .pipe(plugins.nunjucksHtml({
+            locals: {lang: lang},
+            searchPaths: ["src"],
+          }).on("error", plugins.util.log))
           .pipe(plugins.useref())
           .pipe(plugins.if("*.html", lazypipe()
               .pipe(plugins.minifyHtml, {empty: true, loose: true})
