@@ -647,9 +647,18 @@ $ms-size-z: 2 * 3.1177em;
 }
 
 #master-slave {
+  height: auto;
+}
+
+#master-slave-desc {
   display: flex;
   align-items: center;
   flex-direction: row;
+}
+
+#master-slave-picture {
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
 #workflow {
