@@ -637,3 +637,9 @@ $ms-size-z: 2 * 3.1177em;
 #veles-arch {
   align-items: center;
 }
+
+#master-slave {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
