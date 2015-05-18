@@ -96,49 +96,15 @@
     </div>
   </section>
   <section class="details">
-    <div>
-      <div id="locpie-container">
-        <h4>Lines of Code</h4>
-        <div id="locpie"></div>
-        <div id="locpie-legend">
-          {% for name in ["Java", "SASS", "HTML", "OpenCL/CUDA", "Javascript", "C/C++", "Python (tests)", "Python (platform)"] %}
-            <div class="lp{{ loop.index }} locpie-legend-record">{{ name }}</div><br>
-          {% endfor %}
-        </div>
-      </div>
-      Veles platform is built on top of many open source projects.<br>
-      <img id="deps" src="img/deps.png">
-      <blockquote id="newton">
-        <p>If I have seen further it is by standing on the shoulders of giants.</p>
-        <footer>Isaac Newton</footer>
-      </blockquote>
-    </div>
-  </section>
-  <section id="contributions">
-    <div class="parallax"></div>
-    <div class="boast">
-      <h2>Contributions are welcome.</h2>
-
-      <p>Send pull requests on GitHub, they will be automatically converted into
-        <a href="https://velesnet.ml/gerrit">Gerrit patchsets</a>.
-        Watch how nightly tests run in <a href="https://velesnet.ml/jenkins">Jenkins</a>.</p>
-
-      <p>There is plenty of work to do: port to Windows and Mac OS X, add CuDNN
-        support, extend reporting options, improve the distributed operation and
-        many, many more.</p>
-    </div>
-  </section>
-  <section class="details">
     <div class="with-picture">
       <div class="description">
-      <p>Machine learning model execution goes in a <em>workflow</em>, which consists of <em>units</em> and child workflows.
-      Units represent logically independent and integral algorithm parts. E.g. single network layer is a unit; the
-      gradient descent step is another unit.</p>
-      <p>Veles uses a typical data driven approach, where control flow is ruled by data processing though control flow links
-      between units.</p>
-      <p>Such architecture allows easily manageable data parallel and model parallel execution of models.</p>
+        <p>ZeroMQ-based star topology of distributed operation handles up to 100 nodes, depending on the task.
+          Optionally, some compression can be applied. The state of things is sent to the Web Status Server.</p>
       </div>
-      <object type="image/svg+xml" data="img/workflow.svg" id="workflow" class="picture"></object>
+      <div class="picture">
+        <object type="image/svg+xml" data="img/ms.svg" data-src="img/ms.svg" id="ms"></object>
+        <object type="image/svg+xml" data="img/king.svg" id="king"></object>
+      </div>
     </div>
   </section>
   <section id="velesforge">
@@ -150,12 +116,44 @@
         Access others' work. See what Veles is capable of.</p>
     </div>
   </section>
-  <section class="details" id ="loader-stats">
+  <section class="details">
+    <div>
+      Veles is usable from IPython or IPython Notebook.
+      {% include "ipython.html" %}
+    </div>
+  </section>
+  <section id="publish">
+    <div class="parallax"></div>
+    <div class="boast">
+      <h2>Publish the results.</h2>
+
+      <p>Receive automatic reports when the training ends. The supported formats include Atlassian Confluence; PDF,
+        Latex and HTML backends are not yet implemented - but soon will be.</p>
+    </div>
+  </section>
+  <section class="details">
+    <div>
+      Tens of plotting units provide comprehensive insight into the training process.
+      <div id="plotters-container">
+        <object type="image/svg+xml" data="img/plotters.svg" id="plotters"></object>
+        <iframe id="viewerjs" src="/viewerjs/#../sample.pdf" allowfullscreen webkitallowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+  <section id="bboxer">
+    <div class="parallax"></div>
+    <div class="boast">
+      <h2>Create your own image datasets, fast.</h2>
+
+      <p>Veles includes "bboxer", a collaborative tool for image dataset markup.</p>
+    </div>
+  </section>
+  <section class="details" id="loader-stats">
     <div id="loader-stats-boast">
       Veles loaders provide automatic dataset analysis.<br>
       Solve your task without having to write how to load the data.
     </div>
-    <pre id ="loader-sample">
+    <pre id="loader-sample">
 <div class="log-annotation">Requires no data preprocessing</div><span class="log-info">INFO</span>:MnistLoader:Loading from original MNIST files...
 <span class="log-info">INFO</span>:MnistLoader:Minibatch size is set to 88
 <div class="log-annotation">See the number of samples in each set</div><span class="log-info">INFO</span>:MnistLoader:Samples number: test: 0, validation: 10000, train: 60000
@@ -181,7 +179,8 @@
 |   8   |        5851 |  9.8 | *********************     |
 |   9   |        5949 |  9.9 | **********************    |
 +-------+-------------+------+---------------------------+</span>
-<div class="log-annotation">Calculates the cardinality standard deviation to reflect the balance</div><span class="log-info">INFO</span>:MnistLoader:validation label cardinalities: min: 892 (&quot;5&quot;), max: 1135 (&quot;1&quot;), avg: 1000, σ: 59 (5%)
+<div class="log-annotation">Calculates the cardinality standard deviation to reflect the balance</div><span
+            class="log-info">INFO</span>:MnistLoader:validation label cardinalities: min: 892 (&quot;5&quot;), max: 1135 (&quot;1&quot;), avg: 1000, σ: 59 (5%)
 <span class="log-debug">DEBUG:MnistLoader:Detailed validation label stats:
 +-------+-------------+------+---------------------------+
 | Label | Cardinality |    % | Histogram                 |
@@ -197,84 +196,93 @@
 |   8   |         974 |  9.7 | *********************     |
 |   9   |        1009 | 10.1 | **********************    |
 +-------+-------------+------+---------------------------+</span>
-<div class="log-annotation">Does a simple test on mutual set balance</div><span class="log-info">INFO</span>:MnistLoader:<span class="log-success">OK: train and validation labels have the same distributions (Χ-square test's p-value is 1.000)</span>
+<div class="log-annotation">Does a simple test on mutual set balance</div><span class="log-info">INFO</span>:MnistLoader:<span
+            class="log-success">OK: train and validation labels have the same distributions (Χ-square test's p-value is 1.000)</span>
 <span class="log-info">INFO</span>:MnistLoader:Will try to store the entire dataset on the device
 <span class="log-debug">DEBUG:MnistLoader:Used the cached fullbatch_loader for engine &quot;ocl&quot;</span></pre>
   </section>
-  <section id="publish">
-    <div class="parallax"></div>
-    <div class="boast">
-      <h2>Publish the results.</h2>
-
-      <p>Receive automatic reports when the training ends. The supported formats include Atlassian Confluence; PDF,
-        Latex and HTML backends are not yet implemented - but soon will be.</p>
-    </div>
-  </section>
-  <section class="details">
-    <div>
-      Tens of plotting units provide comprehensive insight into the training process.
-      <div id="plotters-container">
-        <object type="image/svg+xml" data="img/plotters.svg" id="plotters"></object>
-        <iframe id="viewerjs" src="/viewerjs/#../sample.pdf" allowfullscreen  webkitallowfullscreen></iframe>
-      </div>
-    </div>
-  </section>
-  <section id="bboxer">
-    <div class="parallax"></div>
-    <div class="boast">
-      <h2>Create your own image datasets, fast.</h2>
-
-      <p>Veles includes "bboxer", a collaborative tool for image dataset markup.</p>
-    </div>
-  </section>
-
-  <section class="details">
-    <div>
-      Veles is usable from IPython or IPython Notebook.
-      {% include "ipython.html" %}
-    </div>
-  </section>
-
   <section id="hadoop">
     <div class="parallax"></div>
     <div class="boast">
       <h2>Veles and Hadoop are friends.</h2>
 
       <p>Veles is bundled with Mastodon, a subproject which integrates it with
-      any Java application. Mastodon includes a simple load balancer between Java
-      nodes and Veles slaves.</p>
+        any Java application. Mastodon includes a simple load balancer between Java
+        nodes and Veles slaves.</p>
 
       <p>Extract features in Hadoop and classify objects in Veles. Analyze data
-      in Veles and pass the results next through the pipeline.</p>
+        in Veles and pass the results next through the pipeline.</p>
     </div>
   </section>
-
   <section class="details">
-      <div class="with-picture">
-        <div class="description">
-          <p>ZeroMQ-based star topology of distributed operation handles up to 100 nodes, depending on the task.
-          Optionally, some compression can be applied. The state of things is sent to the Web Status Server.</p>
-        </div>
-        <div class="picture">
-          <object type="image/svg+xml" data="img/ms.svg" data-src="img/ms.svg" id="ms"></object>
-          <object type="image/svg+xml" data="img/king.svg" id="king"></object>
-        </div>
-      </div>
-  </section>
+    <div class="with-picture">
+      <div class="description">
+        <p>Machine learning model execution goes in a <em>workflow</em>, which consists of <em>units</em> and child
+          workflows.
+          Units represent logically independent and integral algorithm parts. E.g. single network layer is a unit; the
+          gradient descent step is another unit.</p>
 
+        <p>Veles uses a typical data driven approach, where control flow is ruled by data processing though control flow
+          links
+          between units.</p>
+
+        <p>Such architecture allows easily manageable data parallel and model parallel execution of models.</p>
+      </div>
+      <object type="image/svg+xml" data="img/workflow.svg" id="workflow" class="picture"></object>
+    </div>
+  </section>
   <section id="packed-features">
     <div class="parallax"></div>
-      <div class="boast">
-          <h2>Packed with features.</h2>
+    <div class="boast">
+      <h2>Packed with features.</h2>
 
       <p>Veles is cluster and Docker friendly. Deploy the exported tarball, initialize the pyenv
-      environment and you are ready to go - with just 2 simple commands.</p>
-      <p>Manhole feature allows to execute an interactive IPython session in the running process context at any time.</p>
+        environment and you are ready to go - with just 2 simple commands.</p>
+
+      <p>Manhole feature allows to execute an interactive IPython session in the running process context at any
+        time.</p>
+
       <p>Live reload feature allows changing the Python code without restarting the process.</p>
+
       <p>And many, many more...</p>
     </div>
   </section>
+  <section class="details">
+    <div>
+      <div id="locpie-container">
+        <h4>Lines of Code</h4>
 
+        <div id="locpie"></div>
+        <div id="locpie-legend">
+          {% for name in ["Java", "SASS", "HTML", "OpenCL/CUDA", "Javascript", "C/C++", "Python (tests)", "Python
+          (platform)"] %}
+          <div class="lp{{ loop.index }} locpie-legend-record">{{ name }}</div>
+          <br>
+          {% endfor %}
+        </div>
+      </div>
+      Veles platform is built on top of many open source projects.<br>
+      <img id="deps" src="img/deps.png">
+      <blockquote id="newton">
+        <p>If I have seen further it is by standing on the shoulders of giants.</p>
+        <footer>Isaac Newton</footer>
+      </blockquote>
+    </div>
+  </section>
+  <section id="contributions">
+    <div class="parallax"></div>
+    <div class="boast">
+      <h2>Contributions are welcome.</h2>
+
+      <p>Send pull requests on GitHub, they will be automatically converted into
+        <a href="https://velesnet.ml/gerrit">Gerrit patchsets</a>.
+        Watch how nightly tests run in <a href="https://velesnet.ml/jenkins">Jenkins</a>.</p>
+
+      <p>There is plenty of work to do: port to Windows and Mac OS X, add CuDNN
+        support, extend reporting options, improve the distributed operation and
+        many, many more.</p>
+    </div>
+  </section>
   <footer id="bottom">
     <a class="download" href="{{ github }}/releases">Download</a>
   </footer>
