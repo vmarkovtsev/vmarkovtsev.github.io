@@ -482,6 +482,13 @@ $colors: #3366cc #ff9900 #dc3912 #109618 #990099 #0099c6 #dd4477 #66aa00;
                                 rgba(0, 0, 0, 1) 100%) 1 100%;
 }
 
+@-moz-document url-prefix() {
+  .log-annotation {
+    /* Fix buggy Firefox, see https://bugzilla.mozilla.org/show_bug.cgi?id=709587#c19 */
+    border-image: none;
+  }
+}
+
 .log-annotation::before {
   content: "";
   position: absolute;
@@ -636,10 +643,15 @@ $ms-size-z: 2 * 3.1177em;
 
 #veles-arch {
   align-items: center;
+  height: auto;
 }
 
 #master-slave {
   display: flex;
   align-items: center;
   flex-direction: row;
+}
+
+#workflow {
+  height: 45vw;
 }
