@@ -90,8 +90,18 @@ gulp.task("video", function () {
         .pipe(gulp.dest(dist + "video"));
 });
 
+gulp.task("countdown-glyphs", function () {
+    return gulp.src("src/img/cd_*.svg")
+        .pipe(plugins.newer(dist + "img/countdown.svg"))
+        .pipe(plugins.svgmin())
+        .pipe(plugins.svgstore())
+        .pipe(plugins.rename("countdown.svg"))
+        .pipe(gulp.dest(dist + "img"));
+});
+
+
 gulp.task("images", function () {
-    return gulp.src(["src/img/*.png", "src/img/*.jpg"])
+    return gulp.src(["src/img/*.png", "src/img/*.jpg", "!**/_*"])
         .pipe(plugins.newer(dist + "img"))
         .pipe(plugins.imagemin({
             multipass: true,
@@ -102,7 +112,7 @@ gulp.task("images", function () {
         .pipe(gulp.dest(dist + "img"));
 });
 
-gulp.task("media", ["images", "pack-svg", "video"]);
+gulp.task("media", ["images", "pack-svg", "video", "countdown-glyphs"]);
 
 gulp.task("watch-media", function () {
   gulp.watch(["src/img/*"], ["media"]);

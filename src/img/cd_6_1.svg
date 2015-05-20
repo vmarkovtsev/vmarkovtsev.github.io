@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="28.000000pt"
+   height="28.000000pt"
+   viewBox="0 0 28.000000 28.000000"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg4314"
+   inkscape:version="0.91 r"
+   sodipodi:docname="cd_6_1.svg">
+  <defs
+     id="defs4326" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1863"
+     inkscape:window-height="1056"
+     id="namedview4324"
+     showgrid="false"
+     inkscape:zoom="26.257143"
+     inkscape:cx="17.5"
+     inkscape:cy="17.5"
+     inkscape:window-x="57"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4314" />
+  <metadata
+     id="metadata4316">
+Created by potrace 1.11, written by Peter Selinger 2001-2013
+<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+  <g
+     transform="translate(0.000000,28.000000) scale(0.100000,-0.100000)"
+     fill="#000000"
+     stroke="none"
+     id="g4318">
+    <path
+       d="M 17.689453 2.3515625 C 16.244293 2.4009094 13.570312 4.484375 11.25 7.75 C 3 19.125 8.875 29.375 21.875 26.125 C 31.125 23.75 35.5 17.75 30.75 13.875 C 26.875 10.625 15 16.125 15 21 C 15 22.5 14.625 22.5 13.125 21.25 C 12.125 20.375 11.25 18.625 11.25 17.25 C 11.25 14.25 14.125 8.5 16.75 6.375 C 17.875 5.375 18.75 4.25 18.75 3.625 C 18.75 2.7265625 18.346344 2.3291321 17.689453 2.3515625 z M 26.453125 15.875 C 27.8125 15.875 28.75 16.625 28.75 18.125 C 28.75 20 20.25 23.25 19 21.875 C 18.5 21.375 19.625 19.75 21.625 18.125 C 23.3125 16.625 25.09375 15.875 26.453125 15.875 z "
+       transform="matrix(8,0,0,-8,0,280)"
+       id="path4320" />
+  </g>
+</svg>

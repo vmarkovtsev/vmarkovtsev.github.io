@@ -6,7 +6,8 @@
         "bootstrap-sass": "~3.3.4",
         "github-fork-ribbon-css": "~0.1.1",
         "viewerjs": "~0.2.1",
-        "svg-injector": "~1.1.2"
+        "svg-injector": "~1.1.2",
+        "modernizr": "~2.8.3"
     },
     "private": true
 }

@@ -664,3 +664,34 @@ $ms-size-z: 2 * 3.1177em;
 #workflow {
   height: 45vw;
 }
+
+#countdown {
+  min-height: initial;
+  height: auto;
+  background-color: $brand-danger;
+  padding: 4em;
+}
+
+#countdown > h2 {
+  @extend .fabrica;
+  color: black;
+  text-align: center;
+}
+
+#countdown > pre, #countdown > a {
+  margin: 1em auto 0 auto;
+  display: table;
+}
+
+#countdown > .countdown-container {
+  margin-bottom: 0.5em !important;
+}
+
+#countdown-notice {
+  font-size: 1em;
+  color: black;
+  @extend .fabrica;
+  text-align: center;
+  display: block;
+  margin-top: 2em;
+}

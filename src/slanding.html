@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="libs/github-fork-ribbon-css/gh-fork-ribbon.css"/>
   <link rel="stylesheet" type="text/css" href="../build/css/slanding.css"/>
   <link rel="stylesheet" type="text/css" href="../build/css/ipython.css"/>
+  <link rel="stylesheet" type="text/css" href="../build/css/countdown.css"/>
   <!-- endbuild -->
 </head>
 
@@ -16,6 +17,10 @@
 {% endmacro %}
 
 {% set github = "https://github.com/samsung/veles" %}
+
+{% macro download() %}
+<a class="download" href="{{ github }}/releases">Download</a>
+{% endmacro %}
 
 <body>
   <nav>
@@ -34,10 +39,10 @@
       </div>
   </div>
   <section id="promo">
-      <video autoplay="autoplay" data-role="video" loop="loop" width="100%">
-          <source src="video/veles.mp4" type="video/mp4">
-          <source src="video/veles.webm" type="video/webm">
-      </video>
+    <video autoplay="autoplay" data-role="video" loop="loop" width="100%">
+        <source src="video/veles.mp4" type="video/mp4">
+        <source src="video/veles.webm" type="video/webm">
+    </video>
     <div id="title">
       <h1 class="fabrica">{% if lang == "en" %}
         The VELES
@@ -79,12 +84,15 @@
         Открытый проект, разработанный в {{ samsung() }}
         {% endif %}
       </h3>
-      <a class="download" href="{{ github }}/releases">Download</a>
+      {{ download() }}
     </div>
   </section>
   <section class="details">
     <div>
-      Very long and interesting descriptiion of Veles which will be written by Gennady.
+      <p>Veles is a universal machine learning platform, based on Python ecosystem and currently working only on Linux.
+      It's been historically focused at neural networks, but not limited to them. This project's been in development for
+      the recent 2 years and was internally used by Samsung R&D Institute Russia.</p>
+      <p></p>
     </div>
   </section>
   <section id="doneright">
@@ -140,6 +148,53 @@
         <iframe id="viewerjs" src="/viewerjs/#../sample.pdf" allowfullscreen webkitallowfullscreen></iframe>
       </div>
     </div>
+  </section>
+  {% macro digit(series, index) %}
+  <svg class='digit' xmlns="http://www.w3.org/2000/svg">
+    <use xlink:href="img/countdown.svg#cd_{{ index }}_{{ series }}"/>
+  </svg>
+  {% endmacro %}
+  {% macro digits(base, size) %}
+  <div class='digit-wrapper'>
+    {{ digit(base, 0) }}
+    {% for i in range(size) | reverse %}
+    {{ digit(base, i) }}
+    {% endfor %}
+  </div>
+  {% endmacro %}
+  <section id='countdown'>
+    <h2>You've got only</h2>
+    <div class="countdown-container">
+      <div class='countdown-part-container'>
+        <div class='countdown-part hours tens'>
+          {{ digits(0, 3) }}
+        </div>
+        <div class='countdown-part hours ones'>
+          {{ digits(1, 10) }}
+        </div>
+      </div>
+      <div class='countdown-delimiter'><span>:</span></div>
+      <div class='countdown-part-container'>
+        <div class='countdown-part minutes tens'>
+          {{ digits(2, 6) }}
+        </div>
+        <div class='countdown-part minutes ones'>
+          {{ digits(3, 10) }}
+        </div>
+      </div>
+      <div class='countdown-delimiter'><span>:</span></div>
+      <div class='countdown-part-container'>
+        <div class='countdown-part seconds tens'>
+          {{ digits(4, 6) }}
+        </div>
+        <div class='countdown-part seconds ones'>
+          {{ digits(5, 10) }}
+        </div>
+      </div>
+    </div>
+    <h2>till the end of day to </h2>
+    {{ download() }}
+    <span id="countdown-notice">...and then the next day will come.</span>
   </section>
   <section id="bboxer">
     <div class="parallax"></div>
@@ -285,7 +340,7 @@
     </div>
   </section>
   <footer id="bottom">
-    <a class="download" href="{{ github }}/releases">Download</a>
+    {{ download() }}
     <br><br>
     Copyright Samsung Electronics Co., Ltd., 2015.
   </footer>
@@ -301,6 +356,8 @@
   <script src="../build/js/offset_log_annotations.js"></script>
   <script src="libs/svg-injector/svg-injector.js"></script>
   <script src="../build/js/svg_inject.js"></script>
+  <script src="libs/modernizr/modernizr.js"></script>
+  <script src="../build/js/countdown.js"></script>
   <!-- endbuild -->
 </body>
 </html>

@@ -1,0 +1,135 @@
+@import "bootstrap/variables";
+
+$background-color: $brand-danger;
+$foreground-color: black;
+$size: 10vw;
+$delimiter-size: $size * 5 / 18;
+
+.countdown-container {
+  width: $size * 6 * 7 / 9 + $delimiter-size * 2;
+  background: $background-color;
+  margin: 0 auto 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-reflect: below 0px
+      -webkit-gradient(linear, left top, left bottom, from(transparent),
+                       color-stop(50%, transparent),
+                       to(rgba(white, 0.25)));
+}
+
+.countdown-part-container {
+  display: flex;
+  flex-direction: row;
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    width: $size * 2 * 7 / 9;
+    height: 4vh;
+    background-image: linear-gradient(
+        to bottom, $background-color 0%, rgba($background-color, 0) 100%);
+  }
+}
+
+.countdown-delimiter {
+  color: $foreground-color;
+  font-size: $size;
+  line-height: 1.0;
+  font-family: serif;
+  width: $delimiter-size;
+  height: $size;
+  position: relative;
+}
+
+.countdown-delimiter > span {
+  display: inline-block;
+  position: absolute;
+  bottom: 0.08em;
+}
+
+.digit {
+  display: block;
+  color: $background-color;
+  height: $size;
+  width: $size;
+  margin-left: -$size / 9;
+}
+
+.countdown-part {
+  width: $size * 7 / 9;
+  height: $size;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+$cb: cubic-bezier(1, 0, 1, 0);
+
+.countdown-part {
+  &.hours.tens .digit-wrapper {
+    animation: hours-tens 86400s $cb 0 1;
+  }
+  &.hours.ones .digit-wrapper {
+    animation: ones 36000s $cb -21600s 3;
+  }
+  &.minutes.tens .digit-wrapper {
+    animation: minsec-tens 3600s $cb 0 24;
+  }
+  &.minutes.ones .digit-wrapper {
+    animation: ones 600s $cb 0 144;
+  }
+  &.seconds.tens .digit-wrapper {
+    animation: minsec-tens 60s $cb 0 1440;
+  }
+  &.seconds.ones .digit-wrapper {
+    animation: ones 10s $cb 0 8640;
+  }
+}
+
+@mixin common-animation {
+  0% {
+    transform: translateY(-$size);
+  }
+  100% {
+    transform: translateY(-$size);
+  }
+}
+
+@keyframes hours-tens {
+  @include common-animation;
+  @for $i from 0 through 1 {
+    #{($i * 1000 + 400) / 24}% {
+      transform: translateY(-(2 + $i) * $size);
+    }
+  }
+  #{1400% / 24 + 0.00001%} {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes minsec-tens {
+  @include common-animation;
+  @for $i from 1 through 5 {
+    #{$i * 1000 / 60}% {
+      transform: translateY(-(1 + $i) * $size);
+    }
+  }
+  #{5 * 1000 / 60 + 0.00001}% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes ones {
+  @include common-animation;
+  @for $i from 1 through 9 {
+    #{$i * 10}% {
+      transform: translateY(-(1 + $i) * $size);
+    }
+  }
+  90.00001% {
+    transform: translateY(0px);
+  }
+}
