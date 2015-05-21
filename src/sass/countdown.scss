@@ -70,22 +70,22 @@ $cb: cubic-bezier(1, 0, 1, 0);
 
 .countdown-part {
   &.hours.tens .digit-wrapper {
-    animation: hours-tens 86400s $cb 0 1;
+    animation: hours-tens 86400s $cb 0s 1;
   }
   &.hours.ones .digit-wrapper {
     animation: ones 36000s $cb -21600s 3;
   }
   &.minutes.tens .digit-wrapper {
-    animation: minsec-tens 3600s $cb 0 24;
+    animation: minsec-tens 3600s $cb 0s 24;
   }
   &.minutes.ones .digit-wrapper {
-    animation: ones 600s $cb 0 144;
+    animation: ones 600s $cb 0s 144;
   }
   &.seconds.tens .digit-wrapper {
-    animation: minsec-tens 60s $cb 0 1440;
+    animation: minsec-tens 60s $cb 0s 1440;
   }
   &.seconds.ones .digit-wrapper {
-    animation: ones 10s $cb 0 8640;
+    animation: ones 10s $cb 0s 8640;
   }
 }
 
