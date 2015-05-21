@@ -51,7 +51,7 @@
         {% endif %}
       </h1>
       <h2>{% if lang not in ["ru", "ko"] %}
-        Distributed Machine Learning Platform for HPC
+        Distributed Machine Learning Platform for rapid Deep Learning application development.
       {% elif lang == "ko" %}
         분산 기계 학습 플랫폼
       {% elif lang == "ru" %}
@@ -77,7 +77,7 @@
         {% endif %}
         <br>
         {% if lang not in ["ru", "ko"] %}
-        An open source project developed by {{ samsung() }}
+        An open source project developed by {{ samsung() }} R&D Institute Russia
         {% elif lang == "ko" %}
         {{ samsung() }}에 의해 개발.
         {% elif lang == "ru" %}
@@ -89,19 +89,22 @@
   </section>
   <section class="details">
     <div>
-      <p>Veles is a universal machine learning platform, based on Python ecosystem and currently working only on Linux.
-      It's been historically focused at neural networks, but not limited to them. This project's been in development for
-      the recent 2 years and was internally used by Samsung R&D Institute Russia.</p>
-      <p></p>
+      <h2>What is VELES.</h2>
+      <p>VELES is Universal Distributed ML Platform designed for rapid Deep Learning application development by combining predefined or user
+      made building blocks called Units. Each predefined Unit is highly optimized for execution on GPU (CUDA, OpenCL) and 
+      able to work on single computers or high performance cluster in distributed mode.</p>
+      <p>Units can be easily linked with each other in a form of Workflow (Flow-Based Programming) to create ML application. 
+      Control Flow connections defines execution sequence and Data Flow connection defines data transfer using zero copy method (in the GPU memory).
+      </p>
     </div>
   </section>
   <section id="doneright">
     <div class="parallax"></div>
     <div class="boast">
       <h2>Neural networks done right.</h2>
-      <p>veles.znicz NN engine focuses on performance and hackability. It has little hard-coded entities and enables training
-        all the widely recognized topologies, such as fully connected nets, convolutional nets, reccurent nets.</p>
-      <p>In-depth introspection and rich debugging facilities help developing nets fast and predictable.</p>
+      <p>veles.znicz NN engine focuses on performance and flexibility. It has little hard-coded entities and enables training
+        of all the widely recognized topologies, such as fully connected nets, convolutional nets, reccurent nets etc.</p>
+      <p>In-depth introspection and rich debugging facilities helps to develop nets quickly with predictable result.</p>
     </div>
   </section>
   <section class="details">
