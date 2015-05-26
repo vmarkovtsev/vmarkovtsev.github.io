@@ -695,3 +695,47 @@ $ms-size-z: 2 * 3.1177em;
   display: block;
   margin-top: 2em;
 }
+
+#intro {
+  height: 52em;
+}
+
+#intro h3 {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+}
+
+#steps > li {
+  display: block;
+  height: 4em;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+@for $i from 1 through 9 {
+  @if $i < 5 {
+    #steps > li:nth-child(#{$i}) {
+      margin-left: calc((100vw - #{$section_padding} * 2) * (#{$i} - 1) / 8);
+    }
+    #steps > li:nth-child(#{$i}) > img {
+      margin-right: 1em;
+    }
+  } @else {
+    #steps > li:nth-child(#{$i}) {
+      margin-right: calc((100vw - #{$section_padding} * 2) * (8 - #{$i}) / 8);
+      float: right;
+    }
+    #steps > li:nth-child(#{$i}) > img {
+      margin-left: 1em;
+    }
+  }
+}
+
+$step-img-size: 2em;
+
+#steps img {
+  border-radius: $step-img-size;
+  border: 0.1em solid black;
+  width: $step-img-size * 2;
+  height: $step-img-size * 2;
+}

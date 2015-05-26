@@ -51,7 +51,7 @@
         {% endif %}
       </h1>
       <h2>{% if lang not in ["ru", "ko"] %}
-        Distributed Machine Learning Platform for HPC
+        Distributed platform for rapid Deep learning application development.
       {% elif lang == "ko" %}
         분산 기계 학습 플랫폼
       {% elif lang == "ru" %}
@@ -87,12 +87,30 @@
       {{ download() }}
     </div>
   </section>
-  <section class="details">
+  <section class="details" id="intro">
     <div>
-      <p>Veles is a universal machine learning platform, based on Python ecosystem and currently working only on Linux.
-      It's been historically focused at neural networks, but not limited to them. This project's been in development for
-      the recent 2 years and was internally used by Samsung R&D Institute Russia.</p>
-      <p></p>
+      <h3>Written on Python, uses OpenCL or CUDA, employs Flow-Based Programming.</h3>
+      <ul id="steps">
+        <li><img src="img/intro_1.svg">Deploy VELES on PC or on cluster with a single command</li>
+
+        <li><img src="img/intro_2.svg">Create the model from >250 optimized units
+        </li>
+
+        <li><img src="img/intro_3.svg">Analyze and serve the dataset on the go using Loaders</li>
+
+        <li><img src="img/intro_4.svg">Train it on PC or a High Performance Cluster</li>
+
+        <li>Interactively monitor the training process<img src="img/intro_5.svg">
+        </li>
+
+        <li>Publish the results<img src="img/intro_6.svg">
+        </li>
+
+        <li>Automatically extract the trained model as an application<img src="img/intro_7.svg"></li>
+
+        <li>Run it in the cloud<img src="img/intro_8.svg">
+        </li>
+      </ul>
     </div>
   </section>
   <section id="doneright">
