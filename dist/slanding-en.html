@@ -1,0 +1,384 @@
+<!DOCTYPE html> <html lang=en> <head> <meta charset=utf-8> <link rel=stylesheet href=css/slanding.min.css> </head> <body> <nav> <div id=links> <a id=link-github class=toplink hint=GitHub href="{{ github }}"> <img src=img/octocat.svg id=svg-octocat> </a> <a id=link-gerrit class=toplink hint=Gerrit&nbsp;Code&nbsp;Review href=https://velesnet.ml/gerrit> <img src=img/diffy.svg id=svg-diffy> </a> <a id=link-jenkins class=toplink hint=Jenkins&nbsp;CI href=https://velesnet.ml/jenkins> <img src=img/jenkins.svg id=svg-jenkins> </a> <a id=link-forge class=toplink hint=VelesForge href=https://velesnet.ml/forge> <img src=img/forge.svg id=svg-forge> </a> <a id=link-benchmarks class=toplink hint=Benchmarks href=https://velesnet.ml/benchmarks> <img src=img/chart.svg id=svg-chart> </a> <a id=link-docs class=toplink hint=Documentation href=https://velesnet.ml/docs> <img src=img/manual.svg id=svg-manual> </a> </div> </nav> <div class="github-fork-ribbon-wrapper right" style="visibility: hidden; opacity: 0;"> <div class=github-fork-ribbon> <a href=https://github.com/samsung/veles>Fork me on GitHub</a> </div> </div> <section id=promo> <video autoplay data-role=video loop width=100%> <source src=video/veles.mp4 type=video/mp4> <source src=video/veles.webm type=video/webm> </video> <div id=title> <h1 class=fabrica> The VELES </h1> <h2> Distributed platform for rapid Deep learning application development. </h2> <br><br> <h3 class=boast-content> You change parameters. Veles takes the rest. <br> An open source project developed by <img src=img/samsung.svg id=svg-samsung> </h3> <a class=download href=https://github.com/samsung/veles/releases>Download</a> </div> </section> <section class=details id=intro> <div> <h3>Written on Python, uses OpenCL or CUDA, employs Flow-Based Programming.</h3> <ul id=steps> <li><img src=img/intro_1.svg>Deploy VELES on PC or on cluster with a single command</li> <li><img src=img/intro_2.svg>Create the model from >250 optimized units </li> <li><img src=img/intro_3.svg>Analyze and serve the dataset on the go using Loaders</li> <li><img src=img/intro_4.svg>Train it on PC or a High Performance Cluster</li> <li>Interactively monitor the training process<img src=img/intro_5.svg> </li> <li>Publish the results<img src=img/intro_6.svg> </li> <li>Automatically extract the trained model as an application<img src=img/intro_7.svg></li> <li>Run it in the cloud<img src=img/intro_8.svg> </li> </ul> </div> </section> <section id=doneright> <div class=parallax></div> <div class=boast> <h2>Neural networks done right.</h2> <p>veles.znicz NN engine focuses on performance and hackability. It has little hard-coded entities and enables training all the widely recognized topologies, such as fully connected nets, convolutional nets, reccurent nets.</p> <p>In-depth introspection and rich debugging facilities help developing nets fast and predictable.</p> </div> </section> <section class=details> <div class=with-picture id=master-slave> <div class=description id=master-slave-desc> <p>ZeroMQ-based star topology of distributed operation handles up to 100 nodes, depending on the task. Optionally, some compression can be applied. The state of things is sent to the Web Status Server.</p> </div> <div class=picture id=master-slave-picture> <object type=image/svg+xml data=img/ms.svg data-src=img/ms.svg id=ms></object> <object type=image/svg+xml data=img/king.svg id=king></object> </div> </div> </section> <section id=velesforge> <div class=parallax></div> <div class=boast> <h2>Share your experiments.</h2> <p>Upload your workflows to <a href=https://velesnet.ml/forge>Forge</a>. Access others' work. See what Veles is capable of.</p> </div> </section> <section class=details> <div> Veles is usable from IPython or IPython Notebook. <div tabindex=-1 id=notebook class=border-box-sizing> <div class=container id=notebook-container> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[1]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=kn>import</span> <span class=nn>veles</span>
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[2]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>=</span><span class=n>veles</span><span class=p>(</span><span class=s>&quot;veles/znicz/samples/MnistSimple/mnist.py&quot;</span><span class=p>,</span> <span class=n>stealth</span><span class=o>=</span><span class=bp>True</span><span class=p>,</span> <span class=n>backend</span><span class=o>=</span><span class=s>&quot;ocl&quot;</span><span class=p>,</span> <span class=n>matplotlib_backend</span><span class=o>=</span><span class=s>&quot;WebAgg&quot;</span><span class=p>)</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class=prompt></div> <div class="output_subarea output_stream output_stdout output_text"> <pre class=ipython>
+<span class=ansigreen> _   _ _____ _     _____ _____  </span>
+<span class=ansigreen>| | | |  ___| |   |  ___/  ___| </span> Version <span class=ansicyan>0.8.9</span> Tue, 12 May 2015 11:51:57 +0300
+<span class=ansigreen>| | | | |__ | |   | |__ \ &#96;--.  </span><span class=ansigrey> Copyright © 2013 Samsung Electronics Co., Ltd.</span>
+<span class=ansigreen>| | | |  __|| |   |  __| &#96;--. \ </span><span class=ansigrey> Released under Apache 2.0 license.</span>
+<span class=ansigreen>\ \_/ / |___| |___| |___/\__/ / </span><span class=ansigrey> https://velesnet.ml</span>
+<span class=ansigreen> \___/\____/\_____|____/\____/  </span><span class=ansigrey> https://github.com/samsung/veles/issues</span>
+
+<span class=ansicyan>INFO</span>:Main:Loading workflow &quot;/.../znicz/samples/MnistSimple/mnist.py&quot;...
+<span class=ansicyan>INFO</span>:Main:Applying the configuration from /.../znicz/samples/MnistSimple/mnist_config.py...
+<span class=ansicyan>INFO</span>:Launcher:My Python is CPython 3.4.1
+<span class=ansicyan>INFO</span>:Launcher:My PID is 32514
+<span class=ansicyan>INFO</span>:Launcher:My time is 2015-05-14 09:52:16.789127
+<span class=ansicyan>INFO</span>:Launcher:My ID is 7bc792aa-e93e-4819-88f9-53c64a970ec5
+<span class=ansicyan>INFO</span>:Launcher:My log ID is 7bc792aa-e93e-4819-88f9-53c64a970ec5
+<span class=ansicyan>INFO</span>:Main:Created &lt;MnistSimple.mnist.MnistWorkflow object at 0x7f8fc4f18f60&gt; with 21 units
+<span class=ansicyan>INFO</span>:GraphicsServer:Publishing to inproc://veles-plots; ipc:///tmp/veles-ipc-plots-ws2s7i8s; epgm://eth2;239.192.1.1:16080; epgm://vmnet1;239.192.1.1:9052; epgm://vmnet8;239.192.1.1:47888
+<span class=ansicyan>INFO</span>:OpenCLDevice:Selected the following OpenCL configuration:
++-------------------------------------------+--------+--------+------------+---------+
+| device                                    |  dtype | rating | BLOCK_SIZE | version |
++-------------------------------------------+--------+--------+------------+---------+
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | double | 1.000  |     27     |   1.1   |
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | float  | 1.000  |     30     |   1.1   |
++-------------------------------------------+--------+--------+------------+---------+
+<span class=ansicyan>INFO</span>:MnistWorkflow:Initializing units in MnistWorkflow...
+<span class=ansicyan>INFO</span>:MnistLoader:Loading from original MNIST files...
+<span class=ansicyan>INFO</span>:MnistLoader:Minibatch size is set to 88
+<span class=ansicyan>INFO</span>:MnistLoader:Samples number: test: 0, validation: 10000, train: 60000
+<span class=ansicyan>INFO</span>:MnistLoader:Normalizing to linear...
+<span class=ansicyan>INFO</span>:MnistLoader:There are 10 unique labels
+<span class=ansicyan>INFO</span>:MnistLoader:train label cardinalities: min: 5421 (&quot;5&quot;), max: 6742 (&quot;1&quot;), avg: 6000, σ: 322 (5%)
+<span class=ansicyan>INFO</span>:MnistLoader:validation label cardinalities: min: 892 (&quot;5&quot;), max: 1135 (&quot;1&quot;), avg: 1000, σ: 59 (5%)
+<span class=ansicyan>INFO</span>:MnistLoader:<span class=ansigreen>OK: train and validation labels have the same distributions (Χ-square test&apos;s p-value is 1.000)</span>
+<span class=ansicyan>INFO</span>:MnistLoader:Will try to store the entire dataset on the device
+100% |#####################| 21 units were initialized
+<span class=ansicyan>INFO</span>:Launcher:<span class=ansigreen>Reactor is running</span>
+<span class=ansicyan>INFO</span>:Main:<span class=ansipurple>Returned the control</span>
+<span class=ansicyan>INFO</span>:MnistLoader:Served 88 samples (0 epochs, 0.1% current); jobs failed: 0/pending: 1
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 0
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 0 class validation n_err 8718 (87.18%) in 0.11 sec
+INFO:GraphicsClient:Launching WebAgg instance on port 8081
+INFO:GraphicsClient:Graphics client is running in process 32641
+<span class=ansicyan>INFO</span>:Launcher:Found out the WebAgg port: 8081
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 1
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 1 class train n_err 8126 (13.54%) in 1.28 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 1
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 1 class validation n_err 951 (9.51%) in 0.13 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 2
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 2 class train n_err 5467 (9.11%) in 1.15 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 2
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 2 class validation n_err 858 (8.58%) in 0.12 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 3
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 3 class train n_err 4937 (8.23%) in 1.17 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 3
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 3 class validation n_err 764 (7.64%) in 0.12 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 4
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 4 class train n_err 4462 (7.44%) in 1.13 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 4
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 4 class validation n_err 787 (7.87%) in 0.12 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 5
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 5 class train n_err 3993 (6.66%) in 1.18 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 5
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 5 class validation n_err 628 (6.28%) in 0.12 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 6
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 6 class train n_err 3659 (6.10%) in 1.18 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 6
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 6 class validation n_err 612 (6.12%) in 0.12 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 7
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 7 class train n_err 3309 (5.51%) in 1.22 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 7
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 7 class validation n_err 533 (5.33%) in 0.12 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (60000 total) of class TRAIN served in epoch 8
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 8 class train n_err 2999 (5.00%) in 1.12 sec
+<span class=ansicyan>INFO</span>:MnistLoader:Last minibatch (10000 total) of class VALIDATION served in epoch 8
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 8 class validation n_err 523 (5.23%) in 0.12 sec
+
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[3]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>.</span><span class=n>pause</span><span class=p>()</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class=prompt></div> <div class="output_subarea output_stream output_stdout output_text"> <pre class=ipython>
+<span class=ansicyan>INFO</span>:ThreadPool:ThreadPool with 2 threads has been suspended
+
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[4]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=o>%</span><span class=k>matplotlib</span> <span class=n>inline</span>
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[5]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>.</span><span class=n>workflow</span><span class=o>.</span><span class=n>units</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class="prompt output_prompt"> Out[5]: </div> <div class="output_text output_subarea output_pyout"> <pre class=ipython>
+[veles.plumbing.StartPoint &quot;Start of MnistWorkflow&quot;,
+veles.plumbing.EndPoint &quot;End of MnistWorkflow&quot;,
+&lt;veles.plumbing.Repeater object at 0x7f8fc4f1def0&gt;,
+&lt;MnistSimple.loader_mnist.MnistLoader object at 0x7f8ff17c20f0&gt;,
+&lt;veles.znicz.all2all.All2AllTanh object at 0x7f8fc4f28ac8&gt;,
+&lt;veles.znicz.all2all.All2AllSoftmax object at 0x7f8fc4f38358&gt;,
+&lt;veles.znicz.evaluator.EvaluatorSoftmax object at 0x7f8fc4f28320&gt;,
+&lt;veles.znicz.decision.DecisionGD object at 0x7f8fc4f38e48&gt;,
+&lt;veles.znicz.nn_units.NNSnapshotter object at 0x7f8fc4ec6198&gt;,
+&lt;veles.interaction.Shell object at 0x7f8fc4ec67f0&gt;,
+&lt;veles.znicz.gd.GDSoftmax object at 0x7f8fc4f38978&gt;,
+&lt;veles.znicz.gd.GDTanh object at 0x7f8fc4ed32e8&gt;,
+veles.plotting_units.SlaveStats &quot;Slave Iteration Timings&quot;,
+veles.plotting_units.AccumulatingPlotter &quot;Errors&quot;,
+veles.plotting_units.AccumulatingPlotter &quot;Errors&quot;,
+veles.plotting_units.AccumulatingPlotter &quot;Errors&quot;,
+veles.plotting_units.MatrixPlotter &quot;Validation matrix&quot;,
+veles.plotting_units.MatrixPlotter &quot;Train matrix&quot;,
+veles.plotting_units.AccumulatingPlotter &quot;Last layer max gradient sum&quot;,
+veles.plotting_units.AccumulatingPlotter &quot;Last layer max gradient sum&quot;,
+veles.plotting_units.AccumulatingPlotter &quot;Last layer max gradient sum&quot;]
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[10]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>plotter</span> <span class=o>=</span> <span class=n>launcher</span><span class=o>.</span><span class=n>workflow</span><span class=p>[</span><span class=s>&quot;Validation matrix&quot;</span><span class=p>]</span>
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[11]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>plotter</span><span class=o>.</span><span class=n>set_matplotlib</span><span class=p>(</span><span class=n>plotter</span><span class=o>.</span><span class=n>import_matplotlib</span><span class=p>())</span>
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[12]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>plotter</span><span class=o>.</span><span class=n>redraw</span><span class=p>()</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class="prompt output_prompt"> Out[12]: </div> <div class="output_png output_subarea output_pyout"> <img class=ipython src=img/matrix.png width=472 height=321> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[13]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>.</span><span class=n>workflow</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class="prompt output_prompt"> Out[13]: </div> <div class="output_text output_subarea output_pyout"> <pre class=ipython>
+&lt;veles.znicz.all2all.All2AllTanh object at 0x7f8fc4f28ac8&gt;
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[14]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>.</span><span class=n>workflow</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span><span class=o>.</span><span class=n>weights</span><span class=o>.</span><span class=n>map_read</span><span class=p>()</span>
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[15]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>.</span><span class=n>workflow</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span><span class=o>.</span><span class=n>weights</span><span class=o>.</span><span class=n>mem</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class="prompt output_prompt"> Out[15]: </div> <div class="output_text output_subarea output_pyout"> <pre class=ipython>
+array([[ 0.01985305,  0.04555232, -0.00427397, ..., -0.03428014,
+  -0.01746353, -0.02500474],
+ [-0.044922  , -0.04528784, -0.0008402 , ..., -0.00028497,
+   0.00180022, -0.029078  ],
+ [-0.05103011,  0.02148511, -0.02060127, ...,  0.0284697 ,
+  -0.02565062,  0.03231564],
+ ...,
+ [ 0.00910947,  0.04012665,  0.02957316, ...,  0.00426198,
+  -0.04464243,  0.03306964],
+ [-0.00470487,  0.00943439,  0.00882221, ...,  0.00947015,
+   0.00919432, -0.00080211],
+ [-0.02244768,  0.02433176, -0.03893734, ..., -0.02918781,
+   0.00433979, -0.02979604]])
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[3]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>=</span><span class=n>veles</span><span class=p>(</span><span class=s>&quot;veles/znicz/samples/YaleFaces/yale_faces.py&quot;</span><span class=p>,</span> <span class=s>&quot;-&quot;</span><span class=p>,</span> <span class=s>&quot;root.yalefaces.decision.max_epochs=20;root.common.disable.publishing=True&quot;</span><span class=p>,</span> <span class=n>stealth</span><span class=o>=</span><span class=bp>True</span><span class=p>,</span> <span class=n>backend</span><span class=o>=</span><span class=s>&quot;ocl&quot;</span><span class=p>,</span> <span class=n>matplotlib_backend</span><span class=o>=</span><span class=s>&quot;WebAgg&quot;</span><span class=p>)</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class=prompt></div> <div class="output_subarea output_stream output_stdout output_text"> <pre class=ipython>
+<span class=ansigreen> _   _ _____ _     _____ _____  </span>
+<span class=ansigreen>| | | |  ___| |   |  ___/  ___| </span> Version <span class=ansicyan>0.8.9</span> Thu, 14 May 2015 11:24:59 +0300
+<span class=ansigreen>| | | | |__ | |   | |__ \ &#96;--.  </span><span class=ansigrey> Copyright © 2013 Samsung Electronics Co., Ltd.</span>
+<span class=ansigreen>| | | |  __|| |   |  __| &#96;--. \ </span><span class=ansigrey> Released under Apache 2.0 license.</span>
+<span class=ansigreen>\ \_/ / |___| |___| |___/\__/ / </span><span class=ansigrey> https://velesnet.ml</span>
+<span class=ansigreen> \___/\____/\_____|____/\____/  </span><span class=ansigrey> https://github.com/samsung/veles/issues</span>
+
+<span class=ansicyan>INFO</span>:Main:Loading workflow &quot;/.../Development/Veles/veles/znicz/samples/YaleFaces/yale_faces.py&quot;...
+<span class=ansicyan>INFO</span>:Main:Applying the configuration from /.../Development/Veles/veles/znicz/samples/YaleFaces/yale_faces_config.py...
+<span class=ansicyan>INFO</span>:Launcher:My Python is CPython 3.4.1
+<span class=ansicyan>INFO</span>:Launcher:My PID is 11871
+<span class=ansicyan>INFO</span>:Launcher:My time is 2015-05-14 14:51:49.385228
+<span class=ansicyan>INFO</span>:Launcher:My ID is 9aa05302-c6b6-4e18-9c70-a0d10b7cb0fe
+<span class=ansicyan>INFO</span>:Launcher:My log ID is 9aa05302-c6b6-4e18-9c70-a0d10b7cb0fe
+<span class=ansicyan>INFO</span>:Main:Created YaleFaces.yale_faces.YaleFacesWorkflow &quot;FullyConnected_YaleFaces&quot; with 17 units
+<span class=ansicyan>INFO</span>:GraphicsServer:Publishing to inproc://veles-plots; ipc:///tmp/veles-ipc-plots-zha0g7bl; epgm://eth2;239.192.1.1:29162; epgm://vmnet1;239.192.1.1:59382; epgm://vmnet8;239.192.1.1:28133
+<span class=ansicyan>INFO</span>:OpenCLDevice:Selected the following OpenCL configuration:
++-------------------------------------------+--------+--------+------------+---------+
+| device                                    |  dtype | rating | BLOCK_SIZE | version |
++-------------------------------------------+--------+--------+------------+---------+
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | double | 1.000  |     27     |   1.1   |
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | float  | 1.000  |     30     |   1.1   |
++-------------------------------------------+--------+--------+------------+---------+
+<span class=ansicyan>INFO</span>:YaleFacesWorkflow:Initializing units in FullyConnected_YaleFaces...
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Scanning /data/veles/datasets/CroppedYale...
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Found 2414 samples of shape (192, 168) (0 TEST, 0 VALIDATION, 2414 TRAIN)
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Reading labels...
+100% |#################################|
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:There are 38 unique labels
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:train label cardinalities: min: 49 (&quot;yaleB22&quot;), max: 59 (&quot;yaleB06&quot;), avg: 54, σ: 2 (3%)
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:validation label cardinalities: min: 5 (&quot;yaleB11&quot;), max: 15 (&quot;yaleB22&quot;), avg: 9, <span class=ansiyellow>σ: 2 (22%)</span>
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:<span class=ansigreen>OK: train and validation labels have the same distributions (Χ-square test&apos;s p-value is 1.000)</span>
+Loading 2414x1 images |#####################| 100%
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Minibatch size is set to 40
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Samples number: test: 0, validation: 362, train: 2052
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Normalizing to mean_disp...
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Will try to store the entire dataset on the device
+<span class=ansicyan>INFO</span>:YaleFacesWorkflow:Setting &lt;veles.znicz.all2all.All2AllSoftmax object at 0x7f98652c4860&gt;.output_sample_shape to 38
+<span class=ansicyan>INFO</span>:DecisionGD:Will allow max 20 epochs
+100% |#################| 17 units were initialized
+<span class=ansicyan>INFO</span>:Launcher:<span class=ansigreen>Reactor is running</span>
+<span class=ansicyan>INFO</span>:Main:<span class=ansipurple>Returned the control</span>
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 0
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 0 class validation n_err 356 (98.34%) in 0.06 sec
+INFO:GraphicsClient:Launching WebAgg instance on port 8083
+INFO:GraphicsClient:Graphics client is running in process 11915
+<span class=ansicyan>INFO</span>:Launcher:Found out the WebAgg port: 8083
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 1
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 1 class train n_err 1859 (90.59%) in 0.56 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 1
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 1 class validation n_err 307 (84.81%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 2
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 2 class train n_err 1536 (74.85%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 2
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 2 class validation n_err 264 (72.93%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 3
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 3 class train n_err 1235 (60.19%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 3
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 3 class validation n_err 198 (54.70%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 4
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 4 class train n_err 1009 (49.17%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 4
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 4 class validation n_err 183 (50.55%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 5
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 5 class train n_err 875 (42.64%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 5
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 5 class validation n_err 161 (44.48%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 6
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 6 class train n_err 755 (36.79%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 6
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 6 class validation n_err 148 (40.88%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 7
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 7 class train n_err 656 (31.97%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 7
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 7 class validation n_err 137 (37.85%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 8
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 8 class train n_err 561 (27.34%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 8
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 8 class validation n_err 121 (33.43%) in 0.06 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 9
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 9 class train n_err 471 (22.95%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 9
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 9 class validation n_err 110 (30.39%) in 0.05 sec
+<span class=ansicyan>INFO</span>:NNSnapshotter:Snapshotting to /.../.veles/snapshots/yalefaces_30.39pt.4.pickle.gz...
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: input: min max avg: -0.357297 0.791220 -0.002804
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: weights: min max avg: -0.014116 0.013425 -0.000015
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: bias: min max avg: -0.012791 0.011129 0.000084
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: output: min max avg: -1.572862 1.424502 -0.006934
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllSoftmax: weights: min max avg: -0.125616 0.112880 -0.000141
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllSoftmax: bias: min max avg: -0.051301 0.050824 -0.000993
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllSoftmax: output: min max avg: 0.002155 0.275100 0.026316
+<span class=ansicyan>INFO</span>:NNSnapshotter:EvaluatorSoftmax: err_output: min max avg: -0.448843 0.057346 -0.000000
+<span class=ansicyan>INFO</span>:NNSnapshotter:GDSoftmax: err_input: min max avg: -0.010567 0.010521 0.000012
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 10
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 10 class train n_err 412 (20.08%) in 3.52 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 10
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 10 class validation n_err 93 (25.69%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 11
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 11 class train n_err 343 (16.72%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 11
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 11 class validation n_err 85 (23.48%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 12
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 12 class train n_err 311 (15.16%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 12
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 12 class validation n_err 80 (22.10%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 13
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 13 class train n_err 285 (13.89%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 13
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 13 class validation n_err 64 (17.68%) in 0.06 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 14
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 14 class train n_err 248 (12.09%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 14
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 14 class validation n_err 58 (16.02%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 15
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 15 class train n_err 236 (11.50%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 15
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 15 class validation n_err 58 (16.02%) in 0.06 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 16
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 16 class train n_err 207 (10.09%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 16
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 16 class validation n_err 52 (14.36%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 17
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 17 class train n_err 185 (9.02%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 17
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 17 class validation n_err 44 (12.15%) in 0.06 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 18
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 18 class train n_err 171 (8.33%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 18
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 18 class validation n_err 44 (12.15%) in 0.05 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 19
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 19 class train n_err 157 (7.65%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 19
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 19 class validation n_err 45 (12.43%) in 0.06 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (2052 total) of class TRAIN served in epoch 20
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 20 class train n_err 145 (7.07%) in 0.42 sec
+<span class=ansicyan>INFO</span>:FullBatchAutoLabelFileImageLoader:Last minibatch (362 total) of class VALIDATION served in epoch 20
+<span class=ansicyan>INFO</span>:DecisionGD:Epoch 20 class validation n_err 43 (11.88%) in 0.05 sec
+<span class=ansicyan>INFO</span>:NNSnapshotter:Snapshotting to /.../.veles/snapshots/yalefaces_11.88pt.4.pickle.gz...
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: input: min max avg: -0.357297 0.791220 -0.002804
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: weights: min max avg: -0.019245 0.018747 -0.000029
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: bias: min max avg: -0.029353 0.022790 0.000203
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllTanh: output: min max avg: -1.660748 1.612951 -0.009259
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllSoftmax: weights: min max avg: -0.168302 0.167950 -0.000141
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllSoftmax: bias: min max avg: -0.062234 0.065644 -0.000993
+<span class=ansicyan>INFO</span>:NNSnapshotter:All2AllSoftmax: output: min max avg: 0.000094 0.839616 0.026316
+<span class=ansicyan>INFO</span>:NNSnapshotter:EvaluatorSoftmax: err_output: min max avg: -0.375672 0.105692 -0.000000
+<span class=ansicyan>INFO</span>:NNSnapshotter:GDSoftmax: err_input: min max avg: -0.011464 0.012940 -0.000041
+<span class=ansicyan>INFO</span>:YaleFacesWorkflow:<span class=ansigreen>Finished</span>
+<span class=ansicyan>INFO</span>:Launcher:Stopping everything (standalone mode)
+<span class=ansicyan>INFO</span>:YaleFacesWorkflow:Unit run time statistics top:
++---+----+----------------+----------------+
+| # | %  |      time      | unit           |
++---+----+----------------+----------------+
+| 1 | 38 | 0:00:05.682100 | NNSnapshotter  |
+| 2 | 30 | 0:00:04.461317 | DecisionGD     |
+| 3 | 13 | 0:00:01.997349 | GDTanh         |
+| 4 | 6  | 0:00:00.885001 | GDSoftmax      |
+| 5 | 3  | 0:00:00.540686 | All2AllSoftmax |
+| Σ | 92 | 0:00:13.566452 | Top 5          |
++---+----+----------------+----------------+
+<span class=ansicyan>INFO</span>:YaleFacesWorkflow:Total run time:
++----------------+----------------+-----+
+|     units      |      real      | η,% |
++----------------+----------------+-----+
+| 0:00:14.608761 | 0:00:15.452039 |  94 |
++----------------+----------------+-----+
+<span class=ansicyan>INFO</span>:Launcher:Time elapsed: 0:00:15.457077
+
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[4]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=kn>from</span> <span class=nn>veles.znicz.labels_printer</span> <span class=kn>import</span> <span class=n>LabelsPrinter</span>
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[5]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>fwd</span> <span class=o>=</span> <span class=n>launcher</span><span class=o>.</span><span class=n>workflow</span><span class=o>.</span><span class=n>extract_forward_workflow</span><span class=p>(</span>
+<span class=n>loader_name</span><span class=o>=</span><span class=s>&quot;interactive_image&quot;</span><span class=p>,</span> <span class=n>loader_config</span><span class=o>=</span><span class=p>{},</span>
+<span class=n>result_unit_factory</span><span class=o>=</span><span class=n>LabelsPrinter</span><span class=p>,</span> <span class=n>cyclic</span><span class=o>=</span><span class=bp>True</span><span class=p>)</span>
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[6]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>launcher</span><span class=o>.</span><span class=n>boot</span><span class=p>()</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class=prompt></div> <div class="output_subarea output_stream output_stdout output_text"> <pre class=ipython>
+<span class=ansicyan>INFO</span>:OpenCLDevice:Selected the following OpenCL configuration:
++-------------------------------------------+--------+--------+------------+---------+
+| device                                    |  dtype | rating | BLOCK_SIZE | version |
++-------------------------------------------+--------+--------+------------+---------+
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | double | 1.000  |     27     |   1.1   |
+| NVIDIA Corporation/GeForce GTX TITAN/4318 | float  | 1.000  |     30     |   1.1   |
++-------------------------------------------+--------+--------+------------+---------+
+<span class=ansicyan>INFO</span>:StandardWorkflowBase:Initializing units in Forwards@FullyConnected_YaleFaces...
+<span class=ansicyan>INFO</span>:InteractiveImageLoader:Minibatch size is set to 1
+<span class=ansicyan>INFO</span>:InteractiveImageLoader:Samples number: test: 1, validation: 0, train: 0
+<span class=ansicyan>INFO</span>:InteractiveImageLoader:Performing &quot;mean_disp&quot; normalization analysis...
+100% |                                 |
+<span class=ansicyan>INFO</span>:StandardWorkflowBase:Setting &lt;veles.znicz.all2all.All2AllSoftmax object at 0x7f985c267c50&gt;.output_sample_shape to 38
+100% |#######| 7 units were initialized
+<span class=ansicyan>INFO</span>:Launcher:<span class=ansigreen>Reactor is running</span>
+<span class=ansicyan>INFO</span>:InteractiveImageLoader:Waiting for the user&apos;s input...
+
+</pre> </div> </div> </div> </div> </div> <div class="cell border-box-sizing code_cell rendered"> <div class=input> <div class="prompt input_prompt"> In&nbsp;[7]: </div> <div class=inner_cell> <div class=input_area> <div class=highlight><pre class=ipython><span class=n>feed</span><span class=p>(</span><span class=s>&quot;http://cont.ws/uploads/posts/78168.jpg&quot;</span><span class=p>)</span>
+</pre> </div> </div> </div> </div> <div class=output_wrapper> <div class=output> <div class=output_area> <div class=prompt></div> <div class="output_subarea output_stream output_stdout output_text"> <pre class=ipython>
+
+<span class=ansicyan>INFO</span>:InteractiveImageLoader:Served 1 samples (1 epochs, 0.0% current); jobs failed: 0/pending: 1
+<span class=ansicyan>INFO</span>:InteractiveImageLoader:Last minibatch (1 total) of class TEST served in epoch 1
+<span class=ansicyan>INFO</span>:LabelsPrinter:Results:
++-------+---------+
+| label |  value  |
++-------+---------+
+|   17  | 0.03079 |
+|   11  | 0.02980 |
+|   23  | 0.02951 |
+|   5   | 0.02915 |
+|   30  | 0.02850 |
++-------+---------+
+<span class=ansicyan>INFO</span>:LabelsPrinter:Max to mean ratio: 1.2
+<span class=ansicyan>INFO</span>:InteractiveImageLoader:Waiting for the user&apos;s input...
+
+</pre> </div> </div> </div> </div> </div> </div> </div> </div> </section> <section id=publish> <div class=parallax></div> <div class=boast> <h2>Publish the results.</h2> <p>Receive automatic reports when the training ends. The supported formats include Atlassian Confluence; PDF, Latex and HTML backends are not yet implemented - but soon will be.</p> </div> </section> <section class=details> <div> Tens of plotting units provide comprehensive insight into the training process. <div id=plotters-container> <object type=image/svg+xml data=img/plotters.svg id=plotters></object> <iframe id=viewerjs src=/viewerjs/#../sample.pdf allowfullscreen webkitallowfullscreen></iframe> </div> </div> </section> <section id=countdown> <h2>You've got only</h2> <div class=countdown-container> <div class=countdown-part-container> <div class="countdown-part hours tens"> <div class=digit-wrapper> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_0></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_2_0></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_1_0></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_0></use> </svg> </div> </div> <div class="countdown-part hours ones"> <div class=digit-wrapper> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_9_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_8_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_7_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_6_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_5_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_4_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_3_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_2_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_1_1></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_1></use> </svg> </div> </div> </div> <div class=countdown-delimiter><span>:</span></div> <div class=countdown-part-container> <div class="countdown-part minutes tens"> <div class=digit-wrapper> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_2></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_5_2></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_4_2></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_3_2></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_2_2></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_1_2></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_2></use> </svg> </div> </div> <div class="countdown-part minutes ones"> <div class=digit-wrapper> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_9_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_8_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_7_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_6_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_5_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_4_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_3_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_2_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_1_3></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_3></use> </svg> </div> </div> </div> <div class=countdown-delimiter><span>:</span></div> <div class=countdown-part-container> <div class="countdown-part seconds tens"> <div class=digit-wrapper> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_4></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_5_4></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_4_4></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_3_4></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_2_4></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_1_4></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_4></use> </svg> </div> </div> <div class="countdown-part seconds ones"> <div class=digit-wrapper> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_9_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_8_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_7_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_6_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_5_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_4_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_3_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_2_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_1_5></use> </svg> <svg class=digit xmlns=http://www.w3.org/2000/svg> <use xlink:href=img/countdown.svg#cd_0_5></use> </svg> </div> </div> </div> </div> <h2>till the end of day to </h2> <a class=download href=https://github.com/samsung/veles/releases>Download</a> <span id=countdown-notice>...and then the next day will come.</span> </section> <section id=bboxer> <div class=parallax></div> <div class=boast> <h2>Create your own image datasets, fast.</h2> <p>Veles includes "bboxer", a collaborative tool for image dataset markup.</p> </div> </section> <section class=details id=loader-stats> <div id=loader-stats-boast> Veles loaders provide automatic dataset analysis.<br> Solve your task without having to write how to load the data. </div> <pre id=loader-sample>
+<div class=log-annotation>Requires no data preprocessing</div><span class=log-info>INFO</span>:MnistLoader:Loading from original MNIST files...
+<span class=log-info>INFO</span>:MnistLoader:Minibatch size is set to 88
+<div class=log-annotation>See the number of samples in each set</div><span class=log-info>INFO</span>:MnistLoader:Samples number: test: 0, validation: 10000, train: 60000
+<span class=log-debug>DEBUG:MnistLoader:Shuffling, remaining limit is 4294967294</span>
+<span class=log-debug>DEBUG:MnistLoader:Shuffled train set</span>
+<div class=log-annotation>Various data normalization algorithms</div><span class=log-info>INFO</span>:MnistLoader:Normalizing to linear...
+<span class=log-debug>DEBUG:MnistLoader:Data range: (0.000000, 255.000000), </span>
+<span class=log-debug>DEBUG:MnistLoader:Normalized data range: (-1.000000, 1.000000), </span>
+<div class=log-annotation>The number of classes in the raw data</div><span class=log-info>INFO</span>:MnistLoader:There are 10 unique labels
+<span class=log-info>INFO</span>:MnistLoader:train label cardinalities: min: 5421 (&quot;5&quot;), max: 6742 (&quot;1&quot;), avg: 6000, σ: 322 (5%)
+<span class=log-debug>DEBUG:MnistLoader:Detailed train label stats:
++-------+-------------+------+---------------------------+
+| Label | Cardinality |    % | Histogram                 |
++-------+-------------+------+---------------------------+
+|   0   |        5923 |  9.9 | *********************     |
+|   1   |        6742 | 11.2 | ************************* |
+|   2   |        5958 |  9.9 | **********************    |
+|   3   |        6131 | 10.2 | **********************    |
+|   4   |        5842 |  9.7 | *********************     |
+|   5   |        5421 |  9.0 | ********************      |
+|   6   |        5918 |  9.9 | *********************     |
+|   7   |        6265 | 10.4 | ***********************   |
+|   8   |        5851 |  9.8 | *********************     |
+|   9   |        5949 |  9.9 | **********************    |
++-------+-------------+------+---------------------------+</span>
+<div class=log-annotation>Calculates the cardinality standard deviation to reflect the balance</div><span class=log-info>INFO</span>:MnistLoader:validation label cardinalities: min: 892 (&quot;5&quot;), max: 1135 (&quot;1&quot;), avg: 1000, σ: 59 (5%)
+<span class=log-debug>DEBUG:MnistLoader:Detailed validation label stats:
++-------+-------------+------+---------------------------+
+| Label | Cardinality |    % | Histogram                 |
++-------+-------------+------+---------------------------+
+|   0   |         980 |  9.8 | *********************     |
+|   1   |        1135 | 11.3 | ************************* |
+|   2   |        1032 | 10.3 | **********************    |
+|   3   |        1010 | 10.1 | **********************    |
+|   4   |         982 |  9.8 | *********************     |
+|   5   |         892 |  8.9 | *******************       |
+|   6   |         958 |  9.6 | *********************     |
+|   7   |        1028 | 10.3 | **********************    |
+|   8   |         974 |  9.7 | *********************     |
+|   9   |        1009 | 10.1 | **********************    |
++-------+-------------+------+---------------------------+</span>
+<div class=log-annotation>Does a simple test on mutual set balance</div><span class=log-info>INFO</span>:MnistLoader:<span class=log-success>OK: train and validation labels have the same distributions (Χ-square test's p-value is 1.000)</span>
+<span class=log-info>INFO</span>:MnistLoader:Will try to store the entire dataset on the device
+<span class=log-debug>DEBUG:MnistLoader:Used the cached fullbatch_loader for engine &quot;ocl&quot;</span></pre> </section> <section id=hadoop> <div class=parallax></div> <div class=boast> <h2>Veles and Hadoop are friends.</h2> <p>Veles is bundled with Mastodon, a subproject which integrates it with any Java application. Mastodon includes a simple load balancer between Java nodes and Veles slaves.</p> <p>Extract features in Hadoop and classify objects in Veles. Analyze data in Veles and pass the results next through the pipeline.</p> </div> </section> <section class=details> <div class=with-picture id=veles-arch> <div class=description> <p>Machine learning model execution goes in a <em>workflow</em>, which consists of <em>units</em> and child workflows. Units represent logically independent and integral algorithm parts. E.g. single network layer is a unit; the gradient descent step is another unit.</p> <p>Veles uses a typical data driven approach, where control flow is ruled by data processing though control flow links between units.</p> <p>Such architecture allows easily manageable data parallel and model parallel execution of models.</p> </div> <object type=image/svg+xml data=img/workflow.svg id=workflow class=picture></object> </div> </section> <section id=packed-features> <div class=parallax></div> <div class=boast> <h2>Packed with features.</h2> <p>Veles is cluster and Docker friendly. Deploy the exported tarball, initialize the pyenv environment and you are ready to go - with just 2 simple commands.</p> <p>Manhole feature allows to execute an interactive IPython session in the running process context at any time.</p> <p>Live reload feature allows changing the Python code without restarting the process.</p> <p>And many, many more...</p> </div> </section> <section class=details> <div> <div id=locpie-container> <h4>Lines of Code</h4> <div id=locpie></div> <div id=locpie-legend> <div class="lp1 locpie-legend-record">Java</div> <br> <div class="lp2 locpie-legend-record">SASS</div> <br> <div class="lp3 locpie-legend-record">HTML</div> <br> <div class="lp4 locpie-legend-record">OpenCL/CUDA</div> <br> <div class="lp5 locpie-legend-record">Javascript</div> <br> <div class="lp6 locpie-legend-record">C/C++</div> <br> <div class="lp7 locpie-legend-record">Python (tests)</div> <br> <div class="lp8 locpie-legend-record">Python (platform)</div> <br> </div> </div> Veles platform is built on top of many open source projects.<br> <img id=deps src=img/deps.png> <blockquote id=newton> <p>If I have seen further it is by standing on the shoulders of giants.</p> <footer>Isaac Newton</footer> </blockquote> </div> </section> <section id=contributions> <div class=parallax></div> <div class=boast> <h2>Contributions are welcome.</h2> <p>Send pull requests on GitHub, they will be automatically converted into <a href=https://velesnet.ml/gerrit>Gerrit patchsets</a>. Watch how nightly tests run in <a href=https://velesnet.ml/jenkins>Jenkins</a>.</p> <p>There is plenty of work to do: port to Windows and Mac OS X, add CuDNN support, extend reporting options, improve the distributed operation and many, many more.</p> </div> </section> <footer id=bottom> <a class=download href=https://github.com/samsung/veles/releases>Download</a> <br><br> Copyright Samsung Electronics Co., Ltd., 2015. </footer> <script src=js/jquery.min.js></script> <script src=js/slanding.min.js></script> </body> </html> 
