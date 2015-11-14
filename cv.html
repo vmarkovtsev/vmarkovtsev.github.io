@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vadim Markovtsev</title>
+  <style>
+  /** Font Awesome */
+  @font-face {
+    font-family: 'FontAwesome';
+    src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .fa-male:before {
+    content: "\f183";
+  }
+
+  .fa-location-arrow:before {
+    content: "\f124";
+  }
+
+  .fa-envelope:before {
+    content: "\f0e0";
+  }
+
+  .fa-github:before {
+    content: "\f09b";
+  }
+
+  .fa-linkedin:before {
+    content: "\f0e1";
+  }
+
+  /** Ultra Light */
+  @font-face {
+    font-family: "San Francisco";
+    font-weight: 100;
+    src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-ultralight-webfont.woff2");
+  }
+
+  /** Thin */
+  @font-face {
+    font-family: "San Francisco";
+    font-weight: 200;
+    src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-thin-webfont.woff2");
+  }
+
+  /** Medium */
+  @font-face {
+    font-family: "San Francisco";
+    font-weight: normal;
+    src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-medium-webfont.woff2");
+  }
+
+  /** Semi Bold */
+  @font-face {
+    font-family: "San Francisco";
+    font-weight: 500;
+    src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-semibold-webfont.woff2");
+  }
+
+  /** Bold */
+  @font-face {
+    font-family: "San Francisco";
+    font-weight: bold;
+    src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-bold-webfont.woff2");
+  }
+
+  * {
+      font-family: "San Francisco";
+  }
+
+  body {
+    padding: 2em calc((100vw - (100vh / 1.4142)) / 3);
+  }
+
+  article {
+    padding-left: 8em;
+  }
+
+  h1, section::before, a:hover {
+    color: #3a5795;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  article > header {
+    margin-bottom: 2em;
+  }
+
+  article > section {
+    margin-bottom: 4em;
+  }
+
+  header {
+    display: flex;
+    font-size: 0.8em;
+  }
+
+  #photo, #qr > * {
+    height: 100px;
+    width: 100px;
+    min-width: 100px;
+    object-fit: cover;
+  }
+
+  #photo {
+    margin-right: 1em;
+    background-color: black;
+  }
+
+  #qr {
+    position: relative;
+    margin-left: 1em;
+  }
+
+  header li {
+    margin-bottom: 0.5em;
+  }
+
+  header ul, header li {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  header ul:last-of-type {
+    flex-grow: 1;
+  }
+
+  #awesome {
+    margin-right: 0.5em;
+    text-align: center;
+  }
+
+  section {
+    position: relative;
+  }
+
+  section::before {
+    content: attr(label);
+    position: absolute;
+    right: calc(100% + 1em);
+  }
+
+  section > ul > li {
+    margin-bottom: 2em;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    page-break-inside: avoid;
+  }
+
+  aside, aside a {
+    float: right;
+    color: #3a5795;
+    margin-left: 1em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+    margin-top: 0;
+  }
+
+  h3 {
+    font-size: 1.1em;
+  }
+
+  summary {
+    color: gray;
+  }
+
+  #samsung {
+    page-break-inside: auto;
+  }
+
+  #samsung > summary > ul {
+    list-style-type: square;
+  }
+
+  #samsung aside {
+    color: gray;
+  }
+
+  #samsung > summary > ul > li {
+    margin-bottom: 0.5em;
+  }
+
+  .project {
+    display: flex;
+  }
+
+  .project > div {
+    flex: 1;
+  }
+
+  .project > div:first-of-type {
+    padding-right: 1em;
+  }
+
+  .project > div:last-of-type {
+    padding-left: 1em;
+  }
+
+  footer {
+    font-size: 0.5em;
+  }
+
+  canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  </style>
+</head>
+<body>
+  <article>
+    <h1>Vadim Markovtsev</h1>
+    <header>
+      <img src="photo.jpg" id="photo">
+      <ul id="awesome">
+        <li><i class="fa fa-male"></i></li>
+        <li><i class="fa fa-location-arrow"></i></li>
+        <li><i class="fa fa-envelope"></i></li>
+        <li><i class="fa fa-github"></i></li>
+        <li><i class="fa fa-linkedin"></i></li>
+      </ul>
+      <ul>
+        <li><span id="years">?</span> years old, married</li>
+        <script>
+          document.getElementById("years").textContent = (new Date().getFullYear()) - 1989;
+          /* I love my wife, so "married" is permanent :) */
+        </script>
+        <li>Moscow, Russia / ready to relocate</li>
+        <li><a href="mailto://gmarkhor@gmail.com">gmarkhor@gmail.com</a></li>
+        <li><a href="http://github.com/vmarkovtsev">vmarkovtsev</a></li>
+        <li><a href="https://www.linkedin.com/in/vadim-markovtsev-76a17392">goo.gl/JCFJcc</a></li>
+      </ul>
+      <div id="qr">
+        <img src="qrcode.png">
+        <canvas width="280" height="280" onmouseleave="reset_qr_canvas(this)"
+            onmouseover="render_random_qr(performance.now())"></canvas>
+        <script>
+          var last_render = performance.now();
+
+          function render_random_qr(time) {
+            if (last_render === null) {
+              last_render = performance.now();
+              return;
+            }
+            if ((time - last_render) > (1000 / 30)) {
+              last_render = performance.now();
+              var canvas = document.getElementsByTagName("canvas")[0];
+              var ctx = canvas.getContext("2d");
+              var width = canvas.width;
+              var height = canvas.height;
+              var gridx = width / 28;
+              var gridy = height / 28;
+              ctx.fillStyle = "white";
+              ctx.fillRect(0, 0, width, height);
+              ctx.fillStyle = "black";
+
+              function draw_anchor(x, y) {
+                ctx.fillRect(x, y, gridx * 7, gridy);
+                ctx.fillRect(x, y, gridx, gridy * 7);
+                ctx.fillRect(x + gridx * 6, y, gridx, gridy * 7);
+                ctx.fillRect(x, y + gridy * 6, gridx * 7, gridy);
+                ctx.fillRect(x + gridx * 2, y + gridy * 2, gridx * 3, gridy * 3);
+              }
+
+              draw_anchor(gridx, gridy);
+              draw_anchor(gridx, height - gridy * 8);
+              draw_anchor(width - gridx * 8, gridy);
+              ctx.fillRect(width - gridx * 10, height - gridy * 10, gridx * 5, gridy);
+              ctx.fillRect(width - gridx * 10, height - gridy * 10, gridx, gridy * 5);
+              ctx.fillRect(width - gridx * 6, height - gridy * 10, gridx, gridy * 5);
+              ctx.fillRect(width - gridx * 10, height - gridy * 6, gridx * 5, gridy);
+              ctx.fillRect(width - gridx * 8, height - gridy * 8, gridx, gridy);
+
+              function noise(xmin, xmax, ymin, ymax) {
+                for (var x = xmin; x < xmax; x++) {
+                  for (var y = ymin; y < ymax; y++) {
+                    if (Math.random() > 0.5) {
+                      ctx.fillRect(x * gridx, y * gridy, gridx, gridy);
+                    }
+                  }
+                }
+              }
+
+              noise(9, 19, 1, 9);
+              noise(1, 27, 9, 18);
+              noise(1, 18, 18, 19);
+              noise(9, 18, 19, 27);
+              noise(18, 27, 23, 27);
+              noise(23, 27, 18, 23);
+            }
+            requestAnimationFrame(render_random_qr);
+          }
+
+          function reset_qr_canvas(canvas) {
+            last_render = null;
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        </script>
+      </div>
+    </header>
+    <section label="EXPERIENCE">
+      <ul>
+        <li>
+          <aside><time datetime="2015-09">09 / 2015</time> - present</aside>
+          <h2>Backend Team Lead - Resystem</h2>
+          <summary>
+          DevOps, infra setup and maintenance, development with Django, asyncio.
+          Overall backend architecture elaboration. Business logic implementation.<br>
+          Related public projects: <a href="#plueprint">plueprint</a>.
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2015-09">09 / 2015</time> - present</aside>
+          <h2>Teacher -
+Moscow Institute of Physics and Technology (State University)</h2>
+          <summary>
+          Reading lectures on web programming (see the link); conducting seminars
+          on Algorithm Programming in DIFT faculty of Algorithms and Programming
+          Technologies (2nd year).
+          Related public projects: <a href="#mipt">lectures</a>.
+          </summary>
+        </li>
+        <li id="samsung">
+          <aside><time datetime="2012-07">07 / 2012</time> - <time datetime="2015-08">08 / 2015</time></aside>
+          <h2>Expert Engineer - Samsung R&amp;D Institute Russia</h2>
+          <summary>
+          <ul>
+            <li>
+              <aside>
+                <time datetime="2015-03">03 / 2015</time> - <time datetime="2015-08">08 / 2015</time>
+              </aside>
+              <h3>Expert Engineer</h3>
+              Sub-project leader in Platform Algorithms Group. Machine Learning
+              with Deep Neural Networks, High Performance, GPGPU, Big Data,
+              Distributed and Cloud Computing, Web Technologies, Mobile
+              Applications Development. Platforms: GNU/Linux, Android.<br>
+              Related public projects: <a href="#veles">Veles</a>.
+              </li>
+            <li>
+              <aside>
+                <time datetime="2014-03">03 / 2014</time> - <time datetime="2015-02">02 / 2015</time>
+              </aside>
+              <h3>Leading Engineer</h3>
+              Machine Learning with Deep Neural Networks, High Performance,
+              GPGPU, Big Data, Distributed and Cloud Computing, Web Technologies.
+              Platforms: GNU/Linux, Amazon Linux.<br>
+              Related public projects: <a href="#veles">Veles</a>, <a href="#vizjs">viz.js</a>.
+            </li>
+            <li>
+              <aside>
+                <time datetime="2013-03">07 / 2012</time> - <time datetime="2014-02">02 / 2014</time>
+              </aside>
+              <h3>Engineer</h3>
+              Speech Processing, Signal Processing, Image Processing, Embedded
+              Programming, GPGPU, Machine Learning with Neural Networks.
+              Platforms: GNU/Linux, Samsung VDLinux, Tizen.<br>
+              Related public projects: <a href="#veles">Veles</a>, <a href="#deathhandler">DeathHandler</a>.
+            </li>
+          </ul>
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2011-03">03 / 2011</time> - <time datetime="2012-06">06 / 2012</time></aside>
+          <h2>Analysist - <a href="http://www.petrosoftinc.com/">Petrosoft LLC</a></h2>
+          <summary>
+          Development of the driver scheduling algorithm; convenience store assortment
+          data mining; business metrics analysis.
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2010-01">01 / 2010</time> - <time datetime="2012-05">05 / 2012</time></aside>
+          <h2>Laborant - ISPRAS (Russian Academy of Sciences)</h2>
+          <summary>
+          Development of JIT with dynamic profile collection and recompilation on
+          <a href="http://llvm.org/">LLVM</a>.
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2007-01">01 / 2007</time> - <time datetime="2010-06">06 / 2010</time></aside>
+          <h2>Technician - Moscow Institute of Physics and Technology (State University)</h2>
+          <summary>
+          Educational software development on MS Visual Studio .NET C# / Delphi XE+, LaTeX.
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2009-01">01 / 2009</time> - <time datetime="2009-12">12 / 2009</time></aside>
+          <h2>Junior Programmer - GrinMark</h2>
+          <summary>
+          Development of <a href="https://sugarexchange.sugarcrm.com/apps/19908#!overview">
+            GrinMark MS Office Addin for SugarCRM</a> on .NET / C# / WIX.
+          </summary>
+        </li>
+      </ul>
+    </section>
+    <section label="EDUCATION">
+      <ul>
+        <li>
+          <aside><time datetime="2006-09">09 / 2006</time> - <time datetime="2012-06">06 / 2012</time></aside>
+          <h2>MSc - Moscow Institute of Physics and Technology (State University)</h2>
+          <summary>
+          Diploma in the field of system programming and compiler technologies:
+          JIT compilation with on-stack replacement using LLVM.
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2012-05">05 / 2012</time></aside>
+          <h2>IELTS - 8.0</h2>
+          <summary>
+          <a href="http://www.ielts.org/">International English Language Testing System</a>
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2015-05">05 / 2015</time></aside>
+          <h2>Project Manager training - Luxoft</h2>
+          <summary>
+          2 weeks of intensive exploration of what is project management.
+          </summary>
+        </li>
+      </ul>
+      Numerous other trainings were omitted.
+    </section>
+    <section label="PROJECTS">
+      <ul>
+        <li id="veles">
+          <aside><a href="https://velesnet.ml">velesnet.ml</a></aside>
+          <h2>VELES Machine Learning Platform</h2>
+          <summary>
+            <div class="project">
+              <div>
+                Core platform; neural network engine; Java integration layer; audio
+                feature extraction library; landing page; web frontends;
+                development infrastructure.
+              </div>
+              <div>
+                Python2/3, OpenCL, CUDA, Java7, C99, C++11, HTML5, ES6;<br>
+                ZeroMQ, Twisted, Tornado, Graphviz, node.js;<br>
+                Jenkins, Gerrit, custom toolset.
+              </div>
+            </div>
+          </summary>
+        </li>
+        <li id="mipt">
+          <aside><a href="http://vmarkovtsev.github.io/mipt_web_2015/00_overview/index.html">goo.gl/JOZH5B</a></aside>
+          <h2>Web Programming lectures at MIPT (2015 - 2016)</h2>
+          <summary>
+            <div class="project">
+              <div>
+                Weekly presentations about modern web technologies.
+              </div>
+              <div>
+                HTML5.
+              </div>
+            </div>
+          </summary>
+        </li>
+        <li id="plueprint">
+          <aside><a href="https://github.com/vmarkovtsev/plueprint">github.com/vmarkovtsev/plueprint</a></aside>
+          <h2>plueprint</h2>
+          <summary>
+            <div class="project">
+              <div>
+                Parsing <a href="https://github.com/apiaryio/api-blueprint">APIBlueprint</a>
+                documents and generating the code to validate servers against those documents.
+              </div>
+              <div>
+                Python2/3 (Django, REST Framework), Markdown, HTTP.
+              </div>
+          </summary>
+        </li>
+        <li id="deathhandler">
+          <aside><a href="https://github.com/vmarkovtsev/DeathHandler">github.com/vmarkovtsev/DeathHandler</a></aside>
+          <h2>DeathHandler</h2>
+          <summary>
+            <div class="project">
+              <div>
+                UNIX SIGSEGV/SIGABRT/SIGFPE reliable debug stack trace printer.
+              </div>
+              <div>
+                C++03, GNU libc.
+              </div>
+            </div>
+          </summary>
+        </li>
+        <li id="vizjs">
+          <aside><a href="https://github.com/mdaines/viz.js">github.com/mdaines/viz.js</a></aside>
+          <h2>viz.js (core contributor)</h2>
+          <summary>
+            <div class="project">
+              <div>
+                Port of Graphviz to HTML5 using <a href="https://github.com/kripken/emscripten">Emscripten</a>
+              </div>
+              <div>
+                ES5, C.
+              </div>
+            </div>
+          </summary>
+        </li>
+      </ul>
+      Numerous other projects were omitted.
+    </section>
+    <footer>
+      This document is released under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA 3.0 Unported</a>.
+    </footer>
+  </article>
+</body>
+</html>
