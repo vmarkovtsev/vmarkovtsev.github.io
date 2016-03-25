@@ -1,3 +1,7 @@
 [submodule "mipt_web_2015"]
 	path = mipt_web_2015
 	url = https://github.com/vmarkovtsev/mipt_web_2015.git
+[submodule "antispam_from_the_inside_out"]
+	path = antispam_from_the_inside_out
+	url = https://github.com/vmarkovtsev/antispam_from_the_inside_out.git
+	branch = gh-pages
