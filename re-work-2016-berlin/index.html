@@ -41,6 +41,11 @@
 	</section>
 	<section class="slide">
 		<h2>Plan</h2>
+		<div id="qrcode">
+			<img src="pictures/qrcode.svg">
+			<a href="http://goo.gl/4zq8g9">goo.gl/4zq8g9</a>
+			<div>(view this on your device)</div>
+		</div>
 		<ol>
 			<li>Motivation</li>
 			<li>Source code feature engineering</li>
@@ -51,6 +56,18 @@
 			<li>Distance Metric Learning</li>
 			<li>Network architecture - future</li>
 		</ol>
+		<style>
+			#qrcode {
+				float: right;
+				display: flex;
+				flex-direction: column;
+			}
+			#qrcode > a {
+				text-decoration: none;
+				background: none;
+				text-align: center;
+			}
+		</style>
 	</section>
 	<!--
 		To hide progress bar from entire presentation
