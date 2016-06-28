@@ -370,13 +370,15 @@
 	</section>
 	<section class="slide">
 		<h2>Network architecture</h2>
-		<p>Merge all project files together, feed 50 LOT (lines of tokens) as a
-			single sample.</p>
-		<p>Does not converge without random shuffling files (sample borders are
-			of course fixed).</p>
-		<p>Batch size is 50.</p>
-		<p>Truncate projects by the smallest LOT.</p>
-		<p>Fragile to small metaparameter deviations.</p>
+		<ul>
+			<li>Merge all project files together, feed 50 LOT (lines of tokens) as a
+			single sample.</li>
+			<li>Does not converge without random shuffling files (sample borders are
+				of course fixed).</li>
+			<li>Batch size is 50.</li>
+			<li>Truncate projects by the smallest LOT.</li>
+			<li>Fragile to small metaparameter deviations.</li>
+		</ul>
 	</section>
 	<section class="slide">
 		<h2>Implementation details</h2>
@@ -423,19 +425,19 @@
 				<th scope="row">Matplotlib vs Django</th>
 				<td>Plotting libraries, Python</td>
 				<td>1Mtok vs 800ktok</td>
-				<td>24%</td>
+				<td>76%</td>
 			</tr>
 			<tr>
 				<th scope="row">Django vs Guava</th>
 				<td>Python vs Java</td>
 				<td>800ktok</td>
-				<td><1%</td>
+				<td>>99%</td>
 			</tr>
 			<tr>
 				<th scope="row">Hibernate vs Guava</th>
 				<td>Java libraries</td>
 				<td>3Mtok vs 800ktok</td>
-				<td>3.5%</td>
+				<td>96%</td>
 			</tr>
 			</tbody>
 		</table>
