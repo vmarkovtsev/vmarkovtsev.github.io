@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+	<link rel="stylesheet" href="node_modules/shower-ribbon/styles/screen-16x10.css">
 	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
 	<style>
 		.fa {
@@ -263,9 +263,18 @@
 	</section>
 	<section class="slide">
 		<h2>Feature engineering</h2>
-		<p>Important: though extracted, names are <em>not</em> used to solve this
+		<p>Though extracted, names as words are <em>not</em> used to solve this
 		classification problem. They are a subject of separate research and are
 		likely to dramatically improve accuracy.</p>
+		<img id="bag" src="pictures/bag.png">
+		<style>
+			#bag {
+				height: 220px;
+				display: table;
+				margin-right: auto;
+				margin-left: auto;
+			}
+		</style>
 	</section>
 	<section id="slide-code" class="slide">
 		<h2>Feature engineering</h2>
@@ -509,7 +518,7 @@
 		<img src="pictures/dream_code.jpg" class="cover">
 	</section>
 	<div class="progress"></div>
-	<script src="shower/shower.min.js"></script>
+	<script src="node_modules/shower-core/shower.min.js"></script>
 	<script type="text/javascript" async defer
       src="node_modules/mathjax/MathJax.js">
 	</script>
