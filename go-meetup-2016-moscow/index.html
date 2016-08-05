@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<title>Работа с Go из Python</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="node_modules/shower-material/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+<style>
+	.slide::after {
+		display: none;
+	}
+	.cover {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.slide a {
+		color: #2578b6;
+	}
+</style>
+	<header class="caption">
+		<h1>Работа с Go из Python</h1>
+		<p>Вадим Марковцев, <a href="http://sourced.tech">source{d}</a></p>
+	</header>
+	<section class="slide" id="cover">
+		<h2>Работа с Go из Python</h2>
+		<img src="pictures/cover.svg" alt="" class="cover go-in-python">
+		<div class="qr">
+			<a href="http://goo.gl/SYIzVP">goo.gl/SYIzVP</a>
+			<img src="pictures/qrcode.svg">
+		</div>
+		<style>
+			.go-in-python {
+				margin-left: 100px;
+				object-fit: contain;
+			}
+			.cover h2 {
+				margin:30px 0 0;
+				color:#FFF;
+				text-align:center;
+				font-size:70px;
+			}
+			.qr {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				display: flex;
+				flex-direction: column;
+			}
+			.qr > a {
+				text-align: center;
+				background: none;
+				color: black;
+				margin-bottom: -10px;
+			}
+			.qr > img {
+				width: 175px;
+				height: 175px;
+			}
+		</style>
+	</section>
+	<section class="slide">
+		<h2>Обо мне</h2>
+		<ul>
+			<li>Инженер по машинному обучению в
+				<a href="http://sourced.tech" class="sourced">
+				<img src="pictures/sourced.svg">
+			</a></li>
+			<li>Опыт Go - 3 месяца</li>
+			<li>Опыт Python - 3 года</li>
+			<li>Опыт C/C++ - <span class="strikethrough">42</span> 6 лет</li>
+			<li><img class="social" src="pictures/github.png">
+				<a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+			<li><img class="social" src="pictures/habrahabr.png">
+				<a href="https://habrahabr.ru/users/markhor">markhor</a></li>
+		</ul>
+		<style>
+			.sourced {
+				background: none !important;
+			}
+			.sourced > img {
+				height: 1em;
+				object-fit: contain;
+				margin-bottom: -4px;
+			}
+			.strikethrough {
+				text-decoration: line-through;
+			}
+			.social {
+				height: 1em;
+				margin-bottom: -2.5px;
+			}
+		</style>
+	</section>
+	<section class="slide">
+		<h2>Что мы делаем</h2>
+		<ul>
+			<li>У нас есть полная копия GitHub-а в Монге</li>
+			<li>Всё добро написано на Go и крутится в системе контейнеров docker в Google Cloud</li>
+			<li>Мы работаем с тех. директорами IT компаний, которые хантят, и предлагаем им
+			жемчужины из мира open source</li>
+			<li>Тех. директора за это много платят <img src="pictures/euro.png" id="euro"></li>
+			<li>Поиск жемчужин можно усложнять насколько хватит фантазии</li>
+		</ul>
+		<style>
+			#euro {
+				height: 1.5em;
+				margin-bottom: -6px;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2>Проблема</h2>
+		<ul>
+			<li>Ключевая технология нашей компании -
+				<a href="https://github.com/src-d/go-git">src-d/go-git</a></li>
+			<li>Это (отличная) реализация readonly клиента Git на чистом Go</li>
+			<li>Go не предназначен для исследования задач машинного обучения,
+				<a href="http://www.datadan.io/common-go-for-data-science-questions/">
+					хотя некоторые пытаются</a></li>
+			<li>Для go-git нужен мост в мир Python</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>Go-git</h2>
+		<pre><code>go get -u gopkg.in/src-d/go-git.v3</code></pre>
+		<pre class="compressed">
+<code>r, _ <span class="pl-k">:=</span> git.<span class="pl-cl">NewRepository</span>(<span class="pl-s">"https://github.com/..."</span>, <span class="pl-cl">nil</span>)</code>
+<code>_ = r.<span class="pl-cl">PullDefault</span>()</code>
+<code>iter, _ <span class="pl-k">:=</span> r.<span class="pl-cl">Commits</span>()</code>
+<code><span class="pl-k">for</span> {</code>
+<code>    commit, err <span class="pl-k">:=</span> iter.<span class="pl-cl">Next</span>()</code>
+<code>    <span class="pl-k">if</span> err == io.EOF <span class="pl-k">break</span></code>
+<code>    fmt.<span class="pl-cl">Println</span>(commit)</code>
+<code>}</code>
+		</pre>
+		<style>
+			.compressed code {
+				line-height: 1.75 !important;
+			}
+			code > .pl-cl {
+				color: #0086b3;
+			}
+			code > .pl-s {
+				color: #183691;
+			}
+			code > .pl-k {
+				color: #a71d5d;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2 class="hell">Внутри...</h2>
+		<img src="pictures/hell.jpg" alt="" class="cover">
+		<style>
+			h2.hell {
+				color: white;
+			}
+		</style>
+	</section>
+	<section class="slide">
+		<h2>Потому что</h2>
+		<ul>
+			<li>Пришлось переписать половину
+				<a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain">
+					plumbing-а</a></li>
+			<li>И все равно пришлось пойти на компромиссы, например, поддерживаются
+			репозитории только из одного <a href="https://git-scm.com/book/en/v2/Git-Internals-Packfiles">packfile</a>-а (нужен git gc)</li>
+			<li>Несмотря на то что есть документация, приходилось читать исходники оригинального git на С</li>
+			<li>git - алгоритмоемкая система</li>
+			<li>Ссылки:
+			<a href="https://codewords.recurse.com/issues/three/unpacking-git-packfiles">1</a>,
+			<a href="http://git.rsbx.net/Documents/Git_Data_Formats.txt">2</a>,
+			<a href="http://stefan.saasen.me/articles/git-clone-in-haskell-from-the-bottom-up/">3</a>
+			</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>Зависимости</h2>
+		<pre><code>go list -f '{{ .Deps }}' github.com/src-d/go-git</code></pre>
+		<ul>
+			<li><a href="https://github.com/sergi/go-diff">sergi/go-diff</a> - сравнение файлов</li>
+			<li><a href="https://github.com/sourcegraph/go-vcsurl">sourcegraph/go-vcsurl</a> - парсинг URL</li>
+		</ul>
+	</section>
+    <section class="slide">
+		<img class="cover" src="pictures/eralach.jpg">
+	</section>
+    <section class="slide">
+		<img class="cover" src="pictures/1+1.jpg">
+	</section>
+    <section class="slide">
+		<h2>cgo</h2>
+		<ul>
+			<li>Это интерфейс взаимодействия Go с традиционным миром - <a href="https://golang.org/cmd/cgo/">RTFM</a></li>
+			<li>Он нужен, потому что есть GC</li>
+			<li>Работает в обе стороны</li>
+			<li>Отсутствует
+				<a href="https://ru.wikipedia.org/wiki/%D0%9C%D0%B0%D1%80%D1%88%D0%B0%D0%BB%D0%B8%D0%BD%D0%B3">маршалинг</a>,
+				потому что Go - достаточно низкоуровневый язык</li>
+			<li>Тем не менее, не zero-copy</li>
+			<li>По большей части, детище Russ Cox</li>
+		</ul>
+	</section>
+    <section class="slide">
+		<h2>cgo: вызов наружу</h2>
+<pre>
+<code><span class="pl-k">package</span> main</code>
+<code><span class="pl-c">/* #include &lt;stdio.h&gt;</span></code>
+<code><span class="pl-c">void cprint(const char *what) {</span></code>
+<code><span class="pl-c">  printf("%s", what);</span></code>
+<code><span class="pl-c">} */</span></code>
+<code><span class="pl-k">import</span> <span class="pl-s">"C"</span></code>
+<code><span class="pl-k">func</span> <span class="pl-en">main</span>() {</code>
+<code>  C.<span class="pl-cl">cprint</span>(C.<span class="pl-cl">CString</span>(<span class="pl-s">"Hello, world!\n"</span>))</code>
+<code>}</code>
+</pre>
+		<style>
+			code > .pl-c {
+				color: #969896;
+			}
+			code > .pl-en {
+				color: #795da3;
+			}
+		</style>
+	</section>
+    <section class="slide terminal">
+		<h2>@ Linux</h2>
+		<pre class="no-numbers compressed"><code>$ CC=wat go build test.go</code>
+<code># command-line-arguments</code>
+<code>exec: "wat": executable file not found in $PATH</code>
+<code>$ nm test|grep cprint</code>
+<code>0000000000454120 T _cgo_efd028656a81_Cfunc_cprint</code>
+<code>0000000000401510 t main._Cfunc_cprint</code>
+<code>00000000006c2130 d main._cgo_efd028656a81_Cfunc_cprint</code>
+<code>0000000000454110 T cprint</code>
+</pre>
+		<p>Компиляция выполняется хостовым CC и затем объектник линкуется</p>
+		<style>
+			.terminal {
+				background: black;
+				color: white;
+			}
+			.terminal > h2 {
+				color: white;
+			}
+			.terminal code::before {
+				display: none;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2>Что происходит?</h2>
+		<a href="http://stackoverflow.com/a/28354879/69708" id="cgo-source">StackOverflow</a>
+		<ol class="inline">
+			<li><pre><code>main._Cfunc_cprint</code></pre> ==
+				вызов <pre><code>C.print</code></pre> в коде main</li>
+			<li><pre><code>runtime.cgocall(_cgo_efd028656a81_Cfunc_cprint, frame)</code></pre></li>
+			<li>Далее происходит как-бы syscall; горутина останавливается,
+				вызывается C-заглушка на новом стеке</li>
+			<li>Заглушка вызывает <pre><code>cprint</code></pre> с переданными параметрами</li>
+			<li>Работает <pre><code>cprint</code></pre></li>
+			<li>Заглушка записывает результат и покидает мир C</li>
+			<li>На стороне Go происходит возврат из как-бы syscall-а</li>
+			<li>Какая-то горутина продолжает выполняться с результатом работы
+				<pre><code>cprint</code></pre></li>
+		</ol>
+		<style>
+			pre.inline, .inline code {
+				display: inline !important;
+			}
+			#cgo-source {
+				position: absolute;
+				right: 112px;
+				top: 104px;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2>Проблемы</h2>
+		<ul>
+			<li>Передать наружу Go-указатель легко не получится</li>
+			<li>Передать наружу Go-указатель - плохая идея</li>
+			<li>Кто-то должен освобождать память</li>
+		</ul>
+		<div class="double rule">
+        <pre><code><span class="pl-c">void ...(const char *what) {</span></code>
+<code><span class="pl-c">  printf("%s", what);</span></code>
+<code><span class="pl-c">  free(what);</span></code>
+<code><span class="pl-c">}</span></code>
+<code> </code></pre>
+		<pre class="column"><code><span class="pl-c">/* #include &lt;stdlib.h&gt; */</span></code>
+<code><span class="pl-k">import</span> <span class="pl-s">"C"</span></code>
+<code><span class="pl-k">func</span> <span class="pl-en">main</span>() {</code>
+<code>  C.<span class="pl-cl">free</span>(C.<span class="pl-cl">CString</span>(<span class="pl-s">"..."</span>))</code>
+<code>}</code>
+</pre>
+			</div>
+		<style>
+			.column {
+				break-before: column;
+			}
+			.double.rule {
+				column-rule: solid #4caf50;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2>cgo: вызов внутрь</h2>
+		<pre><code>go build -o libtest.so -buildmode=c-shared test.go</code></pre>
+		<pre><code><span class="pl-k">package</span> main</code>
+<code><span class="pl-k">import</span> <span class="pl-s">"C"</span></code>
+<code><span class="pl-c">//export goprint</span></code>
+<code><span class="pl-k">func</span> <span class="pl-en">goprint</span>(<span class="pl-v">what string</span>) { <span class="pl-cl">print</span>(what) }</code>
+<code><span class="pl-k">func</span> <span class="pl-en">main</span>() { <span class="pl-cl">print</span>(<span class="pl-s">"main\n"</span>) }</code></pre>
+		<pre><code>libtest.h  libtest.so</code></pre>
+		<style>
+			code > .pl-v {
+				color: #ed6a43;
+			}
+		</style>
+	</section>
+    <section class="slide terminal">
+		<h2>@ Linux</h2>
+		<pre class="no-numbers compressed"><code>$ nm libtest.so|grep goprint</code>
+<code>0000000000061270 T _cgoexp_25e34a201b27_goprint</code>
+<code>00000000000b4610 T goprint</code>
+<code>00000000000612b0 t main._cgoexpwrap_25e34a201b27_goprint</code>
+<code>00000000002fa428 d main._cgoexpwrap_25e34a201b27_goprint.f</code>
+<code> </code>
+<code>$ gdb ./test</code>
+<code>b goprint</code>
+</pre>
+	</section>
+    <section class="slide">
+		<h2>C: вызов наружу</h2>
+		<pre><code>gcc test.c -Wl,-rpath,. -L. -ltest -o test</code></pre>
+		<pre><code>#<span class="pl-k">include</span> <span class="pl-s">"libtest.h"</span></code>
+<code><span class="pl-k">int</span> <span class="pl-en">main</span>() {</code>
+<code>  GoString str = {<span class="pl-s">"Hello, world!\n"</span>, <span class="pl-cl">14</span>};</code>
+<code>  <span class="pl-cl">goprint</span>(str);</code>
+<code>  <span class="pl-k">return</span> <span class="pl-cl">0</span>;</code>
+<code>}</code></pre>
+	</section>
+	<section class="slide">
+		<h2>Что происходит?</h2>
+		<ol class="inline small">
+			<li>Мы конструируем <pre><code>GoString</code></pre> (см. первый доклад)</li>
+			<li>Вызываем <pre><code>goprint</code></pre>, которая находится в libtest.so</li>
+			<li>Инициализируется Go рантайм, вызывается <pre><code>_cgoexp_25e34a201b27_goprint</code></pre> через как-бы syscall</li>
+			<li>Вызывается <pre><code>runtime.cgocallback</code></pre> с параметром <pre><code>main._cgoexpwrap_25e34a201b27_goprint.f</code></pre></li>
+			<li>Попадаем в мир Go, отрабатывает <pre><code>main._cgoexpwrap_25e34a201b27_goprint</code></pre></li>
+			<li>Выходим из как-бы syscall-а, Go рантайм спит</li>
+			<li>Продолжает работать <pre><code>int main</code></pre></li>
+		</ol>
+		<style>
+			.small {
+				font-size: 90%;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2>Проблемы</h2>
+		<ul>
+			<li>Табу на Go-указатели</li>
+			<li>Кто-то должен освобождать память</li>
+			<li>Все очень плохо со структурами</li>
+		</ul>
+		<pre><code>Go type not supported in export: struct</code></pre>
+	</section>
+    <section class="slide">
+		<h2>Проверка указателей в рантайме</h2>
+		<pre><code><span class="pl-k">var</span> hello <span class="pl-k">string</span> = <span class="pl-s">"hello"</span></code>
+<code> </code>
+<code><span class="pl-c">//export giveme</span></code>
+<code><span class="pl-k">func</span> <span class="pl-en">giveme</span>() *<span class="pl-v">string</span> {</code>
+<code><span class="pl-k">  return</span> &hello</code>
+<code>}</code>
+</pre>
+	</section>
+    <section class="slide">
+		<h2>...</h2>
+		<pre><code>#<span class="pl-k">include</span> <span class="pl-s">&lt;stdio.h&gt</span></code>
+<code>#<span class="pl-k">include</span> <span class="pl-s">"libtest.h"</span></code>
+<code><span class="pl-k">int</span> <span class="pl-en">main</span>() {</code>
+<code>  GoString *str = <span class="pl-cl">giveme</span>();</code>
+<code>  <span class="pl-cl">printf</span>(<span class="pl-s">"%s\n"</span>, str->p);</code>
+<code>  <span class="pl-k">return</span> <span class="pl-cl">0</span>;</code>
+<code>}</code>
+</pre>
+	</section>
+    <section class="slide terminal">
+		<h2>@ Linux</h2>
+		<pre class="no-numbers compressed"><code>$ ./test</code>
+<code>panic: runtime error: cgo result has Go pointer</code>
+<code>goroutine 17 [running, locked to thread]:</code>
+<code>panic(0x7fd4d5a808a0, 0xc82007c020)</code>
+<code>	/usr/lib/go-1.6/src/runtime/panic.go:481 +0x3ea</code>
+<code>main._cgoexpwrap_b3226aa49989_giveme.func1(0xc82003cee0)</code>
+<code>	command-line-arguments/_obj/_cgo_gotypes.go:49 +0x3c</code>
+<code>main._cgoexpwrap_b3226aa49989_giveme(0x7fd4d5ad6160)</code>
+<code>	command-line-arguments/_obj/_cgo_gotypes.go:51 +0x5b</code>
+<code>Aborted (core dumped)</code></pre>
+	</section>
+    <section class="slide">
+		<img class="cover" src="pictures/all.jpg">
+	</section>
+    <section class="slide">
+		<h2>cffi</h2>
+		<ul>
+			<li><a href="https://cffi.readthedocs.io/en/latest/">Common Foreign Function Interface</a></li>
+			<li>Самый правильный (в общем случае) способ работы с нативными библиотеками в Питоне</li>
+			<li>Преимущество перед native extension: работает на любой реализации Python</li>
+			<li>Преимущество перед ctypes: парсинг API-хидеров</li>
+			<li>@ Armin Rigo и Maciej Fijalkowski</li>
+		</ul>
+	</section>
+    <section class="slide">
+		<h2>Оборачиваем пример с goprint</h2>
+		<pre><code><span class="pl-k">import</span> cffi, re</code>
+<code> </code>
+<code>ffi = cffi.FFI()</code>
+<code><span class="pl-k">with</span> <span class="pl-cl">open</span>(<span class="pl-s">"libtest.h"</span>) <span class="pl-k">as</span> fin:</code>
+<code>    src = fin.read()</code></pre>
+	</section>
+<section class="slide">
+		<h2>Немного уличной магии</h2>
+		<pre><code>src = re.sub(<span class="pl-s">"#ifdef.*\n.*\n#endif|#.*|.*_Complex.*|"</span></code>
+<code>             <span class="pl-s">".*_check_for_64_bit_pointer_matching_GoInt.*"</span>,</code>
+<code>             <span class="pl-s">""</span>, src)</code>
+<code>src = <span class="pl-s">"extern free(void *ptr);\n"</span> + \</code>
+<code>    src.replace(<span class="pl-s">"__SIZE_TYPE__"</span>, <span class="pl-s">"uintptr_t"</span>)</code></pre>
+	<img src="pictures/david_blane.jpg" id="david">
+	<style>
+		#david {
+			height: 170px;
+		}
+	</style>
+	</section>
+	<section class="slide">
+		<h2>Загружаемся</h2>
+		<pre><code>ffi.cdef(src)</code>
+<code>lib = ffi.dlopen(<span class="pl-s">"./libtest.so"</span>)</code></pre>
+	</section>
+    <section class="slide">
+		<h2>Готовим строку</h2>
+		<pre><code>python_str = <span class="pl-s">"Hello!\n"</span>.encode(<span class="pl-s">"utf-8"</span>)</code>
+<code>char_ptr = ffi.new(<span class="pl-s">"char[]"</span>, python_str)</code>
+<code>go_str = ffi.new(<span class="pl-s">"GoString*"</span>, {</code>
+<code>    <span class="pl-s">"p"</span>: char_ptr,</code>
+<code>    <span class="pl-s">"n"</span>: <span class="pl-cl">len</span>(python_str)</code>
+<code>})[<span class="pl-cl">0</span>]</code></pre>
+	</section>
+    <section class="slide">
+		<h2>Самое главное</h2>
+		<pre><code>lib.goprint(go_str)</code></pre>
+		<p>Видите как все просто!</p>
+		<pre><code> </code></pre>
+		<pre><code> </code></pre>
+		<pre class="inline"><code>del char_ptr</code></pre> - заморочки с местным GC
+	</section>
+    <section class="slide">
+		<h2>Но ведь в реальной жизни будут объекты?</h2>
+		<p>О да!</p>
+		<p>Что же делать, ведь указатели запрещены?</p>
+	</section>
+    <section class="slide">
+		<img src="pictures/pepperidge.jpg" class="cover" id="pepperidge">
+		<style>
+			#pepperidge {
+				object-fit: contain;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2>Хэндлы</h2>
+		<p>Идея: поддерживать двусторонний мэппинг объектов на 64-битные дескрипторы</p>
+				<pre><code><span class="pl-k">func</span> <span class="pl-en">RegisterObject</span>(obj <span class="pl-k">interface</span>{}) <span class="pl-v">Handle</span></code>
+<code><span class="pl-k">func</span> <span class="pl-en">UnregisterObject</span>(<span class="pl-v">handle Handle</span>) <span class="pl-k">int</span></code>
+<code><span class="pl-k">func</span> <span class="pl-en">GetObject</span>(<span class="pl-v">handle Handle</span>) (<span class="pl-k">interface</span>{}, <span class="pl-k">bool</span>)</code>
+<code><span class="pl-k">func</span> <span class="pl-en">GetHandle</span>(obj <span class="pl-k">interface</span>{}) (<span class="pl-v">Handle</span>, bool)</code></pre>
+	</section>
+    <section class="slide">
+		<h2>Реализация</h2>
+        <pre><code><span class="pl-k">type</span> Handle <span class="pl-k">uint64</span></code>
+<code> </code>
+<code><span class="pl-k">var</span> registryHandle2Obj <span class="pl-k">map</span>[<span class="pl-v">Handle</span>]<span class="pl-k">interface</span>{}</code>
+<code><span class="pl-k">var</span> registryObj2Handle ???</code></pre>
+	Важно: за исключением редких случаев, всегда используем указатель на
+		структуру в качестве <pre class="inline"><code>interface{}</code></pre>, т.к. иначе будет копия.
+	<br>Проблема: интерфейс не может быть ключом в <pre class="inline"><code>map</code></pre>.
+	</section>
+    <section class="slide">
+		<h2>Решение проблемы</h2>
+		<ul>
+			<li>Если вы подумали про <pre class="inline"><code>*interface{}</code></pre> - подумайте еще раз</li>
+			<li>Зато <pre class="inline"><code>[2]uintptr</code></pre> может быть ключом</li>
+			<li>Можно ли обойтись одним <pre class="inline"><code>uintptr</code></pre> - указателем на данные?</li>
+			<li>Указатель на структуру совпадает с указателем на первый элемент.</li>
+			<li>Но это случается не часто, поэтому:</li>
+		</ul>
+		<pre><code><span class="pl-k">var</span> registryObj2Handle <span class="pl-k">map</span>[<span class="pl-k">uintptr</span>][]<span class="pl-v">Handle</span></code></pre>
+		<a href="https://github.com/src-d/go-git/blob/master/cshared/objects.go">Исходник.</a>
+	</section>
+    <section class="slide terminal darken">
+		<img class="cover" src="pictures/zombies.jpg">
+		<h2>Проблема со строками</h2>
+		<ul>
+			<li>Строки в Go - иммутабельны и зерокопибильны</li>
+			<li>Если получаем <pre class="inline"><code>string</code></pre> из внешнего мира, то он заразит собой каждую
+				сущность которая с ней встретится</li>
+			<li>А потом будет достаточно одного <pre class="inline"><code>free()</code></pre></li>
+		</ul>
+		<br>
+		<p>Лечение состоит в принудительном копировании.</p>
+		<style>
+			.darken::before {
+				content: "";
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				box-shadow: 0px 0px 0px 1000px rgba(0,0,0,0.4);
+			}
+			.darken > * {
+				position: relative;
+				z-index: 100;
+			}
+		</style>
+	</section>
+    <section class="slide">
+		<h2>Прочие проблемы</h2>
+		<ul>
+			<li>В 1.6 отсутствует <a href="https://github.com/golang/go/issues/14838">C.CBytes</a>
+				для конвертации <pre class="inline"><code>[]byte</code></pre> в
+				<pre class="inline"><code>*C.char</code></pre></li>
+			<li>Пришлось написать много оберток над стандартными контейнерами</li>
+			<li>Много рефлексии, местами непростой</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>На стороне Python</h2>
+		<pre class="compressed"><code><span class="pl-k">class</span> <span class="pl-en">GoObject</span>(<span class="pl-cl">object</span>):</code>
+<code>    ffi = FFI()</code>
+<code>    lib = <span class="pl-cl">None</span></code>
+<code>    registry = weakref.WeakValueDictionary()</code>
+<code>    <span class="pl-k">def</span> <span class="pl-cl">__new__</span>(cls, handle, <span class="pl-k">*</span>args, <span class="pl-k">**</span>kwargs):</code>
+<code>        <span class="pl-k">assert</span> <span class="pl-v">cls</span>.lib <span class="pl-k">is not</span> <span class="pl-cl">None</span></code>
+<code>        instance = GoObject.registry.get(handle)</code>
+<code>        <span class="pl-k">if</span> instance <span class="pl-k">is not</span> <span class="pl-cl">None</span>:</code>
+<code>            <span class="pl-k">return</span> instance</code>
+<code>        <span class="pl-k">return</span> <span class="pl-cl">object</span>.<span class="pl-cl">__new__</span>(<span class="pl-v">cls</span>)</code></pre>
+	</section>
+    <section class="slide">
+		<pre class="compressed"><code>    <span class="pl-k">def</span> <span class="pl-cl">__init__</span>(self, handle):</code>
+<code>        <span class="pl-k">assert</span> <span class="pl-cl">isinstance</span>(handle, <span class="pl-cl">int</span>)</code>
+<code>        <span class="pl-k">if</span> handle <= <span class="pl-cl">0</span>:</code>
+<code>            <span class="pl-k">raise</span> <span class="pl-cl">ValueError</span>("Invalid handle")</code>
+<code>        <span class="pl-v">self</span>._handle = handle</code>
+<code>        GoObject.registry[handle] = <span class="pl-v">self</span></code>
+<code> </code>
+<code>    <span class="pl-k">def</span> <span class="pl-cl">__del__</span>(self):</code>
+<code>        handle = <span class="pl-cl">getattr</span>(<span class="pl-v">self</span>, "_handle", <span class="pl-cl">None</span>)</code>
+<code>        <span class="pl-k">if</span> handle <span class="pl-k">is not</span> <span class="pl-cl">None</span>:</code>
+<code>            <span class="pl-v">self</span>.lib.UnregisterObject(handle)</code>
+<code>        <span class="pl-v">self</span>._handle = <span class="pl-cl">0</span></code></pre>
+	</section>
+    <section class="slide">
+		<h2>Результат</h2>
+<pre><code><span class="pl-k">from</span> gypogit <span class="pl-k">import</span> Repository</code>
+<code>r = Repository.New(<span class="pl-s">"https://github.com/..."</span>)</code>
+<code>r.PullDefault()</code>
+<code><span class="pl-k">for</span> c <span class="pl-k">in</span> r.Commits():</code>
+<code>    <span class="pl-cl">print</span>(c)</code></pre>
+	</section>
+    <section class="slide">
+		<h2>Альтернативы</h2>
+		<ul>
+			<li><a href="https://github.com/sbinet/go-python">go-python</a>
+				<ul>
+					<li>Автоматическая генерация биндингов</li>
+					<li>По сути заброшен и неюзабелен (т.е. ничего сложнее hello, world)</li>
+					<li>Тяжело довести до ума, но направление выбрано верное</li>
+				</ul>
+			</li>
+			<li><a href="http://www.swig.org/">SWIG</a>
+				<ul>
+					<li>Автоматическая генерация биндингов для 100500 языков</li>
+					<li>Не в ту сторону (C -> Go)</li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+    <section class="slide">
+		<h2>Выводы?</h2>
+		<ul>
+			<li>Оборачивать библиотеки на Go возможно</li>
+			<li>Но пока только вручную</li>
+			<li>В обертке необходимо тщательно следить за памятью и решать проблемы</li>
+			<li>Ждем появления проекта, который обобщит оборачивание</li>
+		</ul>
+	</section>
+    <section class="slide">
+		<img src="pictures/cover.svg" alt="" class="cover go-in-python">
+		<h2 id="end">Fin</h2>
+		<p id="hiring">We are hiring<br>
+			<a href="http://sourced.tech/about/#map-tyba" class="sourced">
+				<img src="pictures/sourced.svg"></a></p>
+		<style>
+			#hiring {
+				position: absolute;
+				right: 112px;
+				bottom: 104px;
+			}
+		</style>
+	</section>
+	<div class="progress"></div>
+	<script src="shower/shower.min.js"></script>
+</body>
+</html>
