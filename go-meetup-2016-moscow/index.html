@@ -572,11 +572,17 @@
 	</section>
     <section class="slide">
 		<h2>Результат</h2>
-<pre><code><span class="pl-k">from</span> gypogit <span class="pl-k">import</span> Repository</code>
+		<a href="https://github.com/src-d/gypogit">src-d/gypogit</a>
+<pre id="gypogit"><code><span class="pl-k">from</span> gypogit <span class="pl-k">import</span> Repository</code>
 <code>r = Repository.New(<span class="pl-s">"https://github.com/..."</span>)</code>
 <code>r.PullDefault()</code>
 <code><span class="pl-k">for</span> c <span class="pl-k">in</span> r.Commits():</code>
 <code>    <span class="pl-cl">print</span>(c)</code></pre>
+		<style>
+			#gypogit {
+				margin-top: 20px;
+			}
+		</style>
 	</section>
     <section class="slide">
 		<h2>Альтернативы</h2>
