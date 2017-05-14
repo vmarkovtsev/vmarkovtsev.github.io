@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>GitHub Contributions Graph: Analyzing PageRank &amp; Proving The 6 Handshakes Theory - DevDays 2017</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<h1>GitHub Contributions Graph: Analyzing PageRank &amp; Proving The 6 Handshakes Theory</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+		body {
+			-webkit-font-smoothing: antialiased;
+			-webkit-tap-highlight-color: transparent;
+		}
+		@media not print {
+			.slide {
+				color: white;
+				background: black;
+			}
+				.slide h2 {
+					color: #bababa;
+				}
+		}
+		.slide p {
+			line-height: 1.25;
+		}
+		.slide::after {
+			display: none;
+		}
+		.no-link {
+			background: none !important;
+		}
+		.center {
+			display: table;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		h2.bottom {
+			position: absolute;
+			bottom: 50px;
+		}
+		.important {
+			color: red;
+		}
+		.mono {
+			font-family: monospace;
+		}
+		.video {
+			padding-top: 0;
+			padding-bottom: 10px;
+		}
+		.success {
+		    color: green;
+		}
+		.vista {
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+		.vista-cover {
+			background-size: cover;
+		}
+		i.fa {
+		    font-style: normal;
+		}
+		ul.no-bullets > li::before {
+		    display: none;
+		    text-indent: 0;
+		}
+		ul.no-bullets > li {
+		    text-indent: 0;
+		}
+	</style>
+
+	<section class="slide" id="cover">
+		<h2>GitHub Contributions Graph: Analyzing PageRank &amp; Proving The 6 Handshakes Theory</h2>
+		<p>Vadim Markovtsev, <a class="no-link" href="https://sourced.tech">source{d}</a></p>
+		<figure>
+			<img class="cover" src="pictures/graph_2048.jpg" alt="GitHub contributions graph - 22M nodes">
+		</figure>
+		<!--https://goo.gl/NxldTP-->
+		<style>
+			#cover h2 {
+				margin:30px 0 0;
+				color:#FFF;
+				text-align:center;
+				font-size:70px;
+			}
+			#cover p {
+				margin:10px 0 0;
+				text-align:center;
+				color:#FFF;
+				font-style:italic;
+				font-size:20px;
+			}
+				#cover p a {
+					color:#FFF;
+				}
+			#cover img {
+				width: 100%;
+				object-fit: cover;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Read this on your device</h2>
+		<!-- <img> with @media srcset does not work! -->
+		<div class="vista center" id="qrcode"></div>
+		<style>
+			#qrcode {
+				width: 350px;
+				height: 350px;
+				background-image: url("pictures/qrcode_black.svg");
+			}
+			@media not print {
+				#qrcode {
+					background-image: url("pictures/qrcode_white.svg");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>About me</h2>
+		<ul>
+			<li>Lead Engineer, Machine Learning @ <a href="https://sourced.tech">source{d}</a></li>
+			<li>Education: compiler technologies</li>
+			<li>Switched to ML/DS in 2013</li>
+			<li>Python, C/C++, Go, HTML5</li>
+		</ul>
+	</section>	
+
+	<section class="slide">
+		<h2>About source{d}</h2>
+		<ul>
+			<li>&lt; 20 people in Madrid, Spain</li>
+			<li>Developed <a href="https://github.com/src-d/go-git">src-d/go-git</a>, Git implementation in Go</li>	
+			<li>Fetch all repositories from GitHub/BitBucket/etc.</li>
+			<li>Do crazy ML and DS on top of them</li>
+			<li>Project <a href="https://doc.bblf.sh/">Babelfish</a> extracts Abstract Syntax Trees from them</li>					
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>About this talk</h2>
+		<ul>
+			<li>Based on the <a href="https://blog.sourced.tech/post/handshakes_pagerank/">blog post</a></li>
+			<li>3 parts</li>
+			<li>Math inside</li>
+			<li>Python code inside</li>
+			<li>Data inside</li>
+		</ul>
+	</section>
+
+	<section class="slide vista ar-2">
+		<h2>Part I</h2>
+		<style>
+			.ar-2 {
+				background-image: url("pictures/armin_ronacher_2_black.png");
+			}
+			@media not print {
+				.ar-2 {
+					background-image: url("pictures/armin_ronacher_2_white.png");
+				}
+			}
+			.ar-3 {
+				background-image: url("pictures/armin_ronacher_3_black.png");
+			}
+			@media not print {
+				.ar-3 {
+					background-image: url("pictures/armin_ronacher_3_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>GitHub in numbers <a id="github-in-numbers-origin" href="https://octoverse.github.com/">octoverse.github.com</a></h2>
+		<div id="github-in-numbers">
+			<div>
+				<div>
+					<div class="github-in-numbers-title">5.8M+</div>
+					<div class="github-in-numbers-subtitle">active users</div>
+					<p>Like <a href="http://github.com/acabunoc" target="_blank">@acabunoc</a>, Lead Developer for Open Source Engagement at the <a href="https://github.com/MozillaFoundation" target="_blank">Mozilla Foundation</a> who is developing new ways to engage contributors on open source projects.</p>
+				</div>
+				<div>
+					<div class="github-in-numbers-title">331k+</div>
+					<div class="github-in-numbers-subtitle">active organizations</div>
+					<p>Like the <a href="https://github.com/datproject/" target="_blank">Dat project</a> who are working openly to develop a peer to peer tool for distributing datasets in science, journalism and government.</p>
+				</div>
+			</div>
+			<div>
+				<div>
+					<div class="github-in-numbers-title">19.4M+</div>
+					<div class="github-in-numbers-subtitle">active repositories</div>
+					<p>Like the <a href="https://github.com/WhiteHouse/source-code-policy" target="_blank">Federal Source Code Policy on GitHub</a> released by <a href="https://github.com/WhiteHouse" target="_blank">The White House</a>, who this year solicited community feedback on GitHub.</p>
+				</div>
+				<div>
+					<div class="github-in-numbers-title">10.7M+</div>
+					<div class="github-in-numbers-subtitle">active issues</div>
+					<p>Like <a href="https://github.com/golang/go/issues/14595" target="_blank">this one</a> opened in the <a href="https://github.com/golang/go" target="_blank">Go programming language repo</a> that used <a href="https://github.com/blog/2201-making-open-source-data-more-available" target="_blank">open source data</a> on Google’s BiqQuery to help decide whether to add new functionality to a Go standard library.</p>
+				</div>
+			</div>
+		</div>
+		<style>
+			#github-in-numbers-origin {
+				float: right;
+			}
+			#github-in-numbers {
+				display: flex;
+				font-family: "Karla", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
+			}
+			#github-in-numbers > div {
+				display: flex;
+				flex-direction: column;
+				width: 50%;
+			}
+			#github-in-numbers > div > div {
+				height: 50%;
+			}
+			#github-in-numbers > div:first-of-type {
+				padding-right: 24px;
+			}
+			.github-in-numbers-title {
+				font-size: 3em;
+				font-weight: 400;
+				line-height: 1;
+				margin-bottom: 0;
+			}
+			.github-in-numbers-subtitle {
+				margin-bottom: 12px;
+				font-weight: 700;
+				line-height: 1;
+				font-size: 0.857em;
+			}
+			#github-in-numbers p {
+				font-size: 0.701em;
+				line-height: 1.1;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Where to take the data?</h2>
+		<p>Commit datasets:</p>
+		<ol>
+			<li><a href="http://ghtorrent.org/">GHTorrent</a> (145M)</li>
+			<li><span class="mono">commits</span> table in <a href="https://bigquery.cloud.google.com/table/bigquery-public-data:github_repos.commits">Google BigQuery</a> - equivalent to GHTorrent</li>
+			<li><a href="https://www.githubarchive.org/">GitHub Archive</a> (stream, unknown)</li>
+			<li>source{d}'s <a href="https://data.world/vmarkovtsev/452-m-commits-on-github">452M dataset</a> with <a href="https://blog.sourced.tech/post/minhashcuda/">de-fuzzy-forking</a></li>
+		</ol>
+		<p class="important">BigQuery will charge you money.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Problem</h2>
+		<p>There are no GitHub user <-> email associations in both datasets.<p>
+		<p class="important">We need to do identity matching.</p>
+		<pre>
+			<code>mcuadros@gmail.com</code>
+			<code>maximo@sourced.tech</code>
+			<code>mcuadros@maximos-macbook.local</code>
+			<code>mcuadros@maximos-mac-pro.local</code>
+			<code>root@localhost</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>How to build the graph?</h2>
+		<ul>
+			<li>Binary undirected edges</li>
+			<li>Weighted directed edges
+				<ul>
+					<li>Implies contribution volume estimation</li>
+				</ul>
+			</li>
+		</ul>
+		<p>At large scale, it is useless to distinguish developers and repositories.<p>
+	</section>	
+
+	<section class="slide">
+		<p class="teaser">Binary undirected edges</p>
+	</section>
+
+	<style>
+		.teaser {
+			font-size: 2em;
+		}
+	</style>
+
+	<section class="slide">
+		<h2>Gephi</h2>
+		<ul>
+			<li><a href="https://gephi.org">gephi.org</a></li>
+			<li>Open source, Java</li>
+			<li>Most popular graph visualization software, has GUI</li>
+			<li>And very... special</li>
+			<li class="important">Does not handle millions of nodes</li>
+		</ul>
+	</section>
+	
+	<section class="slide vista ar-2">
+		<h2>Armin Ronacher,<br>2 levels</h2>
+		<p class="graph-notice">Armin is in the center.<br>8k nodes, 11k edges.</p>
+	</section>
+
+	<style>
+		.graph-notice {
+			position: absolute;
+    		bottom: 20px;
+		}
+	</style>
+
+	<section class="slide vista vista-cover ar-3">
+		<h2 class="bottom">3 levels</h2>
+		<p class="graph-notice">200k nodes, 300k edges.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Heatmap</h2>
+		<p>Color depends on how many hops the dot is distant from the root.</p>
+		<img alt="Sequence of 4 circles with increasing redness" src="pictures/heatmap.svg" class="center" id="heatmap">
+		<style>
+			#heatmap {
+				margin-top: 100px;
+				width: 500px;
+			}
+		</style>
+	</section>	
+
+	<section class="slide vista vista-cover rp-3">
+		<h2 class="bottom">Rob Pike, 3 levels, zoomed</h2>
+		<style>
+			.rp-3 {
+				background-image: url("pictures/rob_pike_3.png");
+			}
+		</style>
+	</section>	
+
+	<section class="slide vista rp-repos">		
+	</section>
+
+	<section class="slide">
+		<h2>Oops</h2>
+		<p>Actually Rob Pike did not contribute to <a href="https://github.com/cmars/oo">cmars/oo</a> and <a href="https://github.com/cmars/tools">cmars/tools</a>.</p>
+		<p>Author forgery is perfectly possible on GitHub.</p>
+		<style>
+			.rp-repos {
+				background-image: url("pictures/rob_pike_repos_black.png");
+			}
+			@media not print {
+				.rp-repos {
+					background-image: url("pictures/rob_pike_repos_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<p class="teaser">Weighted directed edges</p>
+	</section>
+
+	<section class="slide">
+		<h2>Adjacency matrix</h2>
+		<div class="adj-matrix"></div>
+		<p>C<sub>ij</sub> is the number of commits done by developer i to repository j</p>
+		<p>C<sub>ij</sub> = C<sub>ji</sub></p>
+		<p>Non-zero elements: &lt;10<sup>-7</sup></p>
+		<style>
+			.adj-matrix {
+				width: 400px;
+				height: 400px;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
+				float: left;
+				margin-right: 50px;
+				background-image: url("pictures/adj_matrix_black.svg");
+			}
+			@media not print {
+				.adj-matrix {
+					background-image: url("pictures/adj_matrix_white.svg");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Adjacency matrix</h2>
+		<p>We normalize values in every column.</p>
+		<p>$$\sum_i C_{ij}=1$$</p>
+		<p class="important">The matrix is no longer symmetric.</p>
+		<ul>
+			<li>Developer: measure of attention</li>
+			<li>Repository: measure if impact</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>LargeVis</h2>		
+		<ul>
+			<li><a href="https://github.com/lferry007/LargeVis">lferry007/LargeVis</a></li>
+			<li>C++, Python</li>			
+			<li>Handles millions of nodes</li>
+			<li class="important">Unmaintained</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>LargeVis</h2>		
+		<ul>
+			<li>Write every non-zero matrix element (edge) to a text file</li>
+			<li>Apply LargeVis command-line application</li>
+			<li>23M nodes, 28M edges, 32 cores: <64GB RAM, 2 days</li>
+			<li>Plot the resulting node coordinates</li>
+		</ul>
+		<a href="https://drive.google.com/file/d/0B-w8jGUJto0ibmhpQ1JWamh5UVE">Resulting node coordinates - 264MB.</a>
+	</section>
+
+	<section class="slide">
+		<h2>Problem</h2>		
+		<p>How to plot 22,000,000 dots?</p>
+		<ul>
+			<li>Brute-force scatter plot</li>
+			<li>Brute-force scatter plot with semi-transparent dots</li>
+			<li>Heatmap density estimatiion
+				<ul>
+					<li class="mono">numpy.histogram2d + matplotlib.pyplot.imshow</li>
+					<li class="mono">matplotlib.pyplot.hexbin</li>
+				</ul>
+			</li>
+		</ul>
+		<a href="graph.ipynb">Jupyter notebook.</a>
+	</section>
+
+	<section class="slide vista" id="scatter">
+		<h2>Brute-force scatter plot</h2>
+		<style>	
+			#scatter {
+				background-image: url("pictures/graph_scatter.png");
+			}
+		</style>
+	</section>
+
+	<section class="slide vista" id="scatter_alpha">
+		<h2>&amp; transparency (0.1)</h2>
+		<style>	
+			#scatter_alpha {
+				background-image: url("pictures/graph_scatter_alpha.png");
+			}
+		</style>
+	</section>
+
+	<section class="slide vista histogram2d">
+		<h2>Heatmap (log)</h2>
+		<style>	
+			.histogram2d {
+				background-image: url("pictures/graph_histogram2d.png");
+			}
+		</style>
+	</section>
+
+	<section class="slide" id="handshake">
+		<div class="vista"></div>
+		<h2>Part II</h2>
+		<style>
+			#handshake > div {
+				transform: scaleX(-1);
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-image: url("pictures/handshake_black.svg");
+			}
+			@media not print {
+				#handshake > div {
+					background-image: url("pictures/handshake_white.svg");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Statement</h2>
+		<p>Given that two developers "know" each other if they contributed to the same project,
+			how far are they from each other on average, if there is a connection?</p>
+	</section>
+
+	<section class="slide">
+		<h2>Plan</h2>
+		<ol>
+			<li>Find all the <a href="https://en.wikipedia.org/wiki/Connected_component_(graph_theory)">connected components</a>
+			of the graph.</li>
+
+			<li>Pick the core component, or simply “the core”. Calculate the size of the
+			<a href="https://en.wikipedia.org/wiki/Sampling_(statistics)">representative sample</a>
+			of the pairs of nodes.</li>
+
+			<li>Calculate the distances between sampled node pairs.</li>
+
+			<li>Plot the histogram, draw the conclusion.</li>
+		</ol>
+	</section>
+
+	<section class="slide">
+		<h2>Connected components</h2>
+		<p>We run a series of graph traversals</p>
+		<p>Any type works: DFS, BFS, RFS</p>
+		<p>Python, 22M nodes - 5 min</p>
+		<p>Result: 10200912, 10229, ...</p>
+	</section>
+
+	<section class="slide vista histogram2d">
+		<div id="core-border"></div>
+		<span id="core-label">THE CORE</span>
+		<style>
+			#core-border {
+				position: absolute;
+				left: calc(50% - 200px);
+				top: calc(50% - 200px);
+				width: 400px;
+				height: 400px;
+				border: 5px dashed white;
+				border-radius: 50%;
+			}
+			#core-label {
+				position: absolute;
+				left: calc(50% + 180px);
+				top: calc(50% - 180px);				
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Core statistics</h2>
+		<p>The size is 10200912 / 22000000 < 50% of the whole graph</p>
+		<p>33% of the developers; this is 11% of the whole GitHub userbase</p>
+	</section>
+
+	<section class="slide">
+		<h2>Distances</h2>
+		<p>There are \[\frac{N_{core}(N_{core} + 1)}{2}\] possible distance pairs</p>
+		<p>That is, 2.3 trillions (10<sup>12</sup>)</p>
+		<p>Do we need to evaluate them all? No!</p>
+	</section>
+
+	<section class="slide">
+		<h2>Representative sample</h2>
+		<p>Statistics for the win! Let's define our random variable as the distance between two random developers.</p>
+		<p>For sufficiently large N<sub>core</sub>, the distribution of \[{\displaystyle {\hat {p_d}}} = \frac{X_d}{N_{core}}\] will be closely approximated by a normal distribution.</p>
+		<a href="https://en.wikipedia.org/wiki/Sample_size_determination">Sample size on Wikipedia.</a>
+	</section>
+
+	<section class="slide">
+		<h2>Representative sample</h2>
+		<ul>
+			<li>Margin of error: 1% (lower is better)</li>
+			<li>Confidence level: 95% (higher is better)</li>
+			<li>Result: 10,000 evaluations</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Distances calculation</h2>
+		<p>Which algorithm to choose?</p>
+		<ul>
+			<li><a href="https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm">Floyd–Warshall</a> works in O(V<sup>3</sup>) time and eats O(V<sup>2</sup>) memory</li>
+			<li><a href="https://en.wikipedia.org/wiki/Dijkstra's_algorithm">Dijkstra</a> is O(|E| + |V|log|V|) time and O(|V|) space</li>
+			<li>▶ <a href="https://en.wikipedia.org/wiki/Bidirectional_search">Bidirectional search</a> - similar to Dijkstra, but optimized for pairs ◀</li>
+		</ul>
+		<p class="important">We need to avoid the "generational explosion" as much as possible.</p>
+	</section>
+
+	<section class="slide video">
+		<video width="100%" height="100%" src="pictures/bidisearch_white.webm" poster="pictures/bs000.png" controls>
+			Your browser does not support the video tag.
+		</video>
+		<style>
+		@media not print {
+		    video::-webkit-media-controls {
+		        z-index: 100;
+		    }
+		    video /deep/ input[type=range] {
+                background-color: "#f56100";
+            }
+		    video::-webkit-media-controls-panel {
+                background-color: #202020;
+            }
+            video::-webkit-media-controls-volume-slider {
+                background-color: #f56100;
+            }
+            video::-webkit-media-controls-timeline {
+                background-color: #f56100;
+            }
+        }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Result</h2>
+		<div id="handshakes" class="vista center"></div>
+		<style>
+			#handshakes {
+				width: 400px;
+				height: 400px;
+				background-image: url("pictures/histogram_black.png");
+			}
+			@media not print {
+				#handshakes {
+					background-image: url("pictures/histogram_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide" id="pagerank">
+		<div class="vista"></div>
+		<h2>Part III</h2>
+		<style>
+			#pagerank > div {
+				transform: scaleX(-1);
+				position: absolute;
+				left: 10%;
+				top: 10%;
+				width: 80%;
+				height: 80%;
+				background-image: url("pictures/crown_black.svg");
+			}
+			@media not print {
+				#pagerank > div {
+					background-image: url("pictures/crown_white.svg");
+				}
+			}
+		</style>
+	</section>
+	
+	<section class="slide">
+		<h2>Statement</h2>
+		<p>What developers and repositories are the most important?</p>
+	</section>
+	
+	<section class="slide vista" id="pagerank-armin">
+		<style>
+		    #pagerank-armin {
+				background-image: url("pictures/pagerank_armin_black.svg");
+			}
+			@media not print {
+				#pagerank-armin {
+					background-image: url("pictures/pagerank_armin_white.svg");
+				}
+			}
+		</style>
+	</section>
+	
+	<section class="slide">
+	    <h2>Importance</h2>
+	    <p>"Importance" is defined recursively: we gain ego if we contribute to repositories to which other important developers contribute.</p>
+	    <p>\[x_ {AR} = \frac{w_ 1 x_ 1 + w_ 2 x_ 2 + w_ 3 x_ 3 + ...}{\lambda} = \frac{1}{\lambda} \sum w_ i x_ i\]</p>
+	    <p>We do not distinguish developers and repositories here.</p>
+	</section>
+	
+	<section class="slide">
+	    <h2>Return of the adjacency matrix</h2>
+	    <div id="hcenter">
+		<div class="adj-matrix"></div>
+		<p class="center">$$\sum_i C_{ij}=1$$$$C_{ij} \neq C_{ji}$$</p>
+		</div>
+		<style>
+		    #hcenter {
+		        display: flex;
+		        align-items: center;
+		    }
+		</style>
+	</section>
+	
+	<section class="slide">
+	    <h2>Perron–Frobenius theorem</h2>
+	    <p>If \(C_{ij} > 0\) then \(\vec{x}\) is the first eigenvector of C and \(x_i\) is positive.</p>
+	    <p class="important">This is not our case: only 10<sup>-7</sup> elements are positive, the rest are zeros.</p>
+	</section>
+	
+	<section class="slide">
+	    <h2>Google in 1998</h2>
+	    <p>Larry and Sergey had exactly the same objective and problems with WWW.</p>
+	    <p>C<sub>ij</sub>  is 1 if web page i links to j and 0 otherwise.</p>
+	    <p>They invented the trick to make C have all elements positive.</p>
+	    <p>They called it <a href="http://snap.stanford.edu/class/cs246-2013/slides/09-pagerank.pdf">PageRank</a>.</p>
+	</section>
+	
+	<section class="slide">
+	    <h2>PageRank</h2>
+	    <p>$$
+G = \beta C + \frac{1-\beta}{N}\left( \begin{array}{cccc}
+1 & 1 & ... & 1 \\
+1 & 1 & ... & 1 \\
+... & ... & \ddots & ... \\
+1 & 1 & ... & 1 \end{array} \right)
+$$</p>
+        <p>β is the dampening or random walk factor, usually 0.85.</p>
+        <p>Our matrix becomes acyclic and irreducible, aka the Google matrix.</p>
+    </section>
+    
+    <section class="slide">
+		<h2>Power iteration</h2>
+		<p>An efficient algorithm to calculate the first eigenvector.</p>
+		<p>$$x_{i+1} = G\cdot x_i$$</p>
+		<p>Sparse friendly.</p>
+		<p>22M nodes need less than 50 iterations.</p>
+		<p class="success">GitHub specific: there are no "dead ends".</p>
+	</section>
+	
+	<section class="slide">
+		<h2>Power iteration</h2>
+		<pre>
+		<code class="python">def page_rank(m, beta=0.85, niter=50):</code>
+<code class="python">    N = m.shape[0]</code>
+<code class="python">    x = numpy.ones(N, dtype=numpy.float32) / N</code>
+<code class="python">    for i in range(niter):</code>
+<code class="python">        x_next = m.dot(x) * beta + (1 - beta) / N</code>
+<code class="python">        xdiff = numpy.linalg.norm(x - x_next, ord=1)</code>
+<code class="python">        x = x_next</code>
+<code class="python">    return x</code>
+		</pre>
+	</section>
+	
+	<section class="slide">
+		<h2>Convergence</h2>
+		<div class="vista center" id="pagerank-conv"></div>
+		<style>
+		    #pagerank-conv {
+		        height: 400px;
+		        width: 600px;
+		        background-image: url("pictures/pagerank_black.png");
+		    }
+		    @media not print {
+				#pagerank-conv {
+					background-image: url("pictures/pagerank_white.png");
+				}
+			}
+		</style>
+	</section>
+	
+	<section class="slide">
+		<h2>Who is the most important on GitHub?</h2>
+		<p><a href="https://github.com/ryanfb">Ryan Baumann aka ryanfb</a> (at the time the research was conducted - Jan 2017)</p>
+		<img class="center" src="pictures/ryanfb.png">
+	</section>
+	
+	<section class="slide vista" id="ryanfb">
+	    <style>
+	        #ryanfb {
+	            background-image: url("pictures/unicorn.png");
+	        }
+	    </style>
+	</section>
+	
+	<section class="slide">
+	    <h2>Who is the most important on GitHub?</h2>
+	    <p>Ryan created more than 1,000 repositories, and each repository gives a small amount of importance.</p>
+	    <p class="important">Link farm failure.</p>
+	    <p>Identity matching is not perfect, so the leaderboard is polluted with such anomalies.</p>
+	    <p class="success">PageRank works to compare specific people.</p>
+	</section>
+	
+	<section class="slide">
+	    <h2>Who is the most important on GitHub?</h2>
+	    <table class="tg">
+          <tr>
+            <th>Person</th>
+            <th>PageRank, 10<sup>-5</sup></th>
+          </tr>
+          <tr>
+            <td>Linus Torvalds</td>
+            <td>2.7</td>
+          </tr>
+          <tr>
+            <td>Armin Ronacher</td>
+            <td>0.8</td>
+          </tr>
+          <tr>
+            <td>Maximo Cuadros</td>
+            <td>0.26</td>
+          </tr>
+          <tr>
+            <td>Vadim Markovtsev</td>
+            <td>0.16</td>
+          </tr>
+        </table>
+	 </section>
+
+    <section class="slide">
+	    <h2>What is the most important on GitHub?</h2>
+	    <ol id="repo-list">
+            <li><a href="https://github.com/nguyendtu/patchwork">nguyendtu/patchwork</a></li>
+            <li><a href="https://github.com/coeligena/homebrew-customized-copy">coeligena/homebrew-customized-copy</a></li>
+            <li><a href="https://github.com/KenStanley/reflections">KenStanley/reflections</a></li>
+            <li><a href="https://github.com/torvalds/linux">torvalds/linux</a></li>
+            <li><a href="https://github.com/enkidevs/commit">enkidevs/commit</a></li>
+            <li><a href="https://github.com/gentoo/wikiclone">gentoo/wikiclone</a></li>
+            <li><a href="https://github.com/Homebrew/homebrew-core">Homebrew/homebrew-core</a></li>
+            <li><a href="https://github.com/renoirb/test">renoirb/test</a></li>
+            <li><a href="https://github.com/SopraConsulting/CocoapodsSpecs">SopraConsulting/CocoapodsSpecs</a></li>
+            <li><a href="https://github.com/openSUSE/salt">openSUSE/salt</a></li>
+            <li><a href="https://github.com/caskroom/homebrew-cask">caskroom/homebrew-cask</a></li>
+            <li><a href="https://github.com/borisyankov/DefinitelyTyped">borisyankov/DefinitelyTyped</a></li>
+            <li><a href="https://github.com/openstack/openstack">openstack/openstack</a></li>
+            <li><a href="https://github.com/TheOdinProject/curriculum">TheOdinProject/curriculum</a></li>
+         </ol>
+         <style>
+            #repo-list {
+                font-size: 0.9em;
+                overflow: hidden;
+            }
+            #repo-list > li {
+                float: left;
+                width: 50%;
+                text-indent: 0;
+            }
+            #repo-list > li:before {
+                display: none;
+            }
+         </style>
+	</section>
+	
+	<section class="slide">
+		<h2>Conclusion</h2>
+		<ul>
+		    <li>GitHub contributions graph can be visualized and has a structure</li>
+		    <li>11% of GitHub users form the (strongly) connected core</li>
+		    <li>85% of the core is ≤6 hops from each other</li>
+		    <li>PageRank allows for measuring the socially validated impact</li>
+		</ul>
+	</section>
+	
+	<section class="slide">
+		<h2>Materials</h2>
+		<ul>
+		    <li>Dataset on <a href="https://data.world/vmarkovtsev/452-m-commits-on-github">data.world</a>, <a href="https://drive.google.com/file/d/0B-w8jGUJto0ibVI3QUVBdXJnN1E">pickled graph</a></li>
+		    <li>Code: <a href="graph.ipynb">visualization</a>, <a href="https://blog.sourced.tech/post/handshakes_pagerank/">the rest in the blog post</a></li>
+		    <li><a href="http://snap.stanford.edu/class/cs246-2013/slides/09-pagerank.pdf">CS246</a></li>
+		    <li>Papers: <a href="https://soarsmu.github.io/papers/csmr13-networkstructure.pdf">1</a> (130k nodes, CSMR 2013), <a href="https://springerplus.springeropen.com/articles/10.1186/s40064-016-2897-7">2</a> (? nodes, 2016)</li>
+		    <li>This presentation - <a href="https://github.com/shower/shower">shwr</a></li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Contacts</h2>
+		<ul class="no-bullets">
+		    <li><i class="fa fa-envelope"></i> <a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+		    <li><i class="fa fa-twitter"></i> <a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+		    <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+		    <li><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+		</ul>
+		<p class="success">We are hiring!</p>
+	</section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+
+	<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<link rel="stylesheet" href="styles/darcula.css">
+	<script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
