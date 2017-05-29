@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Hercules and His Labours</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Hercules and His Labours</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 10px;
+			top: 10px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .no-link {
+            background: none !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .video {
+            padding-top: 0;
+            padding-bottom: 10px;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .vista-cover {
+            background-size: cover;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+    </style>
+
+	<section class="slide" id="cover">
+		<h2>Hercules and His Labours</h2>
+		<p>Vadim Markovtsev, <a class="no-link" href="https://sourced.tech">source{d}</a></p>
+		<figure>
+			<img class="cover" src="pictures/cover.jpg" alt="Hercules Killing the Lernean Hydra">
+		</figure>
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                color:#FFF;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin:10px 0 0;
+                text-align:center;
+                color:#FFF;
+                font-style:italic;
+                font-size:20px;
+            }
+                #cover p a {
+                    color:#FFF;
+                }
+            #cover img {
+                width: 100%;
+                object-fit: cover;
+				filter: brightness(0.6);
+            }
+        </style>
+	</section>
+
+	<section class="slide">
+        <h2>Read this on your device</h2>
+        <!-- <img> with @media srcset does not work! -->
+        <div class="vista center" id="qrcode"></div>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<section class="slide">
+		<h2>Objective</h2>
+		<p><code class="inline">git blame foo.py</code></p>
+		<div id="obj" class="blame">
+			<div><span><span class="f2014">●</span>2014</span>
+				<pre><code class="b2014">class Foo:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2014">    print("!")</code></pre>
+			</div>
+			<div><span><span class="f2015">●</span>2015</span><pre><code class="b2014">class Foo:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2015">    print("?")</code>
+<code class="b2015"> </code>
+<code class="b2015">  def baz(self):</code>
+<code class="b2014">    print("!")</code></pre></div>
+			<div><span><span class="f2016">●</span>2016</span><pre><code class="b2016">class FooBarBaz:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2016">    """..."""</code>
+<code class="b2016">    print("yo")</code>
+<code class="b2015"> </code>
+<code class="b2015">  def baz(self):</code>
+<code class="b2014">    print("!")</code></pre></div>
+		</div>
+		<style>
+			#obj {
+				display: flex;
+				height: 400px;
+			}
+			#obj > div {
+				flex-grow: 1;
+				flex-basis: 0;
+				height: 100%;
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			#obj > div > span {
+				text-align: center;
+				width: 100%;
+				display: block;
+			}
+			.blame code {
+				font-size: 0.8em !important;
+				margin-left: 2.5em !important;
+				margin-top: -1px !important;
+				width: auto !important;
+				color: black !important;
+				padding-left: 1px !important;
+			}
+			.blame code:before {
+				color: #585a5e !important;
+				width: calc(2.5em + 1px) !important;
+				margin-left: -2.5em !important;
+				padding-left: 0.5em !important;
+			}
+			.b2014, .b2014:before {
+				background: #CB8C1D !important;
+			}
+			.b2015, .b2015:before {
+				background: #F1684E !important;
+			}
+			.b2016, .b2016:before {
+				background: #4EB1BA !important;
+			}
+			.f2014 {
+				color: #CB8C1D;
+			}
+			.f2015 {
+				color: #F1684E;
+			}
+			.f2016 {
+				color: #4EB1BA;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Objective</h2>
+		<div class="vista" id="obj-plot"></div>
+		<style>
+			#obj-plot {
+				width: 100%;
+				height: 400px;
+				background-image: url("pictures/objective_black.svg");
+			}
+			@media not print {
+                #obj-plot {
+                    background-image: url("pictures/objective_white.svg");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+        <h2>History</h2>
+		<ul>
+			<li>It all started with <a href="https://erikbern.com/2016/12/05/the-half-life-of-code.html">git-of-theseus</a>
+				by Erik Bernhardsson (e.g., <a href="https://github.com/spotify/luigi">Luigi</a>)</li>
+			<li>source{d} decided to build the similar tool using
+				<a href="https://github.com/src-d/go-git">go-git</a> engine</li>
+			<li>This project was named Hercules and was
+				<a href="https://blog.sourced.tech/post/hercules/">blogged</a></li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Problems</h2>
+		<ul>
+			<li>Diff route</li>
+			<li>Performance</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Diff route</h2>
+		<a href="https://drive.google.com/file/d/0B-w8jGUJto0iaWRjcFZUZy15NVU">How to blame</a> by Alberto Cortes.
+		<ol>
+			<li>Trace the commits chain backwards starting from HEAD.
+				<pre><code class="inline-no-offset">&lt;root&gt; D 🠔 E 🠔 F 🠔 G 🠔 H 🠔 I <span class="success">HEAD</span></code></pre>
+			</li>
+			<li>Diff starting from the root along the path from (1).
+				<pre><code class="inline-no-offset"><span class="success">&lt;root&gt;</span> D 🠖 E 🠖 F 🠖 G 🠖 H 🠖 I HEAD</code></pre>
+			</li>
+		</ol>
+	</section>
+
+	<section class="slide">
+        <h2>Diff route</h2>
+		<p>Where are my branches?</p>
+		<pre>
+			<code class="inline">      A---B---C</code>
+<code class="inline">     /         \</code>
+<code class="inline">D---E---F---G---H---I HEAD</code>
+<code class="inline">     ----------> time</code>
+<code class="inline"> way <----------</code>
+		</pre>
+		<p><span class="important">Git branches are pointers, and the history is lost.</span>
+			<span class="success">Merges are ordered.</span></p>
+	</section>
+
+	<section class="slide">
+        <h2>Diff route</h2>
+		<p>Which way to go?</p>
+		<pre>
+			<code class="inline">      A---B---C topic</code>
+<code class="inline">     /         \</code>
+<code class="inline">D---E---F---G---H---I master</code>
+<code class="inline">     ----------> time</code>
+<code class="inline"> way <----------</code>
+		</pre>
+		<p class="important">Blaming using both branches is hard and even impossible sometimes.</p>
+	</section>
+
+	<section class="slide">
+        <h2>Diff route</h2>
+		<p>There can be "octopus" merges.</p>
+		<pre>
+			<code class="inline">      A---B---C topic1</code>
+<code class="inline">     /         \</code>
+<code class="inline">D---E---F---G---H---I master</code>
+<code class="inline">         \     /</code>
+<code class="inline">          J---K topic2</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+        <h2>Diff route</h2>
+		<p>Working solution: treat merges as single commits.</p>
+		<pre id="blame-solution">
+<code class="inline">                C</code>
+<code class="inline">D---E---F---G---H---I master</code>
+<code class="inline">                K</code>
+		</pre>
+		<p class="important">We lose some information.</p>
+		<style>
+			#blame-solution, #blame-solution > code {
+				line-height: 1;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p>Complexity matters:</p>
+		<p><code class="inline">git checkout &lt;commit&gt; && git blame &lt;file&gt;</file></code></p>
+		<p>takes O(n) steps where n is the number of commits before
+			<code class="inline">&lt;commit&gt;</code>.</p>
+		<p>Thus the whole procedure takes O(n<sup>2</sup>).</p>
+		<p class="success">We can reduce it to O(n) using the incremental algorithm!</p>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p class="important">Incremental blame is not possible using the libgit2 and cgit API.</p>
+		<img src="pictures/deeper.jpg" class="center">
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p>go-git was designed for blame analytics from scratch.</p>
+		<p>It allows to cache the intermediate results.</p>
+		<p>diff-tree implementation is a
+			<a href="https://blog.sourced.tech/post/difftree/">state-of-the-art</a>.</p>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p>How to store the line intervals?</p>
+		<div class="diff-show blame">
+			<pre><code class="b2016">class FooBarBaz:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2016">    """..."""</code>
+<code class="b2016">    print("yo")</code>
+<code class="b2015"> </code>
+<code class="b2015">  def baz(self):</code>
+<code class="b2014">    print("!")</code></pre>
+			<div class="vista" id="ll"></div>
+		</div>
+		<style>
+			.diff-show {
+				display: flex;
+				align-items: center;
+			}
+			.diff-show > pre {
+				width: 300px;
+				margin-bottom: 0;
+				margin-right: 50px;
+			}
+			.diff-show > div {
+				flex-grow: 1;
+				flex-basis: 0;
+            }
+			#ll {
+				height: 100px;
+				background-image: url("pictures/linked_list_black.svg");
+			}
+            @media not print {
+                #ll {
+                    background-image: url("pictures/linked_list_white.svg");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p>How to store the line intervals?</p>
+		<div class="diff-show blame">
+			<pre><code class="b2016">class FooBarBaz:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2016">    """..."""</code>
+<code class="b2016">    print("yo")</code>
+<code class="b2015"> </code>
+<code class="b2015">  def baz(self):</code>
+<code class="b2014">    print("!")</code></pre>
+			<div class="vista" id="tree"></div>
+		</div>
+		<style>
+			#tree {
+				height: 250px;
+				background-image: url("pictures/tree_black.svg");
+			}
+            @media not print {
+                #tree {
+                    background-image: url("pictures/tree_white.svg");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p>How to store the line intervals?</p>
+		<ul>
+			<li>Linked list
+				<ul>
+					<li class="important">O(file size) edit's location</li>
+					<li class="success">O(1) update</li>
+				</ul>
+			</li>
+			<li>Balanced binary tree
+				<ul>
+					<li class="success">O(log (file size)) edit's location</li>
+					<li class="important">O(file size) update</li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<figure>
+			<img src="pictures/spark.png" class="center" id="spark">
+			<figcaption class="white">
+				<a href="https://github.com/apache/spark/commit/7026ee23e0a684e13f9d7dfbb8f85e810106d022#diff-916ca56b663f178f302c265b7ef38499">apache/spark@7026ee23</a>
+			</figcaption>
+		</figure>
+		<style>
+			#spark {
+				height: 400px;
+			}
+			#spark + figcaption {
+				position: absolute;
+				bottom: 50px;
+				right: 180px;
+				font-size: 12px;
+				-webkit-transform-origin: 0 100%;
+				transform-origin: 0 100%;
+				-webkit-transform: translateX(100%) rotate(-90deg);
+				transform: translateX(100%) rotate(-90deg);
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p>In such cases the binary tree has O(1) update complexity.</p>
+		<p>We have chosen the binary tree.</p>
+		<p class="important">Anyway, the profile shows that the diff is the bottleneck.</p>
+	</section>
+
+	<section class="slide">
+        <h2>Performance</h2>
+		<p>Git stores commits as <a href="https://stackoverflow.com/a/8198276/69708">snapshots</a>,
+			we need to diff ourselves.</p>
+		<p>Diff algorithms:</p>
+		<ul>
+			<li><a href="http://www.xmailserver.org/diff2.pdf">Myers</a> - most popular</li>
+			<li>Patience - heuristics for better readability</li>
+			<li>Histogram - used in <a href="http://download.eclipse.org/jgit/docs/jgit-2.0.0.201206130900-r/apidocs/org/eclipse/jgit/diff/HistogramDiff.html">jgit</a></li>
+		</ul>
+		<p class="success">Myers algorithm is optimal for analytics.</p>
+		<p class="important">We tried to accelerate it with NVIDIA CUDA but <a href="https://github.com/src-d/diffcuda">failed</a>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Trying Hercules</h2>
+		<ol>
+			<li>Install <a href="https://golang.org/dl/">Go language</a></li>
+			<li><code class="inline">go get gopkg.in/src-d/hercules.v1/cmd/hercules</code></li>
+			<li><code class="inline">bin/hercules https://github.com/tensorflow/tensorflow | python3 src/gopkg.in/src-d/hercules.v1/labours.py --resample=month</code></li>
+		</ol>
+	</section>
+
+	<section class="slide vista" id="tensorflow">
+		<style>
+			#tensorflow {
+				background-image: url("pictures/tensorflow_black.png");
+			}
+			@media not print {
+                #tensorflow {
+                    background-image: url("pictures/tensorflow_white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Trying Hercules</h2>
+		<code class="inline">... labours.py --resample=month --relative</code>
+	</section>
+
+	<section class="slide vista" id="tensorflow-relative">
+		<style>
+			#tensorflow-relative {
+				background-image: url("pictures/tensorflow_relative_black.png");
+			}
+			@media not print {
+                #tensorflow-relative {
+                    background-image: url("pictures/tensorflow_relative_white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Trying Hercules</h2>
+		<code class="inline">hercules https://github.com/torvalds/linux</code>
+		<p></p>
+		<p>2 hours, 130GB RSS</p>
+	</section>
+
+	<section class="slide vista" id="linux">
+		<style>
+			#linux {
+				background-image: url("pictures/linux_black.png");
+			}
+			@media not print {
+                #linux {
+                    background-image: url("pictures/linux_white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Future</h2>
+		<ul>
+			<li>Survivability metric calculation</li>
+			<li>Per file and per directory basis</li>
+			<li>Open source implementation of X-Ray engine by
+				<a href="http://www.empear.com/">Empear</a></li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+		<p>My contacts:</p>
+        <ul class="no-bullets">
+            <li><i class="fa fa-envelope"></i> <a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter"></i> <a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+            <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+        </ul>
+    </section>
+
+	<footer class="badge">
+		<a href="https://github.com/src-d/hercules">Hercules on GitHub</a>
+	</footer>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
