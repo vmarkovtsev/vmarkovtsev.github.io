@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Similarity of GitHub Repositories by Source Code Identifiers</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Similarity of GitHub Repositories by Source Code Identifiers</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .no-link {
+            background: none !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .video {
+            padding-top: 0;
+            padding-bottom: 10px;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		p.no-margin {
+			margin-bottom: 0px;
+		}
+    </style>
+
+	<section class="slide vista" id="cover">
+		<h2>Similarity of GitHub Repositories by Source Code Identifiers</h2>
+		<p>Vadim Markovtsev, <a class="no-link" href="https://sourced.tech">source{d}</a></p>
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/sierpinski_black.svg");
+			}
+			@media not print {
+				#cover h2, #cover p, #cover p a {
+					color:#FFF;
+				}
+				#cover {
+					background: black url("pictures/sierpinski_white.svg");
+				}
+			}
+        </style>
+	</section>
+
+	<section class="slide">
+        <h2>Read this on your device</h2>
+        <!-- <img> with @media srcset does not work! -->
+        <div class="vista center" id="qrcode"></div>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<section class="slide">
+		<h2>Objective</h2>
+		<p>Given a single software repository, find repositories which are related.</p>
+		<p>"Related" is subjective.</p>
+		<p>"Related" = "similar" here.</p>
+	</section>
+
+	<section class="slide vista vista-cover" id="crossroads">
+		<h2>Ways to find similar repos</h2>
+		<ol>
+			<li>Collaborative filtering</li>
+			<li>Content analysis</li>
+		</ol>
+		<p>Egor will <a href="https://egorbu.github.io/techtalks-2017-moscow">talk</a>
+			about (1) after lunch.</p>
+		<p>We will address (2) in this presentation.</p>
+		<style>
+			@media not print {
+				#crossroads {
+					background: url("pictures/crossroads.jpg");
+				}
+				#crossroads h2:before {
+					content: "";
+					position: absolute;
+					z-index: -1;
+					left: 0;
+					top: 0;
+					right: 0;
+					bottom: 0;
+					background: rgba(0, 0, 0, 0.5);
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Plan</h2>
+		<ol>
+			<li>Turn each repository into features.</li>
+			<li>Apply some algorithm to search for the NN.</li>
+		</ol>
+		<!-- Please, forgive me. I am a bad painter. -->
+		<div class="plan-file" style="left: 206px; top: 374px;"></div>
+		<div class="plan-file" style="left: 239px; top: 481px;"></div>
+		<div class="plan-file" style="left: 235px; top: 402px;"></div>
+		<div class="plan-file" style="left: 145px; top: 400px;"></div>
+		<div class="plan-file" style="left: 114px; top: 460px;"></div>
+		<div class="plan-file" style="left: 174px; top: 524px;"></div>
+		<div class="plan-file" style="left: 180px; top: 431px;"></div>
+		<div class="plan-file" style="left: 264px; top: 366px;"></div>
+		<div class="plan-file" style="left: 202px; top: 476px;"></div>
+		<div class="plan-file" style="left: 176px; top: 471px;"></div>
+		<div class="plan-file" style="left: 262px; top: 408px;"></div>
+		<div class="plan-file" style="left: 231px; top: 421px;"></div>
+		<div class="plan-file" style="left: 300px; top: 463px;"></div>
+		<div class="plan-file" style="left: 274px; top: 442px;"></div>
+		<div class="plan-file" style="left: 250px; top: 523px;"></div>
+		<div class="plan-file" style="left: 186px; top: 349px;"></div>
+		<div class="plan-file" style="left: 207px; top: 435px;"></div>
+		<div class="plan-file" style="left: 150px; top: 445px;"></div>
+		<div class="plan-file" style="left: 194px; top: 396px;"></div>
+		<div class="plan-file" style="left: 234px; top: 447px;"></div>
+		<span class="plan-text" id="plan-arrow">➡</span>
+		<div class="plan-cell" style="left: 400px; top: 450px;">
+			<span>0</span>
+			<span>0</span>
+			<span>1</span>
+			<span>0</span>
+			<span>1</span>
+			<span>0</span>
+		</div>
+		<span class="plan-text" id="plan-question">?</span>
+		<div class="plan-cell" style="left: 610px; top: 350px;">
+			<span>1</span>
+			<span>0</span>
+			<span>1</span>
+			<span>0</span>
+			<span>1</span>
+			<span>0</span>
+		</div>
+		<div class="plan-cell" style="left: 610px; top: 450px;">
+			<span>0</span>
+			<span>0</span>
+			<span>0</span>
+			<span>1</span>
+			<span>0</span>
+			<span>0</span>
+		</div>
+		<div class="plan-cell" style="left: 610px; top: 550px;">
+			<span>0</span>
+			<span>1</span>
+			<span>0</span>
+			<span>0</span>
+			<span>1</span>
+			<span>0</span>
+		</div>
+		<style>
+			.plan-file {
+				background-size: 100% auto !important;
+				background-repeat: no-repeat !important;
+				background: url("pictures/file_black.png");
+				position: absolute;
+				height: 50px;
+				width: 50px;
+			}
+			@media not print {
+                .plan-file {
+                    background-image: url("pictures/file_white.png");
+                }
+            }
+			.plan-cell {
+				position: absolute;
+				height: 1.4em;
+				line-height: 1em;
+				display: flex;
+			}
+			.plan-cell > span {
+				border: 1px solid black;
+				border-right-width: 0px;
+				padding: 0.2em;
+				display: inline-block;
+			}
+			.plan-cell > span:last-of-type {
+				border-right-width: 1px;
+			}
+			@media not print {
+				.plan-cell > span {
+					border-color: white;
+				}
+			}
+			.plan-text {
+				position: absolute;
+				top: 426px;
+				font-size: 40px;
+			}
+			#plan-arrow {
+				left: 355px;
+			}
+			#plan-question {
+				left: 570px;
+			}
+		</style>
+	</section>
+
+	<section class="slide vista" id="teaser-features">
+		<h2 class="part-teaser">Features</h2>
+		<style>
+			@media not print {
+				#teaser-features {
+					background: url("pictures/teaser_features.jpg");
+				}
+				#teaser-features h2:before {
+					content: "";
+					position: absolute;
+					z-index: -1;
+					left: 0;
+					top: 0;
+					right: 0;
+					bottom: 0;
+					background: rgba(0, 0, 0, 0.75);
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>What is source code?</h2>
+		<div id="what-is-sc">
+		<pre>
+		<code class="python">def nearest_neighbors(self, origin, k=10, early_stop=0.5, max_time=3600,</code>
+<code class="python">                      skipped_stop=0.99, throw=True):</code>
+<code class="python">    # origin can be either a text query or an id</code>
+<code class="python">    if <span class="hljs-keyword">isinstance</span>(origin, (<span class="hljs-keyword">tuple</span>, <span class="hljs-keyword">list</span>)):</code>
+<code class="python">	     words, weights = origin</code>
+<code class="python">	     weights = numpy.array(weights, dtype=numpy.float32)</code>
+<code class="python">	     index = None</code>
+<code class="python">	     avg = self._get_centroid(words, weights, force=True)</code>
+<code class="python">    else:</code>
+<code class="python">	     index = origin</code>
+<code class="python">	     words, weights = self._get_vocabulary(index)</code>
+<code class="python">	     avg = self._get_centroid_by_index(index)</code>
+<code class="python">    if avg is None:</code>
+<code class="python">	     raise ValueError(</code>
+<code class="python">		     "Too little vocabulary for %s: %d" % (index, len(words)))</code>
+		</pre>
+			<div><pre>
+				<code class="inline-no-offset"><span class="hljs-keyword">⬤</span> keywords</code>
+				<code class="inline-no-offset"><span class="hljs-title">⬤</span> identifiers</code>
+				<code class="inline-no-offset"><span class="hljs-literal">⬤</span> literals</code>
+				<code class="inline-no-offset"><span class="hljs-string">⬤</span> strings</code>
+				<code class="inline-no-offset"><span class="hljs-comment">⬤</span> comments</code>
+			</pre></div>
+			</div>
+		<style>
+			#what-is-sc {
+				display: flex;
+			}
+			#what-is-sc > pre {
+				font-size: 0.5em;
+				margin-right: 100px;
+			}
+			#what-is-sc > div > pre {
+				border: 1px solid white;
+				border-radius: 5px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+			#what-is-sc > div > pre > code {
+				padding: 0 20px !important;
+			}
+		</style>
+	</section>
+
+	<section class="slide vista" id="ast">
+		<h2>AST</h2>
+		<style>
+			#ast {
+				background: url("pictures/ast_black.svg");
+			}
+			@media not print {
+				#ast {
+					background: black url("pictures/ast_white.svg");
+				}
+			}
+			#ast > h2 {
+				position: absolute;
+				bottom: 50px;
+			}
+		</style>
+	</section>
+
+	<section class="slide vista" id="go-git-blame">
+		<h2>VCS</h2>
+		<style>
+			#go-git-blame {
+				background: white url("pictures/blame.png");
+			}
+			@media not print {
+				#go-git-blame {
+					background: black url("pictures/blame.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide vista" id="source-ml">
+		<style>
+			#source-ml {
+				background: white url("pictures/source_ml.svg");
+			}
+			@media not print {
+				#source-ml {
+					background: black url("pictures/source_ml.svg");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Points of fun</h2>
+		<ul>
+			<li>Development history</li>
+			<li>Project structure</li>
+			<li>Language vector</li>
+			<li>README files</li>
+			<li>Source code structure</li>
+			<li>Comments, literals</li>
+			<li>Identifiers</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Development history</h2>
+		<p>Mining artifacts from VCS (git).</p>
+		<p>Finding repositories which have a similar evolution.</p>
+		<p>E.g. projects written by roughly the same team.</p>
+		<p><a href="https://data.world/vmarkovtsev/452-m-commits-on-github">source{d}'s dataset.</a></p>
+	</section>
+
+	<section class="slide">
+		<h2>Project structure</h2>
+		<p>Comparing file system trees.</p>
+		<p>Finding repositories which have a similar structure.</p>
+		<p>E.g. Wordpress web sites.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Language vector</h2>
+		<p>Aka GitHub language bars.</p>
+		<img src="pictures/github_stats.png" id="github-stats">
+		<p>Finding projects of the same alignment.</p>
+		<p>E.g. C autotools != C cmake.</p>
+		<p><a href="https://data.world/source-d/github-repositories-languages-distribution">source{d}'s dataset.</a></p>
+		<style>
+			#github-stats {
+				width: 800px;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>README files</h2>
+		<p>Pure NLP and entity extraction.</p>
+		<p>Finding projects with similar descriptions / topics.</p>
+		<p>E.g. all projects related to Bitcoin.</p>
+		<div class="vista" id="readme"></div>
+		<p><a href="https://data.world/vmarkovtsev/github-readme-files">source{d}'s dataset.</a></p>
+		<style>
+			#readme {
+				height: 200px;
+				background: white url("pictures/readme_black.png")
+			}
+			@media not print {
+				#readme {
+					background: black url("pictures/readme_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Source code structure</h2>
+		<p>Based on ASTs: source{d}'s <img class="inline" src="pictures/bblfish.png">
+			<a href="https://doc.bblf.sh/">project Babelfish</a>.</p>
+		<p>Finding projects with similar algorithms.</p>
+		<p>E.g. projects which implement quick sort.</p>
+		<style>
+			img.inline {
+				height: 1em;
+				width: 1em;
+				object-fit: contain;
+				display: inline;
+				vertical-align: bottom;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Comments, literals</h2>
+		<p>"short-distance" NLP.</p>
+		<p>Sentiment analysis. Finding projects where developers are happy or sad.</p>
+		<p>Finding projects where developers have similar vocabulary.</p>
+		<p>Native human language detection.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Identifiers</h2>
+		<p>One of the richest features.</p>
+		<p>They carry NLP and algorithmic payloads.</p>
+		<p>This talk focuses on them.</p>
+		<p><a href="https://data.world/vmarkovtsev/github-source-code-names">source{d}'s dataset.</a></p>
+	</section>
+
+	<section class="slide">
+		<h2>Parsing at scale</h2>
+		<p>In pre-Babelfish era, we have to separately classify and regexp parse sources.</p>
+		<p>Classification: <a href="https://github.com/github/linguist">github/linguist</a>,
+			<a href="https://github.com/src-d/simple-linguist">src-d/simple-linguist</a>.</p>
+		<p>Parsing: <a href="http://pygments.org/">Pygments</a>,
+			<a href="https://highlightjs.org/">highlight.js</a>.</p>
+		<p>Perfectly matches to Spark.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Identifier extraction</h2>
+		<p>We use Pygments:</p>
+		<p><code class="inline-no-offset">Token.Name.*</code></p>
+		<p>Try yourself:</p>
+		<p>
+			<code class="inline-no-offset">pip3 install pygments</code><br>
+			<code class="inline-no-offset">pygmentize -f raw /path/to/file</code>
+		</p>
+	</section>
+
+	<section class="slide nn">
+		<h2>Identifier extraction</h2>
+		<p>We split identifiers:</p>
+		<ul id="identifier-split">
+			<li><code class="inline-no-offset">UpperCamelCase -> (upper, camel, case)</code></li>
+			<li><code class="inline-no-offset">camelCase -> (camel, case)</code></li>
+			<li><code class="inline-no-offset">FRAPScase -> (fraps, case)</code></li>
+			<li><code class="inline-no-offset">SQLThing -> (sql, thing)</code></li>
+			<li><code class="inline-no-offset">_Astra -> (astra)</code></li>
+			<li><code class="inline-no-offset">CAPS_CONST -> (caps, const)</code></li>
+			<li><code class="inline-no-offset">_something_SILLY_ -> (something, silly)</code></li>
+			<li><code class="inline-no-offset">blink182 -> (blink)</code></li>
+			<li><code class="inline-no-offset">FooBar100500Bingo -> (foo, bar, bingo)</code></li>
+			<li><code class="inline-no-offset">Man45var -> (man, var)</code></li>
+			<li><code class="inline-no-offset">method_name -> (method, name)</code></li>
+			<li><code class="inline-no-offset">Method_Name -> (method, name)</code></li>
+			<li><code class="inline-no-offset">101dalms -> (dalms)</code></li>
+			<li><code class="inline-no-offset">101_dalms -> (dalms)</code></li>
+			<li><code class="inline-no-offset">101_DalmsBug -> (dalms, bug)</code></li>
+			<li><code class="inline-no-offset">101_Dalms45Bug7 -> (dalms, bug)</code></li>
+			<li><code class="inline-no-offset">wdSize -> (size, wdsize)</code></li>
+			<li><code class="inline-no-offset">Glint -> (glint)</code></li>
+			<li><code class="inline-no-offset">foo_BAR -> (foo, bar)</code></li>
+		</ul>
+		<p><a href="https://gist.github.com/vmarkovtsev/6371e34cd6b7e895fbb31376d4eedbfa">Algorithm on GitHub.</a></p>
+		<style>
+			#identifier-split {
+				font-size: 0.6em;
+				padding-left: 1em;
+			}
+			#identifier-split code {
+				padding-left: 0 !important;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Identifier extraction</h2>
+		<p class="no-margin">Finally, we apply Snowball stemmer to words longer than 6 chars.</p>
+		<div class="vista center" id="name-lengths"></div>
+		<style>
+			#name-lengths {
+				height: 400px;
+				width: 600px;
+				background: white url("pictures/name_lengths_black.png");
+			}
+			@media not print {
+				#name-lengths {
+					background: black url("pictures/name_lengths_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Weighted nBOW</h2>
+		<p>Let's interpret every repository as the weighted bag-of-words.</p>
+		<p>We calculate TF-IDF to weight the occurring identifiers.</p>
+		<div id="tensorflow-nbow"><code class="inline-no-offset">tensorflow/tensorflow:</code>
+		<pre class="pre">    tfreturn	67.780249
+  oprequires	63.968142
+      doblas	63.714424
+    gputools	62.337396
+    tfassign	61.545926
+    opkernel	60.721556
+        sycl	57.064558
+         hlo	55.723587
+     libxsmm	54.820668
+  tfdisallow	53.666890</pre></div>
+		<style>
+			#tensorflow-nbow {
+				display: flex;
+				align-items: center;
+			}
+			#tensorflow-nbow > code {
+				padding-right: 50px;
+			}
+			.pre {
+				white-space: pre !important;
+				font-family: monospace;
+				line-height: 1.2em;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Topic modeling</h2>
+		<div id="tm">
+			<div>
+				<p>We can run topic modeling on these features.</p>
+				<p><a href="https://habrahabr.ru/post/312596/">Post on Habrahabr.</a></p>
+				<p><a href="https://arxiv.org/pdf/1704.00135.pdf">Paper on ArXiV</a> - accepted to AI'17 (Sydney).</p>
+				<p id="topic-label">Topic #36 "Movies" →</p>
+			</div>
+			<div class="vista" id="tm-movie"></div>
+		</div>
+		<style>
+			#tm {
+				display: flex;
+				height: 400px;
+			}
+			#tm-movie {
+				flex-grow: 1;
+				flex-basis: 0;
+				background: white url("pictures/movie_topic_black.png");
+			}
+			@media not print {
+				#tm-movie {
+					background: black url("pictures/movie_topic_white.png");
+				}
+			}
+			#topic-label {
+				margin-top: 215px;
+				text-align: right;
+			}
+		</style>
+	</section>
+
+	<section class="slide" id="tf-ids">
+		<h2>Identifier embeddings</h2>
+		    <p>tensorflow float unaligned vector ttypes
+			types const unaligned vec int unaligned vector ttypes types int const
+			unaligned vec example statistics norm normalized squared regularizations
+			regularizations status initialize construction kernel opkernel context
+			error iferror return tfreturn context attr get symmetric error iferror
+			return tfreturn context attr get symmetric shrinkage symmetric symmetric
+			status shrink weight shrinked std max std abs weight shrinkage shrinked
+			std copysign shrinked weight eigen tensor eigen major row eigen shrink
+			eigen tensor eigen major row weights weights sign weights abs weights
+			constant shrinkage cwise max weights
+			constant shrinkage cwise max weights constant symmetric symmetric
+			symmetric symmetric shrinkage and assign copy disallow tfdisallow
+			regularizations model weights example example statistics and compute
+			example norm weighted wxand num partitions model weights model weights
+			regularizations regularization example label example label example
+			weight example weight norm squared norm squared features sparse std
+			ptr unique int unaligned vector indices std ptr unique float unaligned
+			vector values std vector features sparse features sparse
+			dense vector eigen map tensor eigen tensor eigen major row row eigen
+			map tensor eigen tensor eigen major row data matrix data index row
+			data matrix dimension data matrix dimension ttypes types const matrix
+			data matrix int index row std vector std ptr unique dense vector dense
+			vectors example label example weight norm squared examples model weights
+			model weights model weights delta update weights eigen device pool thread
+			device example example bounded delta dual normalized sparse weights size
+			example features sparse features sparse example features sparse feature
+			weights feature weights sparse weights int features sparse indices size
+			feature value features sparse values features sparse values feature
+			weights deltas features sparse indices feature value bounded delta
+			dual normalized dense weights size example dense vector dense vector
+			example dense vectors ttypes types vec deltas dense weights deltas
+			deltas device device deltas dense vector row deltas constant bounded
+			delta dual normalized status initialize context kernel opkernel context
+			input list opinput inputs sparse weights error iferror return tfreturn
+			context input list inputs sparse weights input list opinput dense
+			inputs weights error iferror return tfreturn context input list dense
+			inputs weights list opoutput output outputs sparse weights error iferror
+			return tfreturn context list output outputs sparse weights list opoutput
+			output dense outputs weights error iferror return tfreturn context
+			list output dense outputs weights intialize weights input list opinput
+			inputs weight list opoutput output outputs weight std vector feature
+			weights feature weights inputs weight size tensor delta outputs weight
+			allocate inputs weight shape delta deltas delta flat deltas set zero
+			feature weights back emplace feature weights inputs weight flat deltas
+			intialize weights inputs sparse weights outputs sparse weights sparse
+			weights intialize weights dense inputs weights dense outputs weights
+			dense weights status feature weights ttypes types vec nominals ttypes
+			types vec deltas std vector feature weights sparse weights std vector
+			feature weights dense weights example and assign copy disallow tfdisallow
+			model weights example statistics example and compute example norm weighted
+			wxand num partitions model weights model weights regularizations
+			regularization example statistics result result norm normalized squared
+			norm squared regularization symmetric features sparse size example
+			features sparse features sparse features sparse model weights feature
+			weights sparse weights model weights sparse weights int features sparse
+			indices size int feature index features sparse indices feature value
+			features sparse values features sparse values feature weight sparse weights
+			nominals feature index sparse weights deltas feature index num partitions
+			result feature value regularization shrink feature weight dense vectors
+			size example dense vector dense vector dense vectors model weights
+			feature weights dense weights model weights dense weights eigen tensor
+			eigen major row feature weights dense weights nominals dense weights
+			deltas dense weights deltas constant num partitions eigen tensor eigen
+			major row prediction dense vector row regularization eigen shrink
+			feature weights sum result prediction result examples examples example
+			example example index examples example index examples num examples
+			size features num features num status initialize context kernel
+			opkernel context features num sparse features num sparse values with
+			dense features num features num features num sparse dense features
+			num input list opinput example indices inputs sparse error iferror
+			return tfreturn context input list example indices inputs sparse input
+			list opinput feature indices inputs sparse error iferror return
+			tfreturn context input list feature indices inputs sparse input list
+			opinput feature inputs sparse values features num sparse values with
+			error iferror return tfreturn context input list feature inputs sparse
+			values tensor example weights error iferror return tfreturn context
+			input example weights example weights example weights flat examples
+			num example weights size tensor example labels error iferror return
+			tfreturn context input example labels example labels example labels
+			flat input list opinput dense features inputs error iferror return
+			tfreturn context input list dense features inputs examples clear examples
+			</p>
+		<style>
+			#tf-ids p {
+				display: block;
+				height: 100%;
+				overflow: hidden;
+				color: #808080;
+				font-size: 0.5em;
+				line-height: 1.2;
+				font-family: monospace;
+				margin: 0;
+			}
+			#tf-ids h2 {
+				position: absolute;
+				left: 100px;
+				top: 106px;
+				background-color: rgba(255, 255, 255, 0.5);
+			}
+			@media not print {
+				#tf-ids h2 {
+					background-color: rgba(0, 0, 0, 0.5);
+				}
+			}
+			#tf-ids {
+				padding: 10px 0px 15px 0px;
+			}
+		</style>
+	</section>
+	<section class="slide">
+		<h2>Identifier embeddings</h2>
+		<ul>
+			<li>Treat every file as a sentence.</li>
+			<li>Treat every preprocessed identifier as a word.</li>
+			<li>Preserve the sequential order.</li>
+			<li>Babelfish: switch to ASTs to represent identifier locality.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Swivel</h2>
+		<p>Really good embedding engine which works on the co-occurrence matrix.</p>
+		<p>Like GloVe, but better.</p>
+		<p><a ref="https://arxiv.org/pdf/1602.02215.pdf">Paper on ArXiV.</a></p>
+		<p><a href="https://github.com/tensorflow/models/tree/master/swivel">Tensorflow implementation.</a></p>
+		<p><a href="https://github.com/vmarkovtsev/models/tree/master/swivel">Our fork.</a></p>
+		<p><a href="https://github.com/src-d/swivel-spark-prep">Ongoing effort to generate the matrix on Spark.</a></p>
+		<img src="pictures/swivel.png" id="swivel">
+		<style>
+			#swivel {
+				position: absolute;
+				left: 480px;
+				top: 270px;
+				width: 400px;
+				object-fit: contain;
+			}
+		</style>
+	</section>
+
+	<section class="slide vista" id="swivel-convergence">
+		<h2>Swivel convergence</h2>
+		<p>Embedding size is 300.</p>
+		<style>
+			#swivel-convergence {
+				background: url("pictures/convergence_black.png");
+			}
+			@media not print {
+				#swivel-convergence {
+					background: black url("pictures/convergence_white.png");
+				}
+			}
+			#swivel-convergence p {
+				position: absolute;
+				bottom: 30px;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Training identifier embeddings</h2>
+		<table>
+		<tr>
+			<th scope="col">Stage</th>
+			<th>Time</th>
+			<th>Resources</th>
+			<th>Size on disk</th>
+		</tr>
+		<tr>
+			<th scope="row">Cloning 143k repos</th>
+			<td>3 days</td>
+			<td>20x2 cores, 256 GB RAM</td>
+			<td>2.6 TB</td>
+		</tr>
+		<tr>
+			<th scope="row">Dataset</th>
+			<td>4 days</td>
+			<td>20x2 cores, 256 GB RAM</td>
+			<td>2TB (31GB in xz)</td>
+		</tr>
+		<tr>
+			<th scope="row">fastprep</th>
+			<td>2 days</td>
+			<td>16x2 cores, 256 GB RAM</td>
+			<td>20 GB</td>
+		</tr>
+		<tr>
+			<th scope="row">Swivel</th>
+			<td>14 hours</td>
+			<td>2 Titan X'2016 + 2 1080Ti</td>
+			<td>5.6 GB</td>
+		</tr>
+		</table>
+	</section>
+
+	<section class="slide vista" id="projector">
+		<h2>Results</h2>
+		<p><a href="http://projector.tensorflow.org/?config=https://storage.googleapis.com/dataset.srcd.host/projector_config_120k_100k_10k.json">Launch Tensorflow Projector.</a></p>
+		<style>
+			#projector {
+				background-position: right !important;
+				background: white url("pictures/projector_black.png");
+			}
+			@media not print {
+				#projector {
+					background: black url("pictures/projector_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Wrap up</h2>
+		<ol>
+			<li>Clone the repositories.</li>
+			<li>Classify and parse source code.</li>
+			<li>Preprocess identifiers: split, normalize, filter, stem.</li>
+			<li>Generate Swivel input dataset.</li>
+			<li>Run Swivel.</li>
+		</ol>
+	</section>
+
+	<section class="slide vista" id="teaser-nn">
+		<h2 class="part-teaser">Nearest neighbors</h2>
+		<style>
+			@media not print {
+				#teaser-nn {
+					background: url("pictures/teaser_nn.jpg");
+				}
+				#teaser-nn h2:before {
+					content: "";
+					position: absolute;
+					z-index: -1;
+					left: 0;
+					top: 0;
+					right: 0;
+					bottom: 0;
+					background: rgba(0, 0, 0, 0.75);
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Word Mover's Distance</h2>
+		<p>Based on the <a href="http://jmlr.org/proceedings/papers/v37/kusnerb15.pdf">paper</a>.</p>
+		<p>An application of Earth Mover's Distance to sentences.</p>
+		<p>Works on the nBOW model.</p>
+		<div class="vista" id="wmd"></div>
+		<style>
+			#wmd {
+				width: 320px;
+				height: 250px;
+				background: white url("pictures/wmd_black.png");
+			}
+			@media not print {
+				#wmd {
+					background: black url("pictures/wmd_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>WMD calculation in a nutshell</h2>
+		<p class="important">WMD evaluation is O(N<sup>3</sup>), becomes slow on N≈100.</p>
+		<ol>
+			<li>Sort samples by centroid distance.</li>
+			<li>Evaluate first k WMDs.</li>
+			<li>For every subsequent sample, solve the relaxed LP which gives an upper estimation.</li>
+			<li>If it is greater than the farthest among the k NN, go next.</li>
+			<li>Otherwise, evaluate the WMD.</li>
+		</ol>
+		<p class="success">This allows to avoid 95% WMD evaluations on average.</p>
+	</section>
+
+	<section class="slide">
+		<h2>pyemd</h2>
+		<p>The main bottleneck is still WMD evaluation.</p>
+		<p>EMD can be calculated using <a href="https://github.com/wmayner/pyemd">pyemd</a>.</p>
+		<p>Actually, there is <a href="https://github.com/garydoranjr/pyemd">another one</a>.</p>
+		<p>All based on an ancient inefficient C++ code from the academia.</p>
+		<p class="important">Takes 2 seconds on |bag| = 500.</p>
+	</section>
+
+	<section class="slide">
+		<h2>wmd-relax</h2>
+		<p>source{d}'s approach to WMD. <a href="https://github.com/src-d/wmd-relax">GitHub</a>.</p>
+		<p>We tightened up the relaxed estimation.</p>
+		<p>We used <a href="https://github.com/google/or-tools">google/or-tools</a> for the heavy-lifting.</p>
+		<p class="success">Result: WMD takes 0.1s on |bag| = 500.</p>
+	</section>
+
+	<section class="slide" id="bag-sizes">
+		<h2>Bag sizes</h2>
+		<p style="color: gold;">We are golden.</p>
+		<div class="vista" id="bag-sizes"></div>
+		<style>
+			#bag-sizes p {
+				margin-bottom: 0;
+			}
+			#bag-sizes div {
+				width: 600px;
+				height: 400px;
+				background: url("pictures/bag_sizes_black.png");
+			}
+			@media not print {
+				#bag-sizes div {
+					margin-top: -20px;
+					background: url("pictures/bag_sizes_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Wrap up</h2>
+		<ol>
+			<li>WMD scales linearly and has high complexity - bad.</li>
+			<li>We apply 3-level pipeline to minimize the number of WMD evaluations.</li>
+			<li>It works reasonably fast, though not suitable for online.</li>
+			<li>It provides good results!</li>
+		</ol>
+	</section>
+
+	<section class="slide vista" id="teaser-examples">
+		<h2 class="part-teaser">Examples</h2>
+		<style>
+			@media not print {
+				#teaser-examples {
+					background: url("pictures/teaser_examples.jpg");
+				}
+				#teaser-examples h2:before {
+					content: "";
+					position: absolute;
+					z-index: -1;
+					left: 0;
+					top: 0;
+					right: 0;
+					bottom: 0;
+					background: rgba(0, 0, 0, 0.75);
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide nn">
+		<h2>torch/nn</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/intel-analytics/BigDL">intel-analytics/BigDL</a></li>
+			<li><a href="https://github.com/pytorch/pytorch">pytorch/pytorch</a></li>
+			<li><a href="https://github.com/clementfarabet/lua---nnx">clementfarabet/lua---nnx</a></li>
+			<li><a href="https://github.com/Element-Research/dpnn">Element-Research/dpnn</a></li>
+			<li><a href="https://github.com/aciditeam/torch-models">aciditeam/torch-models</a></li>
+			<li><a href="https://github.com/sermanet/OverFeat">sermanet/OverFeat</a></li>
+			<li><a href="https://github.com/naman14/Arcade">naman14/Arcade</a></li>
+			<li><a href="https://github.com/hughperkins/clnn">hughperkins/clnn</a></li>
+			<li><a href="https://github.com/itayhubara/BinaryNet">itayhubara/BinaryNet</a></li>
+			<li><a href="https://github.com/google/FluidNet">google/FluidNet</a></li>
+		</ul>
+		<style>
+			.nn ul {
+				overflow: hidden;
+			}
+			.nn li {
+				float: left;
+  				display: inline;
+				width: 50%;
+			}
+		</style>
+	</section>
+
+	<section class="slide nn">
+		<h2>src-d/go-git</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/chrisparnin/autogit">chrisparnin/autogit</a></li>
+			<li><a href="https://github.com/libgit2/git2go">libgit2/git2go</a></li>
+			<li><a href="https://github.com/christkv/node-git">christkv/node-git</a></li>
+			<li><a href="https://github.com/gitchain/gitchain">gitchain/gitchain</a></li>
+			<li><a href="https://github.com/heroku/cli">heroku/cli</a></li>
+			<li><a href="https://github.com/modocache/Gift">modocache/Gift</a></li>
+			<li><a href="https://github.com/ChimeraCoder/gitgo">ChimeraCoder/gitgo</a></li>
+			<li><a href="https://github.com/mojombo/grit">mojombo/grit</a></li>
+			<li><a href="https://github.com/FriendCode/gittle">FriendCode/gittle</a></li>
+			<li><a href="https://github.com/tsuru/gandalf">tsuru/gandalf</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>kennethreitz/pipenv</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/erikrose/peep">erikrose/peep</a></li>
+			<li><a href="https://github.com/mitsuhiko/pipsi">mitsuhiko/pipsi</a></li>
+			<li><a href="https://github.com/PolicyStat/terrarium">PolicyStat/terrarium</a></li>
+			<li><a href="https://github.com/paylogic/py2deb">paylogic/py2deb</a></li>
+			<li><a href="https://github.com/michaeljoseph/changes">michaeljoseph/changes</a></li>
+			<li><a href="https://github.com/Deepwalker/pundler">Deepwalker/pundler</a></li>
+			<li><a href="https://github.com/mbachry/exxo">mbachry/exxo</a></li>
+			<li><a href="https://github.com/Yelp/venv-update">Yelp/venv-update</a></li>
+			<li><a href="https://github.com/openstack/requirements">openstack/requirements</a></li>
+			<li><a href="https://github.com/PyAr/fades">PyAr/fades</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>apache/spark</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/linkedin/photon-ml">linkedin/photon-ml</a></li>
+			<li><a href="https://github.com/cloudml/zen">cloudml/zen</a></li>
+			<li><a href="https://github.com/databricks/spark-perf">databricks/spark-perf</a></li>
+			<li><a href="https://github.com/lucidworks/spark-solr">lucidworks/spark-solr</a></li>
+			<li><a href="https://github.com/databricks/spark-sql-perf">databricks/spark-sql-perf</a></li>
+			<li><a href="https://github.com/SnappyDataInc/snappydata">SnappyDataInc/snappydata</a></li>
+			<li><a href="https://github.com/EclairJS/eclairjs">EclairJS/eclairjs</a></li>
+			<li><a href="https://github.com/EclairJS/eclairjs-nashorn">EclairJS/eclairjs-nashorn</a></li>
+			<li><a href="https://github.com/apache/hive">apache/hive</a></li>
+			<li><a href="https://github.com/amplab/graphx">amplab/graphx</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>MariaDB/server</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/twitter/mysql">twitter/mysql</a></li>
+			<li><a href="https://github.com/Tokutek/mysql-5.5">Tokutek/mysql-5.5</a></li>
+			<li><a href="https://github.com/percona/percona-xtradb-cluster">percona/percona-xtradb-cluster</a></li>
+			<li><a href="https://github.com/facebook/mysql-5.6">facebook/mysql-5.6</a></li>
+			<li><a href="https://github.com/percona/percona-xtrabackup">percona/percona-xtrabackup</a></li>
+			<li><a href="https://github.com/Tokutek/mariadb-5.5">Tokutek/mariadb-5.5</a></li>
+			<li><a href="https://github.com/percona/percona-server">percona/percona-server</a></li>
+			<li><a href="https://github.com/atcurtis/mariadb">atcurtis/mariadb</a></li>
+			<li><a href="https://github.com/webscalesql/webscalesql-5.6">webscalesql/webscalesql-5.6</a></li>
+			<li><a href="https://github.com/alibaba/AliSQL">alibaba/AliSQL</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>dlang/dmd</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/svent/jsdetox">svent/jsdetox</a></li>
+			<li><a href="https://github.com/arnetheduck/nlvm">arnetheduck/nlvm</a></li>
+			<li><a href="https://github.com/rainers/cv2pdb">rainers/cv2pdb</a></li>
+			<li><a href="https://github.com/notaz/ia32rtools">notaz/ia32rtools</a></li>
+			<li><a href="https://github.com/ldc-developers/ldc">ldc-developers/ldc</a></li>
+			<li><a href="https://github.com/alexfru/SmallerC">alexfru/SmallerC</a></li>
+			<li><a href="https://github.com/oridb/mc">oridb/mc</a></li>
+			<li><a href="https://github.com/D-Programming-GDC/GDC">D-Programming-GDC/GDC</a></li>
+			<li><a href="https://github.com/qeedquan/gosubc">qeedquan/gosubc</a></li>
+			<li><a href="https://github.com/nim-lang/Nim">nim-lang/Nim</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>WordPress/WordPress</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/studioraygun/angularwp">studioraygun/angularwp</a></li>
+			<li><a href="https://github.com/nicescale/docker-training">nicescale/docker-training</a></li>
+			<li><a href="https://github.com/mhoofman/wordpress-heroku">mhoofman/wordpress-heroku</a></li>
+			<li><a href="https://github.com/docker/labs">docker/labs</a></li>
+			<li><a href="https://github.com/dxw/wordpress">dxw/wordpress</a></li>
+			<li><a href="https://github.com/Chassis/Chassis">Chassis/Chassis</a></li>
+			<li><a href="https://github.com/jumilla/wordpress-plus">jumilla/wordpress-plus</a></li>
+			<li><a href="https://github.com/ProjectNami/projectnami">ProjectNami/projectnami</a></li>
+			<li><a href="https://github.com/johnpbloch/wordpress">johnpbloch/wordpress</a></li>
+			<li><a href="https://github.com/markjaquith/WordPress">markjaquith/WordPress</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>Homebrew/brew</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/chef/chef-dk">chef/chef-dk</a></li>
+			<li><a href="https://github.com/bundler/bundler">bundler/bundler</a></li>
+			<li><a href="https://github.com/Homebrew/homebrew-science">Homebrew/homebrew-science</a></li>
+			<li><a href="https://github.com/Homebrew/homebrew-core">Homebrew/homebrew-core</a></li>
+			<li><a href="https://github.com/OSGeo/homebrew-osgeo4mac">OSGeo/homebrew-osgeo4mac</a></li>
+			<li><a href="https://github.com/Linuxbrew/legacy-linuxbrew">Linuxbrew/legacy-linuxbrew</a></li>
+			<li><a href="https://github.com/Homebrew/homebrew-versions">Homebrew/homebrew-versions</a></li>
+			<li><a href="https://github.com/tmm1/brew2deb">tmm1/brew2deb</a></li>
+			<li><a href="https://github.com/mistydemeo/tigerbrew">mistydemeo/tigerbrew</a></li>
+			<li><a href="https://github.com/Homebrew/legacy-homebrew">Homebrew/legacy-homebrew</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>commaai/openpilot</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/zestyping/openpixelcontrol">zestyping/openpixelcontrol</a></li>
+			<li><a href="https://github.com/Thekla/thekla_atlas">Thekla/thekla_atlas</a></li>
+			<li><a href="https://github.com/letoram/senseye">letoram/senseye</a></li>
+			<li><a href="https://github.com/Steveice10/FBI">Steveice10/FBI</a></li>
+			<li><a href="https://github.com/trillek-team/tec">trillek-team/tec</a></li>
+			<li><a href="https://github.com/XT95/PBGI">XT95/PBGI</a></li>
+			<li><a href="https://github.com/jetpacapp/DeepBeliefSDK">jetpacapp/DeepBeliefSDK</a></li>
+			<li><a href="https://github.com/nothings/stb">nothings/stb</a></li>
+			<li><a href="https://github.com/Mon-Ouie/ray">Mon-Ouie/ray</a></li>
+			<li><a href="https://github.com/stevenlovegrove/Pangolin">stevenlovegrove/Pangolin</a></li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>🍺 Beer</h2>
+		<ul class="no-bullets">
+			<li><a href="https://github.com/openbeerdatabase/openbeerdatabase">openbeerdatabase/openbeerdatabase</a></li>
+			<li><a href="https://github.com/andyb129/BeerProgressView">andyb129/BeerProgressView</a></li>
+			<li><a href="https://github.com/davidcelis/goodbre.ws">davidcelis/goodbre.ws</a></li>
+			<li><a href="https://github.com/brewfactory/BrewCore">brewfactory/BrewCore</a></li>
+			<li><a href="https://github.com/recruit-lifestyle/BeerSwipeRefresh">recruit-lifestyle/BeerSwipeRefresh</a></li>
+			<li><a href="https://github.com/Homebrew/brew">Homebrew/brew</a></li>
+			<li><a href="https://github.com/deathcap/ProgrammerArt">deathcap/ProgrammerArt</a></li>
+			<li><a href="https://github.com/kaiinui/UIColor-uiGradientsAdditions">kaiinui/UIColor-uiGradientsAdditions</a></li>
+			<li><a href="https://github.com/RaspberryPints/RaspberryPints">RaspberryPints/RaspberryPints</a></li>
+			<li><a href="https://github.com/exceptionnotfound/DesignPatterns">exceptionnotfound/DesignPatterns</a></li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Future</h2>
+		<ul>
+			<li>Training pipeline, models and API to be open sourced soon.</li>
+			<li>Use ASTs@<a href="https://doc.bblf.sh/">Babelfish</a> instead of Pygments.</li>
+			<li>Playing the trick with Swivel again to embed nBOW.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+		<p>My contacts:</p>
+        <ul class="no-bullets">
+            <li><i class="fa fa-envelope"></i> <a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter"></i> <a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+            <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+        </ul>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<link rel="stylesheet" href="styles/darcula.css">
+	<style>
+		@media print {
+			.hljs, .hljs-params {
+				color: black;
+			}
+		}
+	</style>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
