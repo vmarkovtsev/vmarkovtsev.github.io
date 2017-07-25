@@ -11,7 +11,7 @@
 	<header class="caption">
 		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
 		<h1>Open Source Stack for Machine Learning on Source Code</h1>
-		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+		<p>Vadim Markovtsev, <a href="http://sourced.tech">source{d}</a></p>
 	</header>
 
 	<style>
@@ -137,7 +137,7 @@
 
 	<section class="slide vista vista-cover" id="cover">
 		<h2>Open Source Stack for Machine Learning on Source Code</h2>
-		<p>Vadim Markovtsev, <a class="no-link" href="https://sourced.tech">source{d}</a></p>
+		<p><span>Vadim Markovtsev, <a class="no-link" href="http://sourced.tech">source{d}</a></span></p>
 
 		<style>
             #cover h2 {
@@ -164,6 +164,10 @@
 				bottom: 0;
 				background: rgba(0, 0, 0, 0.75);
 			}
+			#cover p span {
+				padding: 1em;
+				background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75) 0, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0) 100%)
+			}
         </style>
 	</section>
 
@@ -188,7 +192,7 @@
 	<section class="slide">
         <h2>About me</h2>
         <ul>
-            <li>Lead Engineer, Machine Learning @ <a href="https://sourced.tech">source{d}</a></li>
+            <li>Lead Engineer, Machine Learning @ <a href="http://sourced.tech">source{d}</a></li>
             <li>Education: compiler technologies and applied math</li>
             <li>Switched to ML/DS in 2013</li>
             <li>Python, C/C++, Go, HTML5</li>
@@ -196,16 +200,16 @@
     </section>
 
 	<section class="slide">
-		<h2>About source{d]</h2>
+		<h2>About source{d}</h2>
 		<ul>
 			<li>"AI on code"</li>
-			<li>We started as a hiring middleware.</li>
-			<li>You may have read <a href="https://blog.sourced.tech/post/language_migrations/">"how developers change programming languages"</a>.</li>
+			<li>We started as a hiring middleware</li>
+			<li>You may have read <a href="https://blog.sourced.tech/post/language_migrations/">"how developers change programming languages"</a></li>
 			<li>Open everything! <a href="https://github.com/src-d/landing">web site</a>,
 				<a href="https://github.com/src-d/guide">company rules</a>,
 				<a href="https://github.com/src-d/homebrew">brewery</a>
 			</li>
-			<li>We have the technical <a href="https://blog.sourced.tech">blog</a>.</li>
+			<li>We have a technical <a href="https://blog.sourced.tech">blog</a></li>
 		</ul>
 	</section>
 
@@ -213,18 +217,22 @@
 		<h2>Master plan</h2>
 		<ul>
 			<li>Clone all software repositories in the world</li>
-			<li>Extract Abstract Syntax Trees</li>
-			<li>Crazy data science shit</li>
-			<li>...</li>
+			<li>Extract Abstract Syntax Trees (AST)</li>
+			<li>Crazy data science things</li>
+			<li>???</li>
 			<li>PROFIT</li>
 		</ul>
 	</section>
 
 	<section class="slide">
 		<h2>How do you guys make money?</h2>
-		<p>Currently, we don't.</p>
-		<p>We are swimming in the protobroth.</p>
-		<p>We are convincing everybody to use our technology stack.</p>
+		<p>Currently, we don't. Right now, we're focused on research, development and developer adoption</p>
+
+		<p>We want to be the machine learning pipeline on top of the world's source code, in both public and private repositories</p>
+
+		<p>By doing so we believe useful tools can be created to help developers program better and more efficiently</p>
+
+		<p>In the future, we expect to make revenue by charging enterprises for deploying this pipeline on their code</p>
 	</section>
 
 	<section class="slide vista vista-cover" id="dragons">
@@ -262,7 +270,7 @@
 		<h2>Our projects</h2>
 		<ul>
 			<li><a href="https://github.com/src-d/go-git">go-git</a></li>
-			<li>DR: <a href="https://github.com/src-d/rovers">rovers</a>,
+			<li>Data Retrieval: <a href="https://github.com/src-d/rovers">rovers</a>,
 				<a href="https://github.com/src-d/borges">borges</a>,
 				<a href="https://github.com/src-d/go-siva">siva</a>
 			</li>
@@ -276,13 +284,13 @@
 				<a href="https://github.com/src-d/vecino">vecino</a>,
 				neural code completion - TBR
 			</li>
-			<li>Tens of side projects - all on GitHub too.</li>
+			<li>Tens of side projects – all on GitHub too</li>
 		</ul>
 	</section>
 
 	<section class="slide vista vista-cover" id="jobs">
 		<h2>Will it take our jobs?</h2>
-		<p>Relax, we are very far from it.</p>
+		<p>Relax, we are very far from it</p>
 		<figure>
 			<blockquote>
 				<p>... won’t ask what problems can be solved with computers alone. Instead, ... ask:
@@ -310,9 +318,9 @@ previously unimaginable.</p>
 	</section>
 
 	<section class="slide">
-		<h2>Four approaches to extract information from the source code.</h2>
+		<h2>Approaches to extract information from the source code</h2>
 		<ol>
-			<li>Treat it as regular text and feed it to the black box.</li>
+			<li>Treat it as regular text and feed it to the black box</li>
 			<li>Tokenize it using regexps (<a href="http://pygments.org/">Pygments</a>,
 				<a href="https://highlightjs.org/">highlight.js</a>)</li>
 			<li><span class="box">Parse ASTs</span></li>
@@ -327,7 +335,7 @@ previously unimaginable.</p>
 	</section>
 
 	<section class="slide">
-		<h2>Babelfish</h2>
+		<h2>　</h2>
 		<img class="center" src="pictures/bblfsh-logo.png">
 		<div class="vista center" id="bblfsh-arch"></div>
 		<style>
@@ -345,14 +353,13 @@ previously unimaginable.</p>
 	</section>
 
 	<section class="slide">
-		<h2>UAST</h2>
-		<p>Universal Abstract Syntax Tree</p>
-		<p>Shared node roles for every language.</p>
+		<h2>Universal Abstract Syntax Tree (UAST)</h2>
+		<p>Shared node roles for every language</p>
 		<pre>
 			<code>pip3 install bblfsh</code>
 			<code>python3 -m bblfsh -f /path/to/file</code>
 		</pre>
-		We are going to deploy <code class="inline">https://github.com/bblfsh/dashboard</code>
+		We are going to deploy <a href="https://github.com/bblfsh/dashboard"><code class="inline">bblfsh/dashboard</code></a>
 	</section>
 
 	<section class="slide vista vista-cover" id="powerful">
@@ -371,7 +378,7 @@ previously unimaginable.</p>
 		<h2>Opportunities</h2>
 		<ul>
 			<li>Unified code metrics calculation</li>
-			<li>Dependency tree building * <a href="https://libraries.io">libraries.io</a></li>
+			<li>Dependency tree building + <a href="https://libraries.io">libraries.io</a></li>
 			<li>Robust copy-paste detection</li>
 			<li>Pattern mining</li>
 			<li>Advanced diff-ing</li>
@@ -405,7 +412,7 @@ previously unimaginable.</p>
 
 	<section class="slide">
 		<h2>Source code classification</h2>
-		<p>Problem: given millions of repositories, map files to languages in each.</p>
+		<p>Problem: given millions of repositories, map their files to languages</p>
 		<ul>
 			<li><a href="https://github.com/github/linguist">github/linguist</a> - Ruby</li>
 			<li><a href="https://github.com/src-d/enry">src-d/enry</a> - Go</li>
@@ -437,7 +444,7 @@ previously unimaginable.</p>
 		</ul>
 		<style>
 			#identifier-split {
-				font-size: 0.65em;
+				font-size: 0.6em;
 				padding-left: 1em;
 			}
 			#identifier-split code {
@@ -467,19 +474,19 @@ previously unimaginable.</p>
 
 	<section class="slide">
 		<h2>Weighted BOW</h2>
-		<p>Let's interpret every repository as the weighted bag-of-words</p>
-		<p>We calculate TF-IDF to weight the occurring identifiers</p>
+		<p>Let's interpret every repository as a weighted bag-of-words</p>
+		<p>We calculate TF-IDF to weigh the occurring identifiers</p>
 		<div class="flex-center"><code class="inline-no-offset">tensorflow/tensorflow:</code>
-		<pre class="pre">    tfreturn	67.780249
-  oprequires	63.968142
-      doblas	63.714424
-    gputools	62.337396
-    tfassign	61.545926
-    opkernel	60.721556
-        sycl	57.064558
-         hlo	55.723587
-     libxsmm	54.820668
-  tfdisallow	53.666890</pre></div>
+		<pre class="pre">    tfreturn	67.78
+  oprequires	63.97
+      doblas	63.71
+    gputools	62.34
+    tfassign	61.55
+    opkernel	60.72
+        sycl	57.06
+         hlo	55.72
+     libxsmm	54.82
+  tfdisallow	53.67</pre></div>
 		<style>
 			#tensorflow-nbow > code {
 				padding-right: 50px;
@@ -488,6 +495,7 @@ previously unimaginable.</p>
 				white-space: pre !important;
 				font-family: monospace;
 				line-height: 1.2em;
+				margin-bottom: 0 !important;
 			}
 		</style>
 	</section>
@@ -531,7 +539,7 @@ previously unimaginable.</p>
 		<ul>
 			<li>Topic modeling gives you vectors for every word and every file/repository</li>
 			<li>Cluster them with <a href="https://github.com/src-d/kmcuda">src-d/kmcuda</a> or
-			<a href="https://github.com/facebookresearch/faiss">fbr/faiss</a>.</li>
+			<a href="https://github.com/facebookresearch/faiss">fbr/faiss</a></li>
 			<li>Map them to a regular grid with <a href="https://github.com/src-d/lapjv">src-d/lapjv</a></li>
 			<li>Flatten dots for a chosen developer</li>
 		</ul>
@@ -558,7 +566,7 @@ previously unimaginable.</p>
 		<h2>word2vec</h2>
 		<ul>
 			<li>Family of algorithms which map words to dense vectors</li>
-			<li>These vectors allow linear algebra operations which make sense.</li>
+			<li>These vectors allow linear algebra operations which make sense</li>
 		</ul>
 		<div class="vista" id="linrel"></div>
 		<style>
@@ -578,17 +586,17 @@ previously unimaginable.</p>
 	<section class="slide">
 		<h2>Identifier embeddings</h2>
 		<ul>
-			<li>Treat every identifier scope as a context</li>
-			<li>Treat every preprocessed identifier as a word</li>
-			<li>Build the giant co-ocurrence matrix</li>
+			<li>Consider every identifier scope as a context</li>
+			<li>Consider every preprocessed identifier as a word</li>
+			<li>Build the giant co-occurrence matrix</li>
 			<li>Factor (embed) it</li>
 		</ul>
 	</section>
 
 	<section class="slide">
 		<h2>Swivel</h2>
-		<p>Really good embedding engine which works on the co-occurrence matrix</p>
-		<p>Like GloVe, but better - <a ref="https://arxiv.org/pdf/1602.02215.pdf">Paper on ArXiV</a></p>
+		<p>Really good embedding engine which works on co-occurrence matrices</p>
+		<p>Like GloVe, but better - <a href="https://arxiv.org/pdf/1602.02215.pdf">Paper on ArXiV</a></p>
 		<p>We <a href="https://github.com/src-d/tensorflow-swivel">forked</a> the Tensorflow implementation</p>
 		<img src="pictures/swivel.png" id="swivel">
 		<style>
@@ -601,7 +609,7 @@ previously unimaginable.</p>
 
 	<section class="slide vista" id="projector">
 		<h2>Linux kernel embeddings</h2>
-		<p><a href="http://projector.tensorflow.org/?config=https://storage.googleapis.com/dataset.srcd.host/linux.json">Launch Tensorflow Projector.</a></p>
+		<p><a href="http://projector.tensorflow.org/?config=https://storage.googleapis.com/dataset.srcd.host/linux.json">Launch Tensorflow Projector</a></p>
 		<style>
 			#projector {
 				background-position: right !important;
@@ -617,12 +625,12 @@ previously unimaginable.</p>
 
 	<section class="slide">
 		<h2>nBOW</h2>
-		<p>What if we combine bag-of-words with embeddings for every word?</p>
-		<p>We focus on finding related repositories.</p>
+		<p>What if we combine bag-of-words model with embeddings?</p>
+		<p>We focus on finding related repositories</p>
 	</section>
 
 	<section class="slide">
-		<h2>Word Mover's Distance</h2>
+		<h2>Word Mover's Distance (WMD)</h2>
 		<div class="flex">
 			<ul>
 				<li>Based on the <a href="http://jmlr.org/proceedings/papers/v37/kusnerb15.pdf">paper</a></li>
@@ -651,7 +659,7 @@ previously unimaginable.</p>
 		<ol>
 			<li>Sort samples by centroid distance</li>
 			<li>Evaluate first k WMDs</li>
-			<li>For every subsequent sample, solve the relaxed LP which gives an upper estimation</li>
+			<li>For every subsequent sample, solve the relaxed LP which gives a lower estimation</li>
 			<li>If it is greater than the farthest among the k NN, go next</li>
 			<li>Otherwise, evaluate the WMD</li>
 		</ol>
@@ -663,17 +671,17 @@ previously unimaginable.</p>
 		<p>source{d}'s approach to WMD. <a href="https://github.com/src-d/wmd-relax">GitHub</a></p>
 		<p>We tightened up the relaxed estimation</p>
 		<p>We used <a href="https://github.com/google/or-tools">google/or-tools</a> for the heavy-lifting</p>
-		<p class="success">Result: WMD takes 0.1s on |bag| = 500</p>
+		<p class="success">Result: WMD takes 0.1s on |bag| = 500 (pyemd takes 2s)</p>
 	</section>
 
 	<section class="slide">
 		<h2>Practice</h2>
-		<p class="important">Babelfish currently supports only Python and Java.</p>
+		<p class="important">Babelfish currently supports only Python and Java, <a href="https://doc.bblf.sh/languages.html">status</a></p>
 		<pre>
 			<code>pip3 install vecino</code>
 			<code>python3 -m vecino https://github.com/pytorch/pytorch</code>
 		</pre>
-		Models are stored in Google Cloud Storage; not released yet, to use the deprecated ones:
+		Models will be stored in Google Cloud Storage; not released yet, to use the deprecated ones:
 		<pre>
 			<code>python3 -m vecino --gcs test-ast2vec ...</code>
 		</pre>
@@ -709,7 +717,7 @@ previously unimaginable.</p>
 		<h2>Neural code completion</h2>
 		<div class="flex" id="treelstm">
 			<ul>
-				<li>Deprecated approach: work on the sequential token stream
+				<li>Deprecated approach: work on sequential token stream
 					<ul>
 						<li>LSTM in Tensorflow</li>
 					</ul>
@@ -791,7 +799,7 @@ previously unimaginable.</p>
             <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
             <li><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
         </ul>
-		<p>source{d} has the <a href="https://sourced.tech">community channel</a>!</p>
+		<p>source{d} has a <a href="http://sourced.tech">community slack</a>!</p>
     </section>
 
 	<div class="progress"></div>
