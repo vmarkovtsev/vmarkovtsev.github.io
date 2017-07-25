@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Open Source Stack for Machine Learning on Source Code</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Open Source Stack for Machine Learning on Source Code</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: #000;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .no-link {
+            background: none !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.nn ul {
+			overflow: hidden;
+		}
+		.nn li {
+			float: left;
+			display: inline;
+			width: 50%;
+		}
+		.flex, .flex-center {
+			display: flex;
+		}
+		.flex-center {
+			align-items: center;
+		}
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Open Source Stack for Machine Learning on Source Code</h2>
+		<p>Vadim Markovtsev, <a class="no-link" href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") #000;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.75);
+			}
+        </style>
+	</section>
+
+	<section class="slide">
+        <h2>Read this on your device</h2>
+        <!-- <img> with @media srcset does not work! -->
+        <div class="vista center" id="qrcode"></div>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<section class="slide">
+        <h2>About me</h2>
+        <ul>
+            <li>Lead Engineer, Machine Learning @ <a href="https://sourced.tech">source{d}</a></li>
+            <li>Education: compiler technologies and applied math</li>
+            <li>Switched to ML/DS in 2013</li>
+            <li>Python, C/C++, Go, HTML5</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+		<h2>About source{d]</h2>
+		<ul>
+			<li>"AI on code"</li>
+			<li>We started as a hiring middleware.</li>
+			<li>You may have read <a href="https://blog.sourced.tech/post/language_migrations/">"how developers change programming languages"</a>.</li>
+			<li>Open everything! <a href="https://github.com/src-d/landing">web site</a>,
+				<a href="https://github.com/src-d/guide">company rules</a>,
+				<a href="https://github.com/src-d/homebrew">brewery</a>
+			</li>
+			<li>We have the technical <a href="https://blog.sourced.tech">blog</a>.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Master plan</h2>
+		<ul>
+			<li>Clone all software repositories in the world</li>
+			<li>Extract Abstract Syntax Trees</li>
+			<li>Crazy data science shit</li>
+			<li>...</li>
+			<li>PROFIT</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>How do you guys make money?</h2>
+		<p>Currently, we don't.</p>
+		<p>We are swimming in the protobroth.</p>
+		<p>We are convincing everybody to use our technology stack.</p>
+	</section>
+
+	<section class="slide vista vista-cover" id="dragons">
+		<div></div>
+		<h2>Machine learning on source code</h2>
+		<style>
+			@font-face {
+			  font-family: CartaMarinaBold;
+			  src: url("Carta Marina Bold.woff2") format('woff2')
+			}
+			#dragons {
+				background: url("pictures/here_be_dragons.jpg") #000;
+			}
+			#dragons h2 {
+				position: absolute;
+				left: 507px;
+				top: 92px;
+				width: 280px;
+				text-align: center;
+				color: #000;
+				font-family: CartaMarinaBold;
+			}
+			#dragons div {
+				position: absolute;
+				left: 527px;
+				width: 240px;
+				height: 240px;
+				top: 72px;
+				background: radial-gradient(circle at center, #bababa 0, rgba(186, 186, 186, 0) 75%)
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Our projects</h2>
+		<ul>
+			<li><a href="https://github.com/src-d/go-git">go-git</a></li>
+			<li>DR: <a href="https://github.com/src-d/rovers">rovers</a>,
+				<a href="https://github.com/src-d/borges">borges</a>,
+				<a href="https://github.com/src-d/go-siva">siva</a>
+			</li>
+			<li>AST:
+				<a href="https://github.com/src-d/enry">enry</a>
+				<a href="https://doc.bblf.sh">Babelfish</a>
+				<a href="https://github.com/src-d/berserker">berserker</a>
+			</li>
+			<li>DS/ML: <a href="https://github.com/src-d/modelforge">modelforge</a>,
+				<a href="https://github.com/src-d/ast2vec">ast2vec</a>,
+				<a href="https://github.com/src-d/vecino">vecino</a>,
+				neural code completion - TBR
+			</li>
+			<li>Tens of side projects - all on GitHub too.</li>
+		</ul>
+	</section>
+
+	<section class="slide vista vista-cover" id="jobs">
+		<h2>Will it take our jobs?</h2>
+		<p>Relax, we are very far from it.</p>
+		<figure>
+			<blockquote>
+				<p>... won’t ask what problems can be solved with computers alone. Instead, ... ask:
+					how can computers help humans solve hard problems? ... They
+won’t just get better at the kinds of things people already do; they’ll help us to do what was
+previously unimaginable.</p>
+			</blockquote>
+			<figcaption>Peter Thiel, <a href="http://zerotoonebook.com/">0 -> 1</a></figcaption>
+		</figure>
+		<style>
+			#jobs {
+				background: url("pictures/jobs.jpg") #000;
+			}
+			#jobs h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.75);
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Four approaches to extract information from the source code.</h2>
+		<ol>
+			<li>Treat it as regular text and feed it to the black box.</li>
+			<li>Tokenize it using regexps (<a href="http://pygments.org/">Pygments</a>,
+				<a href="https://highlightjs.org/">highlight.js</a>)</li>
+			<li><span class="box">Parse ASTs</span></li>
+			<li>Compile</li>
+		</ol>
+		<style>
+			.box {
+				border: 1px solid white;
+				padding: 0 0.2em 0.1em 0.2em;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Babelfish</h2>
+		<img class="center" src="pictures/bblfsh-logo.png">
+		<div class="vista center" id="bblfsh-arch"></div>
+		<style>
+			#bblfsh-arch {
+                width: 600px;
+                height: 100px;
+                background-image: url("pictures/bblfsh-arch-black.png");
+            }
+            @media not print {
+                #bblfsh-arch {
+                    background-image: url("pictures/bblfsh-arch-white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>UAST</h2>
+		<p>Universal Abstract Syntax Tree</p>
+		<p>Shared node roles for every language.</p>
+		<pre>
+			<code>pip3 install bblfsh</code>
+			<code>python3 -m bblfsh -f /path/to/file</code>
+		</pre>
+		We are going to deploy <code class="inline">https://github.com/bblfsh/dashboard</code>
+	</section>
+
+	<section class="slide vista vista-cover" id="powerful">
+		<h2>Powerful</h2>
+		<style>
+			#powerful {
+				background-image: url("pictures/power.jpg");
+			}
+			#powerful h2 {
+				color: #000;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Opportunities</h2>
+		<ul>
+			<li>Unified code metrics calculation</li>
+			<li>Dependency tree building * <a href="https://libraries.io">libraries.io</a></li>
+			<li>Robust copy-paste detection</li>
+			<li>Pattern mining</li>
+			<li>Advanced diff-ing</li>
+			<li>Code manipulations</li>
+			<li>Many, many more</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<img class="center" id="mltime" src="pictures/mltime.png">
+		<style>
+			#mltime {
+				width: 100%;
+				margin-top: 90px;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Identifiers in source code</h2>
+		<p>One of the richest features.</p>
+		<pre>
+			<code>cat = models.Cat()</code>
+			<code>cat.meow()</code>
+		</pre>
+		<pre>
+			<code>def quick_sort(arr):</code>
+			<code>    ...</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Source code classification</h2>
+		<p>Problem: given millions of repositories, map files to languages in each.</p>
+		<ul>
+			<li><a href="https://github.com/github/linguist">github/linguist</a> - Ruby</li>
+			<li><a href="https://github.com/src-d/enry">src-d/enry</a> - Go</li>
+		</ul>
+	</section>
+
+	<section class="slide nn">
+		<h2>Splitting</h2>
+		<ul id="identifier-split">
+			<li><code class="inline-no-offset">UpperCamelCase -> (upper, camel, case)</code></li>
+			<li><code class="inline-no-offset">camelCase -> (camel, case)</code></li>
+			<li><code class="inline-no-offset">FRAPScase -> (fraps, case)</code></li>
+			<li><code class="inline-no-offset">SQLThing -> (sql, thing)</code></li>
+			<li><code class="inline-no-offset">_Astra -> (astra)</code></li>
+			<li><code class="inline-no-offset">CAPS_CONST -> (caps, const)</code></li>
+			<li><code class="inline-no-offset">_something_SILLY_ -> (something, silly)</code></li>
+			<li><code class="inline-no-offset">blink182 -> (blink)</code></li>
+			<li><code class="inline-no-offset">FooBar100500Bingo -> (foo, bar, bingo)</code></li>
+			<li><code class="inline-no-offset">Man45var -> (man, var)</code></li>
+			<li><code class="inline-no-offset">method_name -> (method, name)</code></li>
+			<li><code class="inline-no-offset">Method_Name -> (method, name)</code></li>
+			<li><code class="inline-no-offset">101dalms -> (dalms)</code></li>
+			<li><code class="inline-no-offset">101_dalms -> (dalms)</code></li>
+			<li><code class="inline-no-offset">101_DalmsBug -> (dalms, bug)</code></li>
+			<li><code class="inline-no-offset">101_Dalms45Bug7 -> (dalms, bug)</code></li>
+			<li><code class="inline-no-offset">wdSize -> (size, wdsize)</code></li>
+			<li><code class="inline-no-offset">Glint -> (glint)</code></li>
+			<li><code class="inline-no-offset">foo_BAR -> (foo, bar)</code></li>
+		</ul>
+		<style>
+			#identifier-split {
+				font-size: 0.65em;
+				padding-left: 1em;
+			}
+			#identifier-split code {
+				padding-left: 0 !important;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Identifier extraction</h2>
+		<p class="no-margin">Finally, we apply Snowball stemmer to words longer than 6 chars</p>
+		<div class="vista center" id="name-lengths"></div>
+		<style>
+			#name-lengths {
+				height: 400px;
+				width: 600px;
+				margin-top: -50px;
+				background: white url("pictures/name_lengths_black.png");
+			}
+			@media not print {
+				#name-lengths {
+					background: #000 url("pictures/name_lengths_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Weighted BOW</h2>
+		<p>Let's interpret every repository as the weighted bag-of-words</p>
+		<p>We calculate TF-IDF to weight the occurring identifiers</p>
+		<div class="flex-center"><code class="inline-no-offset">tensorflow/tensorflow:</code>
+		<pre class="pre">    tfreturn	67.780249
+  oprequires	63.968142
+      doblas	63.714424
+    gputools	62.337396
+    tfassign	61.545926
+    opkernel	60.721556
+        sycl	57.064558
+         hlo	55.723587
+     libxsmm	54.820668
+  tfdisallow	53.666890</pre></div>
+		<style>
+			#tensorflow-nbow > code {
+				padding-right: 50px;
+			}
+			.pre {
+				white-space: pre !important;
+				font-family: monospace;
+				line-height: 1.2em;
+			}
+		</style>
+	</section>
+
+
+	<section class="slide">
+		<h2>Topic modeling</h2>
+		<div class="flex" id="tm">
+			<div>
+				<p>We can run topic modeling on these features</p>
+				<p><a href="https://arxiv.org/pdf/1704.00135.pdf">Paper on ArXiV</a></p>
+				<p>Run on the whole world -> funny tagging</p>
+				<p>Run per ecosystem -> useful exploratory search</p>
+				<p id="topic-label">Topic #36 "Movies" →</p>
+			</div>
+			<div class="vista" id="tm-movie"></div>
+		</div>
+		<style>
+			#tm {
+				height: 400px;
+			}
+			#tm-movie {
+				flex-grow: 1;
+				flex-basis: 0;
+				background: white url("pictures/movie_topic_black.png");
+			}
+			@media not print {
+				#tm-movie {
+					background: #000 url("pictures/movie_topic_white.png");
+				}
+			}
+			#topic-label {
+				margin-top: 140px;
+				text-align: right;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Clustering TM vectors</h2>
+		<ul>
+			<li>Topic modeling gives you vectors for every word and every file/repository</li>
+			<li>Cluster them with <a href="https://github.com/src-d/kmcuda">src-d/kmcuda</a> or
+			<a href="https://github.com/facebookresearch/faiss">fbr/faiss</a>.</li>
+			<li>Map them to a regular grid with <a href="https://github.com/src-d/lapjv">src-d/lapjv</a></li>
+			<li>Flatten dots for a chosen developer</li>
+		</ul>
+		<p id="profile-label">CTO Máximo Cuadros' profile →</p>
+		<div class="vista" id="profile"></div>
+		<style>
+			#profile {
+				position: absolute;
+				width: 300px;
+				height: 300px;
+				left: 600px;
+				top: 280px;
+				background: #000 url("pictures/profile.png");
+			}
+			#profile-label {
+				position: absolute;
+				left: 240px;
+				top: 530px;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>word2vec</h2>
+		<ul>
+			<li>Family of algorithms which map words to dense vectors</li>
+			<li>These vectors allow linear algebra operations which make sense.</li>
+		</ul>
+		<div class="vista" id="linrel"></div>
+		<style>
+			#linrel {
+				width: 700px;
+				height: 250px;
+				background: url("pictures/linrel_black.png");
+			}
+			@media not print {
+				#linrel {
+					background: url("pictures/linrel_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Identifier embeddings</h2>
+		<ul>
+			<li>Treat every identifier scope as a context</li>
+			<li>Treat every preprocessed identifier as a word</li>
+			<li>Build the giant co-ocurrence matrix</li>
+			<li>Factor (embed) it</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Swivel</h2>
+		<p>Really good embedding engine which works on the co-occurrence matrix</p>
+		<p>Like GloVe, but better - <a ref="https://arxiv.org/pdf/1602.02215.pdf">Paper on ArXiV</a></p>
+		<p>We <a href="https://github.com/src-d/tensorflow-swivel">forked</a> the Tensorflow implementation</p>
+		<img src="pictures/swivel.png" id="swivel">
+		<style>
+			#swivel {
+				height: 200px;
+				object-fit: contain;
+			}
+		</style>
+	</section>
+
+	<section class="slide vista" id="projector">
+		<h2>Linux kernel embeddings</h2>
+		<p><a href="http://projector.tensorflow.org/?config=https://storage.googleapis.com/dataset.srcd.host/linux.json">Launch Tensorflow Projector.</a></p>
+		<style>
+			#projector {
+				background-position: right !important;
+				background: white url("pictures/projector_black.png");
+			}
+			@media not print {
+				#projector {
+					background: #000 url("pictures/projector_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>nBOW</h2>
+		<p>What if we combine bag-of-words with embeddings for every word?</p>
+		<p>We focus on finding related repositories.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Word Mover's Distance</h2>
+		<div class="flex">
+			<ul>
+				<li>Based on the <a href="http://jmlr.org/proceedings/papers/v37/kusnerb15.pdf">paper</a></li>
+				<li>An application of Earth Mover's Distance to sentences</li>
+				<li>Works on the nBOW model</li>
+			</ul>
+			<div class="vista" id="wmd"></div>
+		</div>
+		<style>
+			#wmd {
+				width: 400px;
+				height: 300px;
+				background: white url("pictures/wmd_black.png");
+			}
+			@media not print {
+				#wmd {
+					background: #000 url("pictures/wmd_white.png");
+				}
+			}
+		</style>
+	</section>
+
+		<section class="slide">
+		<h2>WMD calculation in a nutshell</h2>
+		<p class="important">WMD evaluation is O(N<sup>3</sup>), becomes slow on N≈100</p>
+		<ol>
+			<li>Sort samples by centroid distance</li>
+			<li>Evaluate first k WMDs</li>
+			<li>For every subsequent sample, solve the relaxed LP which gives an upper estimation</li>
+			<li>If it is greater than the farthest among the k NN, go next</li>
+			<li>Otherwise, evaluate the WMD</li>
+		</ol>
+		<p class="success">This allows to avoid 95% WMD evaluations on average</p>
+	</section>
+
+	<section class="slide">
+		<h2>wmd-relax</h2>
+		<p>source{d}'s approach to WMD. <a href="https://github.com/src-d/wmd-relax">GitHub</a></p>
+		<p>We tightened up the relaxed estimation</p>
+		<p>We used <a href="https://github.com/google/or-tools">google/or-tools</a> for the heavy-lifting</p>
+		<p class="success">Result: WMD takes 0.1s on |bag| = 500</p>
+	</section>
+
+	<section class="slide">
+		<h2>Practice</h2>
+		<p class="important">Babelfish currently supports only Python and Java.</p>
+		<pre>
+			<code>pip3 install vecino</code>
+			<code>python3 -m vecino https://github.com/pytorch/pytorch</code>
+		</pre>
+		Models are stored in Google Cloud Storage; not released yet, to use the deprecated ones:
+		<pre>
+			<code>python3 -m vecino --gcs test-ast2vec ...</code>
+		</pre>
+		<a href="http://vmarkovtsev.github.io/techtalks-2017-moscow/#40">Examples</a>
+	</section>
+
+	<section class="slide">
+		<h2>Advanced Scientific Data Format</h2>
+		<ul>
+			<li>Open standard: <a href="http://asdf-standard.readthedocs.io/en/latest/">1.1.0</a></li>
+			<li>Originated from FITS and astropy</li>
+			<li>numpy-friendly</li>
+			<li>YAML with blobs</li>
+			<li>Transparent compression</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Practice</h2>
+		<p>If you wish to train the embeddings:</p>
+		<pre>
+			<code>pip3 install ast2vec</code>
+			<code>python3 -m ast2vec repo2coocc -o tfcoocc.asdf \
+    https://github.com/tensorflow/tensorflow</code>
+			<code>python3 -m ast2vec preproc -o swivel_dataset -v 10000 \
+    -s 2500 --df df.asdf</code>
+			<code>python3 -m ast2vec train --input_base_path swivel_dataset ...</code>
+			<code>python3 -m ast2vec postproc swivel_output id2vec.asdf</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Neural code completion</h2>
+		<div class="flex" id="treelstm">
+			<ul>
+				<li>Deprecated approach: work on the sequential token stream
+					<ul>
+						<li>LSTM in Tensorflow</li>
+					</ul>
+				</li>
+				<li>Modern approach: <a href="">TreeLSTM</a>
+					<ul>
+						<li>PyTorch because Tensorflow does not support dynamic graphs</li>
+						<li>We are still investigating</li>
+					</ul>
+				</li>
+			</ul>
+			<div class="vista"></div>
+		</div>
+		<style>
+			#treelstm > div {
+				width: 400px;
+				background: url("pictures/treelstm_black.png");
+			}
+			@media not print {
+				#treelstm > div {
+					background: url("pictures/treelstm_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide" id="nncomplete-example">
+		<img class="center" src="pictures/channelSelectExample.gif">
+		<style>
+			#nncomplete-example {
+				background-color: #1e1e1c;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Summary</h2>
+		<ul>
+			<li>There is a funny set of tools and libraries devoted to MLoSC</li>
+			<li>They cover collection, extraction, engineering, training and running</li>
+			<li>We believe that they will allow everybody to solve problems we have not even thought about</li>
+		</ul>
+	</section>
+
+	<section class="slide vista" id="linux">
+		<h2>Bonus: Hercules</h2>
+		<a href="https://github.com/src-d/hercules">GitHub</a>
+		<style>
+			#linux > h2, #linux > a {
+				margin-left: 200px;
+				margin-bottom: 0;
+			}
+			#linux {
+				background-image: url("pictures/linux_black.png");
+			}
+			@media not print {
+                #linux {
+                    background-image: url("pictures/linux_white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Bonus: blog posts</h2>
+		<ul>
+			<li><a href="https://blog.sourced.tech/post/activity_hours/">Daily commit activity on GitHub</a></li>
+			<li><a href="https://blog.sourced.tech/post/handshakes_pagerank/">GitHub Contributions Graph: Analyzing PageRank & Proving The 6 Handshakes Theory</a></li>
+			<li><a href="https://blog.sourced.tech/post/tab_vs_spaces/">397 Languages, 18,000,000 GitHub repositories, 1.2 billion files, 20 terabytes of code: Spaces or Tabs</a></li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+		<p>My contacts:</p>
+        <ul class="no-bullets">
+            <li><i class="fa fa-envelope"></i> <a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter"></i> <a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+            <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+        </ul>
+		<p>source{d} has the <a href="https://sourced.tech">community channel</a>!</p>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
