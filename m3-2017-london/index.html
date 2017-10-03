@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Fighting with high-dimensional not-so-small data</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Fighting with high-dimensional not-so-small data</h1>
+		<p>Vadim Markovtsev, Egor Bulychev - M<sup>3</sup> London, 2017</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+		.caption sup {
+			vertical-align: super !important;
+			font-size: smaller !important;
+		}
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+			padding-left: 0 !important;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		ul.columns {
+			overflow: hidden;
+		}
+		ul.columns > li {
+			float: left;
+			display: inline;
+			width: 50%;
+			padding-left: 24px;
+		}
+		.bottom-space {
+			margin-bottom: 2em !important;
+		}
+		.slide a {
+			background: none;
+		}
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+		.source {
+			font-size: small;
+		}
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Fighting with high-dimensional not-so-small data</h2>
+		<p>Vadim Markovtsev<br>Egor Bulychev<br>
+			<a href="https://sourced.tech">source{d}</a>
+			<br>2017<br><span id="triangle">▼</span></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			@media print {
+				#cover, #cover h2:before {
+					background: white !important;
+				}
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+			#triangle {
+				display: inline-block;
+				transform: scale(1.25, 1);
+				font-style: normal;
+			}
+        </style>
+	</section>
+
+	<section class="slide">
+        <h2>Read this on your device</h2>
+        <!-- <img> with @media srcset does not work! -->
+        <div class="vista center" id="qrcode"></div>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+	</section>
+
+	<style>
+		.chart-2x2 {
+			margin-top: -10px;
+			margin-left: auto;
+			margin-right: auto;
+			display: flex;
+			flex-direction: column;
+			width: 401px;
+			height: 401px;
+		}
+		.chart-2x2 > div:first-of-type {
+			width: 401px;
+			height: 60px;
+			padding-left: 60px;
+			text-align: center;
+			display: flex;
+			align-items: center;
+		}
+		.chart-2x2 > div:first-of-type > div {
+			flex: 1;
+		}
+		.chart-2x2 > div:last-of-type {
+			display: flex;
+		}
+		.chart-2x2 > div:last-of-type > div:first-of-type {
+			height: 341px;
+			width: 60px;
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+
+		}
+		.chart-2x2 > div:last-of-type > div:first-of-type > div {
+			flex: 1;
+			writing-mode: tb-rl;
+			transform: rotate(180deg);
+		}
+		.chart-2x2 > div:last-of-type > div:last-of-type {
+			display: flex;
+			flex-direction: row;
+			border: 1px solid white;
+			border-radius: 5px;
+			width: 341px;
+			height: 341px;
+		}
+		.chart-2x2 > div:last-of-type > div:last-of-type > div {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+		.chart-2x2 > div:last-of-type > div:last-of-type > div:first-of-type {
+			width: 171px;
+			border-right: 1px solid white;
+		}
+		.chart-2x2 > div:last-of-type > div:last-of-type > div:last-of-type {
+			width: 170px;
+		}
+		.chart-2x2 > div:last-of-type > div:last-of-type > div > div:first-of-type {
+			height: 171px;
+			width: 100%;
+			border-bottom: 1px solid white;
+		}
+		.chart-2x2 > div:last-of-type > div:last-of-type > div > div:last-of-type {
+			height: 170px;
+			width: 100%;
+		}
+		.chart-2x2 > div:last-of-type > div:last-of-type > div > div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		@media print {
+			.chart-2x2 > div:last-of-type > div:last-of-type,
+			.chart-2x2 > div:last-of-type > div:last-of-type > div:first-of-type,
+			.chart-2x2 > div:last-of-type > div:last-of-type > div > div:first-of-type {
+				border-color: black;
+			}
+
+		}
+	</style>
+
+	<section class="slide">
+		<div class="shout-background" id="not-so-small"></div>
+		<h2 class="shout shrink">Not-so-small</h2>
+		<style>
+			.shout-background {
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background-size: cover !important;
+            	background-repeat: no-repeat !important;
+            	background-position: center !important;
+			}
+			@media print {
+				.shout-background {
+					background: white !important;
+				}
+				.shout-background:after {
+					display: none;
+				}
+			}
+			.shout-background:after {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background-color: rgba(0, 0, 0, 0.7);
+			}
+			#not-so-small {
+				background-image: url("pictures/shout_not-so-small.jpg");
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Complexity vs data size</h2>
+		<div class="chart-2x2">
+			<div>
+				<div>Fits 1 node</div>
+				<div>≥ 2 nodes</div>
+			</div>
+			<div>
+				<div>
+					<div>Casual</div>
+					<div>Bleeding edge</div>
+				</div>
+				<div>
+					<div>
+						<div>easy, fast</div>
+						<div>easy, slow</div>
+					</div>
+					<div>
+						<div>easy, slow</div>
+						<div>hard, slow</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="slide">
+		<h2>How to determine what's your size?</h2>
+		<ul>
+			<li>Is your data sparse or can be made sparse?</li>
+			<li>Does the processing fit into 256/512GB?</li>
+			<li>Does it take less than 1 hour/day/week?</li>
+			<li>Do you expect that it will not in the future?</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>How to determine what's your complexity?</h2>
+		<a class="source" id="complexity-source" href="https://medium.com/@anandr42/the-data-science-delusion-7759f4eaac8e">Source</a>
+		<div class="chart-2x2">
+			<div>
+				<div>System complexity <span class="text-middle">→</span></div>
+			</div>
+			<div>
+				<div>
+					<div>← Modeling difficulty</div>
+				</div>
+				<div id="complexity-text">
+					<div>
+						<div>Easy to model<br>Simple domain</div>
+						<div>Difficult to model<br>Simple domain</div>
+					</div>
+					<div>
+						<div>Easy to model<br>Complex domain</div>
+						<div>Difficult to model<br>Complex domain</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<style>
+			#complexity-source {
+				position: absolute;
+				right: 100px;
+				bottom: 40px;
+			}
+			#complexity-text {
+				font-size: 0.75em;
+				text-align: center;
+			}
+			.text-middle {
+				vertical-align: middle;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Complexity vs scaling</h2>
+		<div class="chart-2x2">
+			<div>
+				<div>Vertical</div>
+				<div>Horizontal</div>
+			</div>
+			<div>
+				<div>
+					<div>Casual</div>
+					<div>Bleeding edge</div>
+				</div>
+				<div>
+					<div>
+						<div>useless</div>
+						<div>required</div>
+					</div>
+					<div>
+						<div>easy</div>
+						<div>hard</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="slide">
+		<h2>The case of Netflix</h2>
+		<div class="case">
+			<img src="pictures/vectorflow.png">
+			<ul>
+				<li>Sparse-aware</li>
+				<li>IO agnostic</li>
+				<li>Single-machine</li>
+			</ul>
+		</div>
+		<style>
+			.case {
+				display: flex;
+				height: 400px;
+				align-items: center;
+			}
+			.case > img {
+				width: 400px;
+			}
+			.case > ul {
+				margin-left: 100px;
+				margin-bottom: 0;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<div class="shout-background" id="fighting"></div>
+		<h2 class="shout shrink">Fighting</h2>
+		<style>
+			#fighting {
+				background-image: url("pictures/shout_fighting.jpg");
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Do we have to fight?</h2>
+		<ul>
+			<li>Fuzzy duplicates of sets: <a href="https://github.com/leonsim/simhash">SimHash</a>,
+				(Weighted) MinHash: <a href="https://github.com/src-d/minhashcuda">minhashcuda</a> +
+				<a href="https://github.com/ekzhu/datasketch">datasketch</a>.</li>
+			<li>Sparse k-NN: <a href="https://github.com/facebookresearch/pysparnn">pysparnn</a>.</li>
+			<li>SVM is sparse-friendly: <a href="https://github.com/cjlin1/libsvm">libsvm</a>.</li>
+			<li>Decision Trees are sparse-friendly: <a href="https://github.com/dmlc/xgboost">xgboost</a>.</li>
+		</ul>
+	</section>
+
+	<!--<section class="slide">
+		<h2>MinHash</h2>
+		<h3>How to reduce complexity of task without ML.</h3>
+		<ul>
+			<li>Efficient search for near-duplicates.</li>
+			<li>Example: hard forks of repositories.</li>
+			<ul>
+				<li>Initially: 13.6 M.</li>
+				<li>After MinHash: 9.6 M.</li>
+				<li>~30% dataset reduction.</li>
+			</ul>
+			<li><a href="https://github.com/src-d/minhashcuda">MinHash + GPU</a>.</li>
+			<li><a href="https://blog.sourced.tech/post/minhashcuda/">Blog post</a>.</li>
+		</ul>
+	</section>-->
+
+	<section class="slide">
+		<h2>Approaches</h2>
+		<ul class="columns">
+			<li>PCA</li>
+			<li>DSSM</li>
+			<li>CUR</li>
+			<li>t-SNE</li>
+			<li>Topic Modeling</li>
+			<li>LargeVis</li>
+			<li>*2vec</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>PCA</h2>
+		<ul>
+			<li>The lowered number of dimensions depends on the explained variance ratio (EVR).</li>
+			<li>EVR = <div class="frac"><span>Σλ<sup>2</sup></span><span>trace(X<sup>T</sup>X)</span></div></li>
+		</ul>
+		<div class="vista" id="pca-var"></div>
+		<a class="source" id="pca-src" href="pca.ipynb">Source</a>
+		<style>
+			.frac {
+				display: inline-flex;
+				flex-direction: column;
+				text-indent: 0;
+				line-height: 1.2em;
+				text-align: center;
+				position: relative;
+				top: -0.6em;
+			}
+			.frac > * {
+				width: 100%;
+			}
+			.frac > *:first-child {
+				border-bottom: 1px solid white;
+			}
+			@media print {
+				.frac > *:first-child {
+					border-bottom-color: black;
+				}
+			}
+			#pca-var {
+                width: 350px;
+                height: 200px;
+                background-image: url("pictures/pca_variance_black.png");
+            }
+            @media not print {
+                #pca-var {
+                    background-image: url("pictures/pca_variance_white.png");
+                }
+            }
+			#pca-src {
+				position: absolute;
+				left: 425px;
+				bottom: 55px;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>PCA</h2>
+		<ul>
+			<li>Centers the columns.</li>
+			<li>Does not work with sparse matrices.</li>
+			<li>Output is never sparse.</li>
+		</ul>
+		<div class="vista" id="pca-offset"></div>
+		<style>
+			#pca-offset {
+                width: 800px;
+                height: 300px;
+				margin-top: -40px;
+                background-image: url("pictures/pca_offset_black.png");
+            }
+            @media not print {
+                #pca-offset {
+                    background-image: url("pictures/pca_offset_white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>PCA</h2>
+		<ul>
+			<li>Unstable to outliers.</li>
+			<li>Possible solutions: filtering; log or any other damping function.</li>
+		</ul>
+		<div class="vista" id="pca-outlier"></div>
+		<style>
+			#pca-outlier {
+                width: 800px;
+                height: 300px;
+				margin-top: -10px;
+                background-image: url("pictures/pca_outlier_black.png");
+            }
+            @media not print {
+                #pca-outlier {
+                    background-image: url("pictures/pca_outlier_white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Truncated SVD</h2>
+		<ul>
+			<li>The efficient method to calculate PCA.</li>
+			<li>PCA(X, N) = TSVD(centered(X), N).</li>
+			<li>Supports sparse input.</li>
+			<li>Output is never sparse.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Proven implementations</h2>
+		<ul>
+			<li><a href="https://github.com/facebook/fbpca">fbpca</a> - approximate, large scale.</li>
+			<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">sklearn</a>
+				- exact and approximate, small and medium scale.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>CUR</h2>
+		<ul>
+			<li>Randomized, approximate TSVD.</li>
+			<li>Supports sparse input.</li>
+			<li>Output is sparse.</li>
+			<li>Vulnerable to outliers.</li>
+			<li>Implementation: <a href="https://github.com/cthurau/pymf">PyMF</a>.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Topic Modeling</h2>
+		<ul>
+			<li>Family of unsupervised models to mine sets of probabilistically common subsets from a series of sets.</li>
+			<li>Example: topics in text documents.</li>
+			<li>Those sets must be labeled by humans.</li>
+			<li>Implementations:
+				<ul>
+					<li><a href="https://radimrehurek.com/gensim/">Gensim</a></li>
+					<li><a href="https://github.com/bigartm/bigartm">BigARTM</a></li>
+				</ul>
+			</li>
+		</ul>
+		<img src="pictures/tm.png" id="tm">
+		<a class="source" id="tm-src" href="http://dig-eh.org/dig-eh/TopicModelling/RectangularNodes/">Source</a>
+		<style>
+			#tm {
+				position: absolute;
+				top: 250px;
+				right: 100px;
+				width: 350px;
+				height: 350px;
+				object-fit: contain;
+			}
+			#tm-src {
+				position: absolute;
+				right: 100px;
+				bottom: 30px;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Topic Modeling</h2>
+		<ul>
+			<li>Topics are not clusters!</li>
+			<li>Good for explaining, bad for decisions.</li>
+		</ul>
+		<div id="pie-inequality">
+			<img src="pictures/pie.svg">
+			<div>≠</div>
+			<img src="pictures/pie.svg">
+		</div>
+		<style>
+			#pie-inequality {
+				display: flex;
+				align-items: center;
+			}
+			#pie-inequality > div {
+				margin-left: 50px;
+				margin-right: 50px;
+				font-size: 5em;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Sequential data</h2>
+		<div id="seq_data">
+			<ul>
+				<li>We are surrounded by sequential data:</li>
+				<ul>
+					<li>Texts, system logs, etc.</li>
+				</ul>
+
+				<li>Usenet dataset example:</li>
+				<ul>
+					<li>Moderate size: ~7B words ~37GB.</li>
+					<li>A lot of unique entities.</li>
+				</ul>
+			</ul>
+			<div id="sequential-data" class="vista"></div>
+			<style>
+				#sequential-data {
+					margin-left: 50px;
+					width: 350px;
+					height: 350px;
+					background-image: url("pictures/size_vs_uniq_black.png");
+				}
+				@media not print {
+					#sequential-data {
+						background-image: url("pictures/size_vs_uniq_white.png");
+					}
+				}
+			</style>
+		</div>
+		<style>
+			#seq_data {
+				display: flex;
+				height: 400px;
+				align-items: top;
+			}
+			#seq_data > img {
+				width: 400px;
+				object-fit: contain;
+			}
+			#seq_data > ul {
+				margin-left: 0px;
+				margin-bottom: 0;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Embeddings</h2>
+		<h3>Properties:</h3>
+		<ul>
+			<li>Low-dimensional representation.</li>
+			<li>Similar contexts -> similar embeddings.</li>
+			<li>Analogies search (hi to <a href="https://github.com/facebookresearch/faiss">fb/faiss</a>).</li>
+			<li>Reasoning: W("woman") − W("man") ≃ W("queen") − W("king").</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>word2vec - skip-gram</h2>
+		<div id="skip-gram">
+			<ul>
+				<li>Predicting the context given the word:</li>
+				<ul>
+					<li>Input: "mcube".</li>
+					<li>Output: "is", "a", "great", "conference".</li>
+				</ul>
+				<li>Works well even with small data.</li>
+				<li>Represents well rare words.</li>
+			</ul>
+			<div id="skip-gram-img" class="vista"></div>
+			<style>
+				#skip-gram-img {
+					width: 350px;
+					height: 350px;
+					background-image: url("pictures/skip-gram_black.png");
+				}
+				@media not print {
+					#skip-gram-img {
+						background-image: url("pictures/skip-gram_white.png");
+					}
+				}
+			</style>
+		</div>
+		<style>
+			#skip-gram {
+				display: flex;
+				height: 400px;
+				align-items: top;
+			}
+			#skip-gram > img {
+				width: 400px;
+				object-fit: contain
+			}
+			#skip-gram > ul {
+				margin-left: 0px;
+				margin-bottom: 0;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>word2vec - CBOW</h2>
+		<div id="cbow">
+			<ul>
+				<li>Predicting the word given its context.</li>
+				<ul>
+					<li>Input: "is", "a", "great", "conference".</li>
+					<li>Output: "mcube".</li>
+				</ul>
+				<li>Faster training than the skip-gram.</li>
+				<li>Better accuracy for the frequent words.</li>
+			</ul>
+			<div id="cbow-img" class="vista"></div>
+			<style>
+				#cbow-img {
+					margin-left: 50px;
+					width: 350px;
+					height: 350px;
+					background-image: url("pictures/cbow_black.png");
+				}
+				@media not print {
+					#cbow-img {
+						background-image: url("pictures/cbow_white.png");
+					}
+				}
+			</style>
+		</div>
+		<style>
+			#cbow {
+				display: flex;
+				height: 400px;
+				align-items: top;
+			}
+			#cbow > img {
+				width: 400px;
+				object-fit: contain;
+			}
+			#cbow > ul {
+				margin-left: 0px;
+				margin-bottom: 0;
+			}
+		</style>
+	</section>
+
+
+
+	<section class="slide">
+		<h2>word2vec - <a href="https://github.com/facebookresearch/fastText">fastText</a></h2>
+		<div id="fastText">
+			<ul>
+				<li>Embeddings for char n-grams.</li>
+				<li>Emb(word)= Σ Emb(char n-gram)</li>
+				<ul>
+					<li>-> embeddings for unseen words.</li>
+				</ul>
+				<li>Classification of texts.</li>
+				<li>Compression of models.</li>
+			</ul>
+			<div class="vista"></div>
+		</div>
+		<style>
+			#fastText {
+				display: flex;
+				height: 400px;
+				align-items: top;
+			}
+			#fastText > div {
+				width: 350px;
+				height: 400px;
+				margin-left: 20px;
+				background-image: url("pictures/fasttext_size_vs_dur_black.png");
+			}
+			@media not print {
+				#fastText > div {
+					background-image: url("pictures/fasttext_size_vs_dur_white.png");
+				}
+			}
+			#fastText > ul {
+				margin-left: 0px;
+				margin-bottom: 0;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Embeddings - global vectors</h2>
+		<p>Approach combines the advantages of the two major model families:</p>
+
+		<div id="emb_explicit">
+			<ul>
+				<li>Global matrix factorization.</li>
+				<li>Local context window.</li>
+			</ul>
+			<div class="vista"></div>
+		</div>
+		<style>
+			#emb_explicit {
+				display: flex;
+				height: 400px;
+				align-items: top;
+			}
+			#emb_explicit > div:last-child {
+				width: 450px;
+				height: 300px;
+				margin-left: 50px;
+				background-image: url("pictures/explicit_mat_fact_black.png");
+			}
+			@media not print {
+				#emb_explicit > div:last-child {
+					background-image: url("pictures/explicit_mat_fact_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Embeddings - global vectors</h2>
+		<div id="emb_explicit_example">
+			<div>
+				<p>Example:</p>
+				<ul>
+					<li>"Text with 5 unique words".</li>
+				</ul>
+			</div>
+			<div class="vista"></div>
+		</div>
+		<style>
+			#emb_explicit_example {
+				display: flex;
+				height: 400px;
+				align-items: top;
+			}
+			#emb_explicit_example > div:last-child {
+				width: 400px;
+				height: 400px;
+				margin-left: 100px;
+				background-image: url("pictures/coocc_ex_black.png");
+			}
+			@media not print {
+				#emb_explicit_example > div:last-child {
+					background-image: url("pictures/coocc_ex_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Swivel</h2>
+		<p>Embedding engine which works on co-occurrence matrices.</p>
+		<p>Like GloVe, but better - <a href="https://arxiv.org/abs/1602.02215">Paper on ArXiV</a>.</p>
+		<p>We <a href="https://github.com/src-d/tensorflow-swivel">forked</a> the Tensorflow implementation.</p>
+		<img src="pictures/swivel.png" id="swivel">
+		<style>
+			#swivel {
+				height: 200px;
+				object-fit: contain;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Swivel</h2>
+		<div id="swivel_vocab">
+			<ul>
+				<li>Features:</li>
+				<ul>
+					<li>Multi-GPU support.</li>
+					<li>Scales with vocabulary size.</li>
+					<li>Efficient sharding algorithm to distribute workload.</li>
+				</ul>
+			</ul>
+			<div id="swivel-vocab-img" class="vista"></div>
+			<style>
+				#swivel-vocab-img {
+					width: 350px;
+					height: 350px;
+					background-image: url("pictures/swivel_vocab_sz_vs_n_shards_black.png");
+				}
+				@media not print {
+					#swivel-vocab-img {
+						background-image: url("pictures/swivel_vocab_sz_vs_n_shards_white.png");
+					}
+				}
+			</style>
+		</div>
+		<style>
+			#swivel_vocab {
+				display: flex;
+				height: 400px;
+				align-items: top;
+			}
+			#swivel_vocab > img {
+				width: 400px;
+				object-fit: contain;
+			}
+			#swivel_vocab > ul {
+				margin-left: 0px;
+				margin-bottom: 0;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>What to choose?</h2>
+		<div class="chart-2x2">
+			<div>
+				<div>10s~100s GBs</div>
+				<div>100s~ GBs</div>
+			</div>
+			<div>
+				<div>
+					<div>~1M uniq</div>
+					<div> many M uniq </div>
+				</div>
+				<div>
+					<div>
+						<div>CBOW</div>
+						<div>skip-gram</div>
+					</div>
+					<div>
+						<div>Swivel</div>
+						<div>bad luck</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="slide">
+		<h2>Graph embeddings</h2>
+		<p>Problems</p>
+		<ul>
+			<li>Social graphs, dependency graphs, etc.</li>
+		</ul>
+		<p>Properties:</p>
+		<ul>
+			<li>Continuous feature representations for nodes in networks.</li>
+			<li>Maximizes the likelihood of of preserving network neighborhoods of nodes.</li>
+		</ul>
+
+	</section>
+
+	<section class="slide">
+		<h2>node2vec</h2>
+		<p>Approach:</p>
+		<ul>
+			<li>Random walks over a graph - gives sequences of nodes.</li>
+			<li>Sequences of nodes - stochastic approximation of graph.</li>
+			<li>Use these sequences as input to word2vec / Swivel / etc. -> embeddings.</li>
+			<li>As result: embeddings for nodes.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>node2vec</h2>
+		<div id="node2vec">
+			<div class="vista"></div>
+			<ul>
+				<li>n1 -> n1025 -> n37 ...</li>
+				<li>n2 -> n53 -> n209 ...</li>
+				<li>n3 -> n129 -> n548 ...</li>
+				<li>n4 -> n78 -> n789 ...</li>
+				<li>...</li>
+			</ul>
+		</div>
+		<style>
+			#node2vec {
+				display: flex;
+				align-items: top;
+			}
+			#node2vec > div {
+				width: 400px;
+				height: 400px;
+				background-image: url("pictures/random_graph_black.png");
+			}
+			@media not print {
+				#node2vec > div {
+					background-image: url("pictures/random_graph_white.png");
+				}
+			}
+			#node2vec > ul {
+				margin-left: 100px;
+				margin-bottom: 0;
+			}
+		</style>
+	</section>
+
+	<!--<section class="slide">-->
+		<!--<h2>BigCLAM</h2>-->
+		<!--Works when your matrix is a square adjacency matrix of a graph.-->
+        <!--Dimensionality reduction by fuzzy graph clustering aka "community detection".-->
+        <!--<a href="http://140.123.102.14:8080/reportSys/file/paper/ccy2013/ccy2013_16_paper.pdf">paper</a>-->
+        <!--<a href="https://github.com/snap-stanford/snap">Stanford Network Analysis Platform</a>-->
+	<!--</section>-->
+
+	<section class="slide">
+		<h2>Recommendation system: content based</h2>
+		<style type="text/css">
+		#wrap {
+		   width:600px;
+		   margin:0 auto;
+		}
+		#left_col {
+		   float:left;
+		   width:300px;
+		}
+		#right_col {
+		   float:right;
+		   width:300px;
+		}
+		</style>
+
+		<div id="wrap">
+			<div id="left_col">
+				<p>Domains:</p>
+				<ul>
+					<li>Personalization.</li>
+					<li>Advertisements.</li>
+					<li>Item recommendation.</li>
+					<li>Search queries.</li>
+					<li>Etc.</li>
+				</ul>
+			</div>
+			<div id="right_col">
+				<p>Why not collaborative filtering?</p>
+				<ul>
+					<li>Cold start problem.</li>
+					<li>New items.</li>
+					<li>Long tail distribution.</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="slide">
+		<h2>Deep semantic similarity model</h2>
+		<div id="DSSM">
+			<ul>
+				<li><a href="https://www.microsoft.com/en-us/research/project/dssm/">Article</a>.</li>
+				<li>Term vector - 500k unique words.</li>
+				<li>3-grams of characters (30k):</li>
+				<ul>
+					<li>#bad# -> #ba, bad, ad#</li>
+				</ul>
+				<li>Deep representation.</li>
+				<li>Cosine similarity.</li>
+			</ul>
+			<div class="vista"></div>
+		</div>
+		<style>
+			#DSSM{
+				display: flex;
+				height: 300px;
+				align-items: top;
+			}
+			#DSSM > ul {
+				margin-left: 0px;
+				margin-bottom: 0;
+			}
+			#DSSM > div {
+				width: 500px;
+				height: 400px;
+				background-image: url("pictures/DSSM_architecture_black.png");
+			}
+			@media not print {
+				#DSSM > div {
+					background-image: url("pictures/DSSM_architecture_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>The case of Facebook</h2>
+		<div class="case">
+			<img src="pictures/starspace.png">
+			<ul>
+				<li><a href="https://github.com/facebookresearch/Starspace">Starspace</a>
+					<ul>
+						<li>Word, sentence, document, graph embeddings.</li>
+						<li>Text classification, ranking.</li>
+						<li>CF and Content recommendation.</li>
+					</ul>
+				</li>
+				<li><a href="https://github.com/facebookresearch/faiss">Faiss</a>
+					<ul>
+						<li>Dense k-NN.</li>
+						<li>Devilish GPU implementation.</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="slide">
+		<h2>Data visualization</h2>
+		<p>Task definition:</p>
+		<ul>
+			<li>We are given a collection of high-dim data.</li>
+			<li>How can we get a feel for how these objects are arranged in space?</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>t-SNE</h2>
+		<p>Why was it introduced?</p>
+		<ul>
+			<li>Distance preservation is not enough.</li>
+		</ul>
+		<div class="vista" id="t-sne"></div>
+		<style>
+			#t-sne {
+				width: 500px;
+				height: 420px;
+				margin-top: -100px;
+				margin-left: 350px;
+				background-image: url("pictures/PCA_bad_black.png");
+			}
+			@media not print {
+				#t-sne {
+					background-image: url("pictures/PCA_bad_white.png");
+				}
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>t-SNE</h2>
+		<div id="t-sne-idea">
+			<ul>
+				<li>Neighbor preservation.</li>
+				<li>Distance preservation.</li>
+				<li>Balance local and global aspects.</li>
+				<li>Excellent <a href="https://distill.pub/2016/misread-tsne/">blog post</a>.</li>
+				<li>Complexity: exact O(d*N<sup>2</sup>) & Barnes-Hut O(d*N*log(N)).</li>
+			</ul>
+			<img src="pictures/t_sne_idea.png">
+		</div>
+		<style>
+			#t-sne-idea {
+				display: flex;
+				height: 300px;
+				align-items: top;
+			}
+			#t-sne-idea > img {
+				width: 500px;
+				object-fit: contain;
+			}
+			#t-sne-idea > ul {
+				margin-left: 0px;
+				margin-bottom: 0;
+			}
+		</style>
+
+	</section>
+
+	<section class="slide">
+		<h2>LargeVis</h2>
+		<p>Large scale t-SNE replacement.</p>
+		<ul>
+			<li>Complexity: O(s*M*N).</li>
+		</ul>
+		<div id="largevis" class="vista"></div>
+		<style>
+			#largevis {
+				width: 800px;
+				height: 300px;
+				margin-top: -20px;
+				background-image: url("pictures/largevis_black.png");
+			}
+			@media not print {
+				#largevis {
+					background-image: url("pictures/largevis_white.png");
+				}
+			}
+		</style>
+
+	</section>
+
+	<section class="slide">
+		<div class="shout-background" id="conclusion"></div>
+		<h2 class="shout shrink">Conclusion</h2>
+		<style>
+			#conclusion {
+				background-image: url("pictures/shout_conclusion.jpg");
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<ul>
+			<li>Fit data into single node.</li>
+			<li>Reduce the amount of data.</li>
+			<li>Try a sparse-friendly model.</li>
+			<li>Eliminate outliers.</li>
+			<li>PCA can be good for pre-processing.</li>
+			<li>Embed and conquer.</li>
+			<li>Visualize early.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets columns bottom-space">
+			<li>Vadim</li>
+			<li>Egor</li>
+			<li><i class="fa fa-envelope"></i> <a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+			<li><i class="fa fa-envelope"></i> <a href="mailto://egor@sourced.tech">egor@sourced.tech</a></li>
+			<li><i class="fa fa-twitter"></i> <a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+			<li><i class="fa fa-twitter"></i> <a href="https://twitter.com/egor_bu">egor_bu</a></li>
+            <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+			<li><i class="fa fa-github"></i> <a href="https://github.com/egorbu">egorbu</a></li>
+		</ul>
+		<p><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></p>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
