@@ -1072,6 +1072,28 @@
 		</style>
 	</section>
 
+	<section class="slide">
+		<h2>The case of Facebook</h2>
+		<div class="case">
+			<img src="pictures/starspace.png">
+			<ul>
+				<li><a href="https://github.com/facebookresearch/Starspace">Starspace</a>
+					<ul>
+						<li>Word, sentence, document, graph embeddings.</li>
+						<li>Text classification, ranking.</li>
+						<li>CF and Content recommendation.</li>
+					</ul>
+				</li>
+				<li><a href="https://github.com/facebookresearch/faiss">Faiss</a>
+					<ul>
+						<li>Dense k-NN.</li>
+						<li>Devilish GPU implementation.</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</section>
+
 	<!--<section class="slide">-->
 		<!--<h2>BigCLAM</h2>-->
 		<!--Works when your matrix is a square adjacency matrix of a graph.-->
@@ -1158,28 +1180,6 @@
 	</section>
 
 	<section class="slide">
-		<h2>The case of Facebook</h2>
-		<div class="case">
-			<img src="pictures/starspace.png">
-			<ul>
-				<li><a href="https://github.com/facebookresearch/Starspace">Starspace</a>
-					<ul>
-						<li>Word, sentence, document, graph embeddings.</li>
-						<li>Text classification, ranking.</li>
-						<li>CF and Content recommendation.</li>
-					</ul>
-				</li>
-				<li><a href="https://github.com/facebookresearch/faiss">Faiss</a>
-					<ul>
-						<li>Dense k-NN.</li>
-						<li>Devilish GPU implementation.</li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</section>
-
-	<section class="slide">
 		<h2>Data visualization</h2>
 		<p>Task definition:</p>
 		<ul>
@@ -1211,31 +1211,28 @@
 		</style>
 	</section>
 
-	<section class="slide">
+	<section class="slide" id="t-sne-idea">
 		<h2>t-SNE</h2>
-		<div id="t-sne-idea">
-			<ul>
-				<li>Neighbor preservation.</li>
-				<li>Distance preservation.</li>
-				<li>Balance local and global aspects.</li>
-				<li>Excellent <a href="https://distill.pub/2016/misread-tsne/">blog post</a>.</li>
-				<li>Complexity: exact O(d*N<sup>2</sup>) & Barnes-Hut O(d*N*log(N)).</li>
-			</ul>
-			<img src="pictures/t_sne_idea.png">
-		</div>
+		<img src="pictures/t_sne_idea.png">
+		<ul>
+			<li>Preserves the neighborhood.</li>
+			<li>Respects the relation between distances and not the exact values.</li>
+			<li>Works with N dimensions ~10<sup>2</sup>, requires reduction if more.</li>
+			<li>Complexity: exact O(d*N<sup>2</sup>) & Barnes-Hut O(d*N*log(N)).</li>
+			<li>Excellent <a href="https://distill.pub/2016/misread-tsne/">blog post</a>.</li>
+		</ul>
+
 		<style>
-			#t-sne-idea {
-				display: flex;
-				height: 300px;
-				align-items: top;
-			}
 			#t-sne-idea > img {
 				width: 500px;
+				height: 200px;
 				object-fit: contain;
+				float: right;
 			}
 			#t-sne-idea > ul {
 				margin-left: 0px;
 				margin-bottom: 0;
+				display: inline;
 			}
 		</style>
 
