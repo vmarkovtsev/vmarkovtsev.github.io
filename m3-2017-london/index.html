@@ -192,15 +192,17 @@
 	<section class="slide">
         <h2>Read this on your device</h2>
         <!-- <img> with @media srcset does not work! -->
-        <div class="vista center" id="qrcode"></div>
+        <div class="vista center qrcode" id="qrcode-intro"></div>
         <style>
-            #qrcode {
-                width: 350px;
+			#qrcode-intro {
+				width: 350px;
                 height: 350px;
+			}
+            .qrcode {
                 background-image: url("pictures/qrcode_black.svg");
             }
             @media not print {
-                #qrcode {
+                .qrcode {
                     background-image: url("pictures/qrcode_white.svg");
                 }
             }
@@ -904,6 +906,7 @@
 				<p>Example:</p>
 				<ul>
 					<li>"Text with 5 unique words".</li>
+					<li>Window size: 2.</li>
 				</ul>
 			</div>
 			<div class="vista"></div>
@@ -1296,6 +1299,16 @@
 			<li><i class="fa fa-github"></i> <a href="https://github.com/egorbu">egorbu</a></li>
 		</ul>
 		<p><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></p>
+		<div class="vista qrcode" id="qrcode-end"></div>
+		<style>
+			#qrcode-end {
+				position: absolute;
+				right: 100px;
+				bottom: 100px;
+				width: 200px;
+				height: 200px;
+			}
+		</style>
     </section>
 
 	<div class="progress"></div>
