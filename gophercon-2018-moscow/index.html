@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Measuring code sentiment in a Git repository</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Measuring code sentiment in a Git repository</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .no-link {
+            background: none !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Measuring code sentiment in a Git repository</h2>
+		<p>Vadim Markovtsev, <a class="no-link" href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+        </style>
+	</section>
+
+	<section class="slide">
+        <h2>Slide about that StackOverflow question about comments</h2>
+	</section>
+
+	<section class="slide">
+        <h2>What we want to achieve</h2>
+		<ul>
+			<li>Run through commits in a Git repository</li>
+			<li>For each changed file, find new comments</li>
+			<li>Classify each comment as positive, neutral or negative</li>
+			<li>Plot!</li>
+		</ul>
+    </section>
+
+	<section class="slide">
+        <h2>Technologies</h2>
+		<ul>
+			<li>src-d/go-git and src-d/hercules</li>
+			<li>Babelfish</li>
+			<li>Tensorflow, vmarkovtsev/BiDiSentiment</li>
+			<li>Python</li>
+		</ul>
+    </section>
+
+	<section class="slide">
+		<a href="https://github.com/src-d/go-git">
+			<figure>
+				<img class="cover" src="pictures/go-git.png" alt="go-git flying gopher holding a trident logo">
+			</figure>
+		</a>
+	</section>
+
+	<section class="slide">
+        <h2>src-d/go-git</h2>
+		<ul>
+			<li><a href="https://github.com/src-d/go-git/blob/master/COMPATIBILITY.md">Production ready work in progress</a></li>
+			<li>2400 <i class="fas fa-star"></i> on GitHub</li>
+			<li>Started in 2015 as an internal open-source project</li>
+			<li>Highly modular, e.g. has storage backends</li>
+		</ul>
+    </section>
+
+	<section class="slide">
+        <h2>src-d/hercules</h2>
+		<ul class="hercules-title">
+			<li>Started in 2016 as an efficient implementation of <a href="https://erikbern.com/2016/12/05/the-half-life-of-code.html">Git-of-Theseus</a></li>
+		</ul>
+		<img src="pictures/linux.png" class="hercules-demo">
+		<style>
+			.hercules-title {
+				margin-bottom: 0 !important;
+			}
+			.hercules-demo {
+				height: 350px;
+				width: 800px;
+				object-fit: contain;
+			}
+		</style>
+    </section>
+
+	<section class="slide">
+        <h2>src-d/hercules</h2>
+		<ul class="hercules-title"><li>Churn matrix</li></ul>
+		<div class="hercules-demo vista" id="churn"></div>
+		<style>
+			#churn {
+                background-image: url("pictures/wireshark_churn_matrix_black.png");
+
+            }
+            @media not print {
+                #churn {
+                    background-image: url("pictures/wireshark_churn_matrix_white.png");
+                }
+            }
+		</style>
+    </section>
+
+	<section class="slide">
+        <h2>src-d/hercules</h2>
+		<ul class="hercules-title"><li>Code ownership</li></ul>
+		<img src="pictures/emberjs_people.png" class="hercules-demo">
+	</section>
+
+	<section class="slide">
+        <h2>src-d/hercules</h2>
+		<ul class="hercules-title"><li>Structural hotness in 3D</li></ul>
+		<div class="hercules-demo vista" id="shotness"></div>
+		<style>
+			#shotness {
+                background-image: url("pictures/jinja_black.png");
+
+            }
+            @media not print {
+                #shotness {
+                    background-image: url("pictures/jinja_white.png");
+                }
+            }
+		</style>
+    </section>
+
+	<section class="slide">
+        <h2>src-d/hercules</h2>
+		<ul>
+			<li>Powered by the DAG abstraction with automatic dependency resolution</li>
+			<li>Plugin system (pkg/plugin)</li>
+		</ul>
+		<div class="vista" id="hercules-dag"></div>
+		<style>
+			#hercules-dag {
+				width: 800px;
+				height: 300px;
+                background-image: url("pictures/hercules_dag_black.png");
+
+            }
+            @media not print {
+                #hercules-dag {
+                    background-image: url("pictures/hercules_dag_white.png");
+                }
+            }
+		</style>
+	</section>
+
+	<section class="slide">
+        <h2>Babelfish</h2>
+		<p>Classic approach</p>
+		<ul>
+			<li>Define a grammar to create parsers</li>
+			<li>Implement them from scratch</li>
+			<li class="success">Good performance</li>
+			<li class="important">Hell of maintenance</li>
+		</ul>
+    </section>
+
+	<section class="slide">
+        <h2>Babelfish</h2>
+		<p>Our approach</p>
+		<ul>
+			<li>Re-use existing parsers</li>
+			<li>Convert to the universal format</li>
+			<li class="success">Easy to maintain</li>
+			<li class="important">RPC performance</li>
+		</ul>
+    </section>
+
+	<section class="slide">
+        <h2>Babelfish</h2>
+		<a href="http://dashboard.bblf.sh/">See it in action</a>
+	</section>
+
+	<section class="slide">
+        <h2>Tensorflow</h2>
+		<img src="https://www.tensorflow.org/images/tensors_flowing.gif" id="flow">
+		<style>
+			#flow {
+				height: 400px;
+			}
+		</style>
+		Tensor - Operation - Tensor
+    </section>
+
+	<section class="slide">
+        <h2>Tensorflow</h2>
+		<p>Production pipeline:</p>
+		<ul>
+			<li>Ensure that the model is bug-free</li>
+			<li>Train on much data and using a GPU cluster</li>
+			<li>Apply a metaparameter optimization algorithm</li>
+			<li>Export to "GraphDef" format (Protocol Buffers)</li>
+			<li>Distribute in an embedded or pluggable fashion</li>
+			<li>Infer with any programming language</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Tensorflow</h2>
+		<ul>
+			<li>Train platform: Python, GPU</li>
+			<li>Inference platform: Go, CPU</li>
+			<li>Can <a href="https://neugram.io/">neugram</a> change this?</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>Tensorflow</h2>
+		Example Go API
+	</section>
+
+	<section class="slide">
+		<div id="arch" class="vista"></div>
+		<style>
+			#arch {
+				width: 100%;
+				height: 95%;
+				position: absolute;
+				top: 0;
+				left: 0;
+                background-image: url("pictures/arch_black.png");
+            }
+            @media not print {
+                #arch {
+                    background-image: url("pictures/arch_white.png");
+                }
+            }
+		</style>
+    </section>
+
+	<section class="slide">
+		<div id="arch_device" class="vista"></div>
+		<style>
+			#arch_device {
+				width: 100%;
+				height: 95%;
+				position: absolute;
+				top: 0;
+				left: 0;
+                background-image: url("pictures/arch_device_black.png");
+            }
+            @media not print {
+                #arch_device {
+                    background-image: url("pictures/arch_device_white.png");
+                }
+            }
+		</style>
+    </section>
+
+	<section class="slide">
+        <h2>vmarkovtsev/BiDiSentiment</h2>
+		<ul>
+			<li>Dataset: 1.5 million tweets</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+        <h2>vmarkovtsev/BiDiSentiment</h2>
+		<ul>
+			<li>Training schedule</li>
+		</ul>
+    </section>
+
+	<section class="slide">
+        <h2>vmarkovtsev/BiDiSentiment</h2>
+		Inference examples on StackOverflow
+    </section>
+
+	<section class="slide">
+        <h2>Slap everything together</h2>
+		General notice: mostly negative bias
+    </section>
+
+	<section class="slide">
+        <h2>Slap everything together</h2>
+		Some nice plot example
+    </section>
+
+	<section class="slide">
+        <h2>Conclusion</h2>
+		<ul>
+			<li></li>
+		</ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+		<p>My contacts:</p>
+        <ul class="no-bullets">
+            <li><i class="fa fa-envelope"></i> <a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter"></i> <a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+            <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+        </ul>
+		<div class="vista" id="qrcode"></div>
+        <style>
+            #qrcode {
+				position: absolute;
+				left: 550px;
+				top: 150px;
+                width: 350px;
+                height: 350px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
