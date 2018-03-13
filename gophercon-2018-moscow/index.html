@@ -6,6 +6,8 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Over+the+Rainbow" rel="stylesheet">
 </head>
 <body class="shower list">
 
@@ -154,8 +156,23 @@
         </style>
 	</section>
 
-	<section class="slide">
-        <h2>Slide about that StackOverflow question about comments</h2>
+	<section class="slide" id="so">
+		<a href="https://stackoverflow.com/questions/184618/what-is-the-best-comment-in-source-code-you-have-ever-encountered"></a>
+		<style>
+			#so {
+				background-size: cover;
+				background-image: url("pictures/so.png");
+				background-repeat: no-repeat !important;
+            	background-position: center !important;
+			}
+			#so > a {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
 	</section>
 
 	<section class="slide">
@@ -164,17 +181,17 @@
 			<li>Run through commits in a Git repository</li>
 			<li>For each changed file, find new comments</li>
 			<li>Classify each comment as positive, neutral or negative</li>
-			<li>Plot!</li>
+			<li>Plot and discover!</li>
 		</ul>
     </section>
 
 	<section class="slide">
         <h2>Technologies</h2>
 		<ul>
-			<li>src-d/go-git and src-d/hercules</li>
-			<li>Babelfish</li>
-			<li>Tensorflow, vmarkovtsev/BiDiSentiment</li>
-			<li>Python</li>
+			<li><a href="https://github.com/src-d/go-git">src-d/go-git</a>, <a href="https://github.com/src-d/hercules">src-d/hercules</a></li>
+			<li><a href="https://doc.bblf.sh">Babelfish</a></li>
+			<li>Tensorflow, <a href="https://github.com/vmarkovtsev/BiDiSentiment">vmarkovtsev/BiDiSentiment</a></li>
+			<li>Python, Go</li>
 		</ul>
     </section>
 
@@ -190,38 +207,61 @@
         <h2>src-d/go-git</h2>
 		<ul>
 			<li><a href="https://github.com/src-d/go-git/blob/master/COMPATIBILITY.md">Production ready work in progress</a></li>
-			<li>2400 <i class="fas fa-star"></i> on GitHub</li>
+			<li>2400 <i class="fa fa-star"></i> on GitHub</li>
 			<li>Started in 2015 as an internal open-source project</li>
 			<li>Highly modular, e.g. has storage backends</li>
+			<li>Idiomatic ™</li>
 		</ul>
+		<style>
+			.fa {
+				display: inline;
+			}
+		</style>
     </section>
 
 	<section class="slide">
-        <h2>src-d/hercules</h2>
-		<ul class="hercules-title">
+        <h2 class="hercules-rotate">src-d/hercules</h2>
+		<ul class="hercules-rotate">
 			<li>Started in 2016 as an efficient implementation of <a href="https://erikbern.com/2016/12/05/the-half-life-of-code.html">Git-of-Theseus</a></li>
 		</ul>
-		<img src="pictures/linux.png" class="hercules-demo">
+		<img src="pictures/linux.png" class="cover">
+		<style>
+			.hercules-rotate {
+				transform: rotate(-25deg) translate(100px,0px);
+			}
+		</style>
+    </section>
+
+	<section class="slide">
+		<ul id="ownership"><li>Code ownership</li></ul>
+		<img src="pictures/emberjs_people.png" class="cover">
+		<style>
+			#ownership {
+				position: absolute;
+				left: 400px;
+				top: 50px;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<ul class="hercules-title"><li>Churn matrix</li></ul>
+		<div class="hercules-demo vista" id="churn"></div>
 		<style>
 			.hercules-title {
-				margin-bottom: 0 !important;
+				margin-bottom: 0;
 			}
 			.hercules-demo {
 				height: 350px;
 				width: 800px;
 				object-fit: contain;
 			}
-		</style>
-    </section>
-
-	<section class="slide">
-        <h2>src-d/hercules</h2>
-		<ul class="hercules-title"><li>Churn matrix</li></ul>
-		<div class="hercules-demo vista" id="churn"></div>
-		<style>
 			#churn {
+				position: absolute;
+				right: 0;
+				height: 580px;
+				bottom: 40px;
                 background-image: url("pictures/wireshark_churn_matrix_black.png");
-
             }
             @media not print {
                 #churn {
@@ -232,19 +272,15 @@
     </section>
 
 	<section class="slide">
-        <h2>src-d/hercules</h2>
-		<ul class="hercules-title"><li>Code ownership</li></ul>
-		<img src="pictures/emberjs_people.png" class="hercules-demo">
-	</section>
-
-	<section class="slide">
-        <h2>src-d/hercules</h2>
 		<ul class="hercules-title"><li>Structural hotness in 3D</li></ul>
 		<div class="hercules-demo vista" id="shotness"></div>
 		<style>
 			#shotness {
                 background-image: url("pictures/jinja_black.png");
-
+				position: absolute;
+				right: -20px;
+				top: 50px;
+				height: 560px;z-index: -1;
             }
             @media not print {
                 #shotness {
@@ -284,6 +320,7 @@
 			<li>Implement them from scratch</li>
 			<li class="success">Good performance</li>
 			<li class="important">Hell of maintenance</li>
+			<li>I am talking about you, <a href="http://www.antlr.org/">ANTLR4</a></li>
 		</ul>
     </section>
 
@@ -295,23 +332,93 @@
 			<li>Convert to the universal format</li>
 			<li class="success">Easy to maintain</li>
 			<li class="important">RPC performance</li>
+			<li><a href="http://dashboard.bblf.sh/">See it in action</a></li>
 		</ul>
+		<img src="pictures/babelfish.png" id="bblfsh">
+		<style>
+			#bblfsh {
+				position: absolute;
+				right: 100px;
+				width: 400px;
+				top: 120px;
+			}
+		</style>
     </section>
 
 	<section class="slide">
-        <h2>Babelfish</h2>
-		<a href="http://dashboard.bblf.sh/">See it in action</a>
+		<iframe id="roles" sandbox="" src="https://doc.bblf.sh/uast/roles.html" title="UAST roles" width="900" height="600">
+		  <p>Problem loading iframe to https://doc.bblf.sh/uast/roles.html</p>
+		</iframe>
+		<style>
+			#roles {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</section>
+
+	<section class="slide">
+		<pre><code><span style="color: #6ab825; font-weight: bold">import</span> <span style="color: #d0d0d0">(</span></code>
+<code>	<span style="color: #ed9d13">&quot;gopkg.in/bblfsh/client-go.v2&quot;</span></code>
+<code>	<span style="color: #ed9d13">&quot;gopkg.in/bblfsh/client-go.v2/tools&quot;</span></code>
+<code><span style="color: #d0d0d0">)</span></code>
+<code><span style="color: #d0d0d0">client,</span> <span style="color: #d0d0d0">_</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">bblfsh.NewClient(</span><span style="color: #ed9d13">&quot;0.0.0.0:9432&quot;</span><span style="color: #d0d0d0">)</span></code>
+<code><span style="color: #d0d0d0">resp,</span> <span style="color: #d0d0d0">_</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">client.NewParseRequest().Content(</span><span style="color: #ed9d13">&quot;...&quot;</span><span style="color: #d0d0d0">).Do()</span></code>
+<code><span style="color: #d0d0d0">nodes,</span> <span style="color: #d0d0d0">err</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">tools.Filter(resp.UAST,</span> <span style="color: #ed9d13">&quot;//*[@roleComment]&quot;</span><span style="color: #d0d0d0">)</span></code>
+<code><span style="color: #999999; font-style: italic">// nodes[0].Token</span></code>
+</pre>
 	</section>
 
 	<section class="slide">
         <h2>Tensorflow</h2>
+		<object type="image/svg+xml" data="pictures/tf_black.svg" class="tf-plot" id="tf-plot-black">
+		  Tensorflow graph scheme
+		</object>
+		<object type="image/svg+xml" data="pictures/tf_white.svg" class="tf-plot" id="tf-plot-white">
+		  Tensorflow graph scheme
+		</object>
+		<style>
+			.tf-plot {
+				margin-top: -100px;
+			}
+			#tf-plot-black {
+				display: block;
+			}
+			#tf-plot-white {
+				display: none;
+			}
+			@media not print {
+                #tf-plot-white {
+                    display: block;
+                }
+				#tf-plot-black {
+					display: none;
+				}
+            }
+		</style>
+    </section>
+
+	<section class="slide" id="flow-slide">
+        <h2>Tensorflow</h2>
 		<img src="https://www.tensorflow.org/images/tensors_flowing.gif" id="flow">
 		<style>
 			#flow {
-				height: 400px;
+				height: 600px;
+				width: 800px;
+				object-fit: contain;
+				position: absolute;
+				top: 20px;
+			}
+			#flow-slide {
+				background-color: white;
+			}
+			#flow-slide > h2 {
+				color: #454545;
 			}
 		</style>
-		Tensor - Operation - Tensor
     </section>
 
 	<section class="slide">
@@ -337,8 +444,21 @@
 	</section>
 
 	<section class="slide">
-        <h2>Tensorflow</h2>
-		Example Go API
+		<pre><code><span style="color: #d0d0d0">modelBytes,</span> <span style="color: #d0d0d0">_</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">assets.Asset(</span><span style="color: #ed9d13">&quot;model.pb&quot;</span><span style="color: #d0d0d0">)</span></code>
+<code><span style="color: #d0d0d0">graph</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">tf.NewGraph()</span></code>
+<code><span style="color: #d0d0d0">graph.Import(modelBytes,</span> <span style="color: #ed9d13">&quot;&quot;</span><span style="color: #d0d0d0">)</span></code>
+<code><span style="color: #d0d0d0">input</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">graph.Operation(</span><span style="color: #ed9d13">&quot;input&quot;</span><span style="color: #d0d0d0">).Output(</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">)</span></code>
+<code><span style="color: #d0d0d0">output</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">graph.Operation(</span><span style="color: #ed9d13">&quot;output&quot;</span><span style="color: #d0d0d0">).Output(</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">)</span></code>
+<code><span style="color: #d0d0d0">sess,</span> <span style="color: #d0d0d0">_</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">tf.NewSession(graph,</span> <span style="color: #d0d0d0">&amp;tf.SessionOptions{})</span></code>
+<code><span style="color: #d0d0d0">feed,</span> <span style="color: #d0d0d0">_</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">tf.NewTensor([][]</span><span style="color: #6ab825; font-weight: bold">float32</span><span style="color: #d0d0d0">{})</span></code>
+<code><span style="color: #d0d0d0">result,</span> <span style="color: #d0d0d0">_</span> <span style="color: #d0d0d0">:=</span> <span style="color: #d0d0d0">sess.Run(</span></code>
+<code>    <span style="color: #6ab825; font-weight: bold">map</span><span style="color: #d0d0d0">[tf.Output]*tf.Tensor{input:</span> <span style="color: #d0d0d0">input1},</span></code>
+<code>    <span style="color: #d0d0d0">[]tf.Output{output},</span> <span style="color: #6ab825; font-weight: bold">nil</span><span style="color: #d0d0d0">)</span></code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<img class="cover" src="pictures/gophers.png" alt="Happy and sad gophers.">
 	</section>
 
 	<section class="slide">
@@ -382,20 +502,47 @@
 	<section class="slide">
         <h2>vmarkovtsev/BiDiSentiment</h2>
 		<ul>
-			<li>Dataset: 1.5 million tweets</li>
+			<li>Dataset: <a href="http://thinknook.com/twitter-sentiment-analysis-training-corpus-dataset-2012-09-22/">1.5 million tweets</a></li>
 		</ul>
+		<div id="valid" class="vista"></div>
+		<style>
+			#valid {
+				width: 800px;
+				height: 300px;
+				background-image: url("pictures/validation_black.png");
+			}
+			@media not print {
+                #valid {
+                    background-image: url("pictures/validation_white.png");
+                }
+            }
+		</style>
 	</section>
 
 	<section class="slide">
         <h2>vmarkovtsev/BiDiSentiment</h2>
-		<ul>
-			<li>Training schedule</li>
-		</ul>
+		<pre>
+		<code>echo "When I wrote this, only God and I understood \</code>
+		<code>what I was doing. Now, God only knows" | $GOPATH/bin/sentiment</code>
+		</pre>
+		<code class="important">0.8803515</code>
     </section>
 
 	<section class="slide">
         <h2>vmarkovtsev/BiDiSentiment</h2>
-		Inference examples on StackOverflow
+		<pre>
+		<code>echo "sometimes I believe compiler ignores \</code>
+		<code>all my comments" | $GOPATH/bin/sentiment</code>
+		</pre>
+		<code class="important">0.88705057</code>
+    </section>
+
+	<section class="slide">
+        <h2>vmarkovtsev/BiDiSentiment</h2>
+		<pre>
+		<code>echo "drunk, fix later" | $GOPATH/bin/sentiment</code>
+		</pre>
+		<code class="success">0.08034721</code>
     </section>
 
 	<section class="slide">
@@ -411,7 +558,10 @@
 	<section class="slide">
         <h2>Conclusion</h2>
 		<ul>
-			<li></li>
+			<li>It is easy to analyse Git/code with Go</li>
+			<li>Go is handy for inference-in-a-box</li>
+			<li>We need a dedicated dataset for comment sentiment</li>
+			<li>Programmers like to rant</li>
 		</ul>
     </section>
 
@@ -445,7 +595,6 @@
 	<div class="progress"></div>
 
 	<script src="shower/shower.min.js"></script>
-	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
 	<script>
     function fullscreen() {
         if (!document.fullscreenElement && !document.mozFullScreenElement &&
