@@ -71,6 +71,9 @@
         .no-link {
             background: none !important;
         }
+		a {
+			background: none !important;
+		}
         .center {
             display: table;
             margin-left: auto;
@@ -126,7 +129,7 @@
 
 	<section class="slide vista vista-cover" id="cover">
 		<h2>Measuring code sentiment in a Git repository</h2>
-		<p>Vadim Markovtsev, <a class="no-link" href="https://sourced.tech">source{d}</a></p>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a></p>
 
 		<style>
             #cover h2 {
@@ -555,43 +558,37 @@
 			<th>Effective</th>
 		</tr>
 		<tr>
-			<th scope="row"><a class="no-link" href="https://github.com/pygame/pygame">pygame/pygame</a></th>
+			<th scope="row"><a href="https://github.com/pygame/pygame">pygame/pygame</a></th>
 			<td>93.4</td>
 			<td>98.2</td>
 			<td>-4.8</td>
 		</tr>
 		<tr>
-			<th scope="row"><a class="no-link" href="https://github.com/pallets/flask">pallets/flask</a></th>
+			<th scope="row"><a href="https://github.com/pallets/flask">pallets/flask</a></th>
 			<td>23.6</td>
 			<td>31.9</td>
 			<td>-8.3</td>
 		</tr>
 		<tr>
-			<th scope="row"><a class="no-link" href="https://github.com/django/django">django/django</a></th>
+			<th scope="row"><a href="https://github.com/django/django">django/django</a></th>
 			<td>462.1</td>
 			<td>536.1</td>
 			<td>-74.0</td>
 		</tr>
 		<tr>
-			<th scope="row"><a class="no-link" href="https://github.com/golang/go">golang/go</a></th>
+			<th scope="row"><a href="https://github.com/golang/go">golang/go</a></th>
 			<td>402.1</td>
 			<td>507.3</td>
 			<td>-105.2</td>
 		</tr>
 		<tr>
-			<th scope="row"><a class="no-link" href="https://github.com/kubernetes/kubernetes">kubernetes/kubernetes</a></th>
-			<td>Kale</td>
-			<td>Chips</td>
-			<td>Keytar</td>
+			<th scope="row"><a href="https://github.com/kubernetes/kubernetes">kubernetes/kubernetes</a></th>
+			<td>186.1</td>
+			<td>91.6</td>
+			<td>94.5</td>
 		</tr>
 		<tr>
-			<th scope="row"><a class="no-link" href="https://github.com/docker/moby">docker/moby</a></th>
-			<td>Kale</td>
-			<td>Chips</td>
-			<td>Keytar</td>
-		</tr>
-		<tr>
-			<th scope="row"><a class="no-link" href="https://github.com/keras-team/keras">keras-team/keras</a></th>
+			<th scope="row"><a href="https://github.com/keras-team/keras">keras-team/keras</a></th>
 			<td>104.8</td>
 			<td>71.1</td>
 			<td>33.7</td>
@@ -628,10 +625,10 @@
 	<section class="slide">
         <h2>+ golang/go</h2>
 		<ul class="comment-examples">
-			<li><a class="no-link" href="https://github.com/golang/go/blob/master/src/net/http/httputil/persist.go#L33"><code>It is low-level, old, and unused by Go's current HTTP stack</code></a></li>
-			<li><a class="no-link" href="https://github.com/golang/go/blob/32aa0d9198a1b147eb2c756c0d5628b3399f9898/test/bugs/bug046.go#L11"><code>not clear why this shouldn't work</code></a></li>
-			<li><a class="no-link" href="https://github.com/golang/go/blob/master/src/runtime/vlrt.go#L95"><code>overflow causes something awful</code></a></li>
-			<li><a class="no-link" href="https://github.com/golang/go/blob/master/src/os/exec/exec_test.go#L568"><code>quiet expected TLS handshake error remote error: bad certificate</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/master/src/net/http/httputil/persist.go#L33"><code>It is low-level, old, and unused by Go's current HTTP stack</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/32aa0d9198a1b147eb2c756c0d5628b3399f9898/test/bugs/bug046.go#L11"><code>not clear why this shouldn't work</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/master/src/runtime/vlrt.go#L95"><code>overflow causes something awful</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/master/src/os/exec/exec_test.go#L568"><code>quiet expected TLS handshake error remote error: bad certificate</code></a></li>
 		</ul>
 		<style>
 			.comment-examples > li {
@@ -649,20 +646,20 @@
 	<section class="slide">
         <h2>- golang/go</h2>
 		<ul class="comment-examples">
-			<li><a class="no-link" href="https://github.com/golang/go/blob/master/src/bytes/buffer.go#L63"><code>Special case, useful in debugging</code></a></li>
-			<li><a class="no-link" href="https://github.com/golang/go/blob/master/src/math/bits/bits.go#L135"><code>Implementation: Parallel summing of adjacent bits. See Hackers Delight, Chap. 5: Counting Bits.</code></a></li>
-			<li><a class="no-link" href="https://github.com/golang/go/blob/46e392e01c630dee41a67e01223b538aae9dc9b5/usr/austin/ogle/vars.go#L42"><code>TODO(austin): This could be a really awesome string method</code></a></li>
-			<li><a class="no-link" href="https://github.com/golang/go/blob/84ef97b59c89b7d9fdc04a1a8a438cd3257bf521/src/pkg/strconv/strconv_test.go#L21"><code>TODO(bradfitz): this might be 0, once escape analysis is better</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/master/src/bytes/buffer.go#L63"><code>Special case, useful in debugging</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/master/src/math/bits/bits.go#L135"><code>Implementation: Parallel summing of adjacent bits. See Hackers Delight, Chap. 5: Counting Bits.</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/46e392e01c630dee41a67e01223b538aae9dc9b5/usr/austin/ogle/vars.go#L42"><code>TODO(austin): This could be a really awesome string method</code></a></li>
+			<li><a href="https://github.com/golang/go/blob/84ef97b59c89b7d9fdc04a1a8a438cd3257bf521/src/pkg/strconv/strconv_test.go#L21"><code>TODO(bradfitz): this might be 0, once escape analysis is better</code></a></li>
 		</ul>
 	</section>
 
 	<section class="slide">
         <h2>+ keras-team/keras</h2>
 		<ul class="comment-examples">
-			<li><a class="no-link" href="https://github.com/keras-team/keras/blob/master/keras/layers/core.py#L622"><code>With TensorFlow, we can infer the output shape directly</code></a></li>
-			<li><a class="no-link" href="https://github.com/keras-team/keras/blob/master/tests/keras/utils/np_utils_test.py#L26"><code>Make sure there is exactly one 1 in a row</code></a></li>
-			<li><a class="no-link" href="https://github.com/keras-team/keras/blob/61dd53e2621f6a44b90bbe4682eccb1bbf7574e7/keras/engine/topology.py#L1675"><code>get sorted list of layer depths</code></a></li>
-			<li><a class="no-link" href="https://github.com/keras-team/keras/blob/master/keras/backend/theano_backend.py#L621"><code>Theano has a built-in optimization for logsumexp so we can just write the expression directly</code></a></li>
+			<li><a href="https://github.com/keras-team/keras/blob/master/keras/layers/core.py#L622"><code>With TensorFlow, we can infer the output shape directly</code></a></li>
+			<li><a href="https://github.com/keras-team/keras/blob/master/tests/keras/utils/np_utils_test.py#L26"><code>Make sure there is exactly one 1 in a row</code></a></li>
+			<li><a href="https://github.com/keras-team/keras/blob/61dd53e2621f6a44b90bbe4682eccb1bbf7574e7/keras/engine/topology.py#L1675"><code>get sorted list of layer depths</code></a></li>
+			<li><a href="https://github.com/keras-team/keras/blob/master/keras/backend/theano_backend.py#L621"><code>Theano has a built-in optimization for logsumexp so we can just write the expression directly</code></a></li>
 		</ul>
 	</section>
 
@@ -676,9 +673,20 @@
 			<li>It is easy to analyse Git/code with Go</li>
 			<li>Go is handy for inference-in-a-box</li>
 			<li>We need a dedicated dataset for comment sentiment</li>
-			<li>Negative reasoning is more frequent than positive in programming</li>
+			<li>Naive sentiment alignment depends on the project type</li>
 		</ul>
     </section>
+
+	<section class="slide">
+		<h2>Papers</h2>
+		Via <a href="http://www.msrconf.org/">Mining Software Repositories</a>:
+		<ul>
+			<li><a href="https://dl.acm.org/citation.cfm?id=3104217">Classifying code comments in Java open-source software systems</a></li>
+			<li><a href="https://dl.acm.org/citation.cfm?id=2903501">Analyzing developer sentiment in commit logs</a></li>
+			<li><a href="https://dl.acm.org/citation.cfm?id=2597118">Sentiment analysis of commit comments in GitHub: an empirical study</a></li>
+			<li><a href="https://dl.acm.org/citation.cfm?id=3104245">Sentiment analysis of Travis CI builds</a></li>
+		</ul>
+	</section>
 
 	<section class="slide">
         <h2>Thank you</h2>
@@ -689,6 +697,7 @@
             <li><i class="fa fa-github"></i> <a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
             <li><i class="fa fa-rss"></i> <a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
         </ul>
+		#MLonCode
 		<div class="vista" id="qrcode"></div>
         <style>
             #qrcode {
