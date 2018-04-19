@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Стэк для машинного обучения на исходном коде</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Стэк для машинного обучения на исходном коде</h1>
+		<p>Вадим Марковцев, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+		}
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        img.obj-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .fa {
+            display: inline;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.5em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -2em;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Стэк для машинного обучения на исходном коде</h2>
+		<p>Вадим Марковцев, <a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.6);
+			}
+        </style>
+    </section>
+    
+    <section class="slide vista vista-cover active" id="dragons">
+        <div></div>
+        <h2>Machine learning on source code</h2>
+        <style>
+            @font-face {
+              font-family: CartaMarinaBold;
+              src: url("Carta Marina Bold.woff2") format("woff2")
+            }
+            #dragons {
+                background: url("pictures/here_be_dragons.jpg") #000;
+            }
+            #dragons h2 {
+                position: absolute;
+                left: 507px;
+                top: 92px;
+                width: 280px;
+                text-align: center;
+                color: #000;
+                font-family: CartaMarinaBold;
+            }
+            #dragons div {
+                position: absolute;
+                left: 527px;
+                width: 240px;
+                height: 240px;
+                top: 72px;
+                background: radial-gradient(circle at center, #bababa 0, rgba(186, 186, 186, 0) 75%)
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Предпосылки</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-inverse fa-github-alt monofa" aria-hidden="true"></i>GitHub</li>
+            <li><span class="monofa">🚀</span>Машинное обучение хайп не думать</li>
+            <li><span class="monofa">💰</span>Большие компании пишут кучу 💩 кода</li>
+            <li><span class="monofa">📜</span>Пишем код так же как в 2000-х</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Проекты, похожие на MariaDB/server?</h2>
+        <ul class="two-cols">
+            <li><a href="https://github.com/twitter/mysql">twitter/mysql</a></li>
+            <li><a href="https://github.com/Tokutek/mysql-5.5">Tokutek/mysql-5.5</a></li>
+            <li><a href="https://github.com/facebook/mysql-5.6">facebook/mysql-5.6</a></li>
+            <li><a href="https://github.com/percona/percona-xtrabackup">percona/percona-xtrabackup</a></li>
+            <li><a href="https://github.com/Tokutek/mariadb-5.5">Tokutek/mariadb-5.5</a></li>
+            <li><a href="https://github.com/percona/percona-server">percona/percona-server</a></li>
+            <li><a href="https://github.com/atcurtis/mariadb">atcurtis/mariadb</a></li>
+            <li><a href="https://github.com/webscalesql/webscalesql-5.6">webscalesql/webscalesql-5.6</a></li>
+            <li><a href="https://github.com/alibaba/AliSQL">alibaba/AliSQL</a></li>
+            <li><a href="https://github.com/mysql/mysql-server">mysql/mysql-server</a></li>
+        </ul>
+    </section>
+
+    <section class="slide vista" id="excodesearch">
+        <style>
+            #excodesearch {
+                padding: 50px;
+                background-origin: content-box;
+                background-image: url("pictures/excodesearch_black.png");
+            }
+            @media not print {
+                #excodesearch {
+                    background-image: url("pictures/excodesearch_white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Обнаружим похожий код</h2>
+        <ul>
+            <li>По стилю</li>
+            <li>По структуре</li>
+            <li>По именам</li>
+        </ul>
+        <div id="andthen">
+        <h2>И получим</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><span class="monofa">💪</span>Глобальный граф</li>
+            <li><i class="fa fa-balance-scale monofa" aria-hidden="true"></i>Лицензии</li>
+            <li><i class="fa fa-line-chart monofa" aria-hidden="true"></i>Рефакторинг</li>
+        </ul>
+        </div>
+        <style>
+            #andthen {
+                position: absolute;
+                right: 300px;
+                bottom: 100px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="hercules">
+        <style>
+            #hercules {
+                padding: 50px;
+                background-origin: content-box;
+                background-image: url("pictures/jinja_black.png");
+            }
+            @media not print {
+                #hercules {
+                    background-image: url("pictures/jinja_white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="nncomplete-example">
+        <img class="center" src="pictures/channelSelectExample.gif">
+        <style>
+            #nncomplete-example {
+                background-color: #1e1e1c;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <pre><code class="python"><span class="hl-keyword">class</span> foobar:
+    <span class="hl-keyword">def</span> <span class="hl-def">connecttoserver</span>(<span class="hl-reserved">self</span>):
+        myserverhost = globalconfig.server.host</code>
+        </pre>
+        <style>
+            .hl-keyword {
+                color: #cc8242;
+                font-weight: bold;
+            }
+            .hl-def {
+                color: #ffc66d;
+            }
+            .hl-reserved {
+                color: #94558D;
+            }
+            .hl-string {
+                color: #6a8759;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <pre><code class="python"><span class="hl-keyword">class</span> FooBar:
+    <span class="hl-keyword">def</span> <span class="hl-def">connect_to_server</span>(<span class="hl-reserved">self</span>):
+        myServerHost = globalConfig.server.host</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <ul>
+            <li>Предсказание имен классов, функций, переменных</li>
+            <li>Предсказание типов</li>
+            <li>Какие комментарии бессмысленны?</li>
+            <li>Какие комментарии прикольные?</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 id="mloncode-stack-h">Стэк для MLonCode</h2>
+        <figure>
+            <img class="cover obj-cover" src="pictures/leverBigCorners.png" alt="MLonCode logo">
+        </figure>
+        <style>
+            #mloncode-stack-h {
+                color: black;
+                text-shadow: 0 0 10px rgba(255,255,255,1) , 0 0 20px rgba(255,255,255,1) , 0 0 30px rgba(255,255,255,1) , 0 0 40px #ffffff , 0 0 70px #ffffff , 0 0 80px #ffffff , 0 0 100px #ffffff ;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="mloncode-pyramid">
+        <style>
+            #mloncode-pyramid {
+                padding: 100px;
+                background-origin: content-box;
+                background-image: url("pictures/pyramid_black.svg");
+            }
+            @media not print {
+                #mloncode-pyramid {
+                    background-image: url("pictures/pyramid_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Откуда брать данные</h2>
+        <ul>
+            <li><a href="http://ghtorrent.org/">GHTorrent</a> - все кроме самих репозиториев, 70GB</li>
+            <li><a href="https://github.com/src-d/datasets/tree/master/PublicGitArchive">Public Git Archive</a> - репозитории, 3TB</li>
+            <li><a href="https://github.com/src-d/rovers">rovers</a> &amp; <a href="https://github.com/src-d/borges">borges</a> - DIY</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>PGA</h2>
+        <ul>
+            <li>270к siva файлов</li>
+            <li>Индекс в CSV</li>
+        </ul>
+        Подробно в <a href="https://arxiv.org/abs/1803.10144">статье</a>.<br>
+        <img src="pictures/by-nc-sa.eu.svg">
+        <div id="rooted" class="vista"></div>
+        <style>
+            #rooted {
+                position: absolute;
+                width: 600px;
+                height: 400px;
+                top: 120px;
+                right: 50px;
+                background-image: url("pictures/rooted_white.png");
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>PGA индекс</h2>
+        <ul>
+            <li>URL</li>
+            <li>FILE_COUNT</li>
+            <li>LANGS (байты, строки, файлы)</li>
+            <li>COMMITS_[HEAD]_COUNT</li>
+            <li>BRANCHES_COUNT</li>
+            <li>LINES_COUNT (пустые, комментарии, код)</li>
+            <li>LICENSE</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>source{d} engine</h2>
+        <ul>
+            <li>Чтение siva для Spark</li>
+            <li>Классификация и парсинг</li>
+            <li>Открытый код - лицензия Apache</li>
+            <li><a href="https://github.com/src-d/engine">GitHub</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>source{d} engine</h2>
+        <pre><code>&gt;&gt;&gt; <span class="hl-keyword">from</span> sourced.engine <span class="hl-keyword">import</span> Engine
+&gt;&gt;&gt; engine = Engine(spark, <span class="hl-string">"/path/to/siva/files"</span>, <span class="hl-string">"siva"</span>)
+&gt;&gt;&gt; engine.repositories.references.head_ref \
+    .commits.tree_entries.blobs \
+    .classify_languages() \
+    .select(<span class="hl-string">"blob_id"</span>, <span class="hl-string">"path"</span>, <span class="hl-string">"lang"</span>) \
+    .show()
+</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Как парсить</h2>
+        <ul>
+            <li>Регулярки - <a href="http://pygments.org/">Pygments</a>,
+                <a href="https://highlightjs.org/">highlight.js</a></li>
+            <li><span class="box">Абстрактное синтаксическое дерево (AST)</span> - <a href="http://www.antlr.org/">ANTLR</a></li>
+            <li>Компиляция</li>
+        </ul>
+        <style>
+            .box {
+                border: 1px solid white;
+                padding: 0 0.2em 0.1em 0.2em;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>  </h2>
+        <a href="https://doc.bblf.sh"><img class="center" src="pictures/bblfsh-logo.png"></a>
+        <div class="vista center" id="bblfsh-arch"></div>
+        <style>
+            #bblfsh-arch {
+                width: 600px;
+                height: 100px;
+                background-image: url("pictures/bblfsh-arch-black.png");
+            }
+            @media not print {
+                #bblfsh-arch {
+                    background-image: url("pictures/bblfsh-arch-white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2><i class="fa fa-sitemap" aria-hidden="true"></i> Universal AST</h2>
+        <ul>
+            <li>Более-менее одинаковая структура</li>
+            <li>Более-менее стандартные роли узлов</li>
+            <li>Прикидывается XML (XPath запросы)</li>
+            <li>4 варианта обхода</li>
+        </ul>
+        <a href="http://dashboard.bblf.sh/">dashboard.bblf.sh</a>
+    </section>
+
+    <section class="slide">
+        <h2>Клиент для Питона</h2>
+        <pre><code>pip3 install bblfsh</code>
+<code>python3 -m bblfsh -f /path/to/file</code>
+        </pre>
+        <a href="https://github.com/bblfsh/client-python">bblfsh/client-python</a>
+        <img src="pictures/docker.png" id="docker">
+        <style>
+            #docker {
+                position: absolute;
+                right: 50px;
+                bottom: 50px;
+                width: 300px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Интеграция</h2>
+        <pre><code>&gt;&gt;&gt; engine.repositories.references.head_ref \
+    .commits.tree_entries.blobs \
+    .classify_languages() \
+    .filter(<span class="hl-string">'lang = "Python"'</span>) \
+    .extract_uasts() \
+    .query_uast(<span class="hl-string">'//*[@roleIdentifier]'</span>) \
+    .extract_tokens(<span class="hl-string">"result"</span>, <span class="hl-string">"tokens"</span>) \
+    .select(<span class="hl-string">"blob_id"</span>, <span class="hl-string">"path"</span>, <span class="hl-string">"tokens"</span>)
+        </code></pre>
+    </section>
+
+    <section class="slide vista" id="django">
+        <style>
+            #django {
+                padding: 50px;
+                background-origin: content-box;
+                background-image: url("pictures/django_black.png");
+            }
+            @media not print {
+                #django {
+                    background-image: url("pictures/django_white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="powerful">
+        <h2>Мощь</h2>
+        <style>
+            #powerful {
+                background-image: url("pictures/power.jpg");
+            }
+            #powerful h2 {
+                color: #000;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>sourced-ml</h2>
+        <ul>
+            <li><a href="https://github.com/src-d/ml">GitHub</a></li>
+            <li>Python 3.4+</li>
+            <li>Используется Tensorflow, humanize</li>
+            <li>clint <img src="pictures/ireful1.gif" id="ireful"> tqdm</li>
+        </ul>
+        <style>
+            #ireful {
+                vertical-align: middle;
+                margin-bottom: 1px;
+                display: inline;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Хотелки</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-globe monofa" aria-hidden="true"></i>Автозагрузка моделей из интернета</li>
+            <li><i class="fa fa-shopping-cart monofa" aria-hidden="true"></i>"Магазин моделей"</li>
+            <li><i class="fa fa-floppy-o monofa" aria-hidden="true"></i>Вменяемый, современный формат (не HDF5)</li>
+            <li><i class="fa fa-tags monofa" aria-hidden="true"></i>Версионирование</li>
+            <li><i class="fa fa-refresh monofa" aria-hidden="true"></i>Воспроизводимость</li>
+            <li><i class="fa fa-handshake-o monofa" aria-hidden="true"></i>Поддержка разных ЯП</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Modelforge</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Автозагрузка моделей из интернета</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>"Магазин моделей"</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Вменяемый, современный формат - <a href="https://github.com/spacetelescope/asdf">ASDF</a></li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Версионирование</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Воспроизводимость</li>
+            <li><i class="fa fa-close monofa" aria-hidden="true"></i>Поддержка разных ЯП</li>
+        </ul>
+        <a href="https://github.com/src-d/modelforge">GitHub</a>
+    </section>
+
+	<section class="slide">
+        <h2>Конец</h2>
+		<p>Контакты:</p>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+            <li><i class="fa fa-trophy monofa" aria-hidden="true"></i><a href="https://github.com/src-d/awesome-machine-learning-on-source-code">Awesome #MLonCode</a></li>
+        </ul>
+        <div class="vista" id="qrcode"></div>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                position: absolute;
+                left: 550px;
+                top: 150px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+    <script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
