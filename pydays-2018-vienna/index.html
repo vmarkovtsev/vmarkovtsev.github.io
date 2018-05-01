@@ -164,11 +164,14 @@
         .fa-bullets > li {
             margin-left: -2em;
         }
+        .white {
+            color: white !important;
+        }
     </style>
 
 	<section class="slide vista vista-cover" id="cover">
 		<h2>Machine Learning on Source Code</h2>
-		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a></p>
+		<p><span class="white">Vadim Markovtsev,</span> <a href="https://sourced.tech">source{d}</a></p>
 
 		<style>
             #cover h2 {
@@ -195,6 +198,9 @@
 				bottom: 0;
 				background: rgba(0, 0, 0, 0.6);
 			}
+            #cover > h2 {
+                color: #bababa !important;
+            }
         </style>
     </section>
     
@@ -301,7 +307,7 @@
                 background-color: #1e1e1c;
             }
         </style>
-        Another example: <a href="https://www.deepcode.ai/">DeepCode.ai</a>.
+        <span class="white">Another example:</span> <a href="https://www.deepcode.ai/">DeepCode.ai</a>.
     </section>
 
     <section class="slide">
@@ -420,7 +426,12 @@
                 height: 400px;
                 top: 120px;
                 right: 50px;
-                background-image: url("pictures/rooted_white.png");
+                background-image: url("pictures/rooted_black.png");
+            }
+            @media not print {
+                #rooted {
+                    background-image: url("pictures/rooted_white.png");
+                }
             }
         </style>
     </section>
