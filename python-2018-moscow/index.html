@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@tmarkhor" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="29" />
+    <meta name="twitter:data1" content="31" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="Moscow, 24/04/2018" />
     <meta property="og:type" content="article" />
@@ -164,11 +164,14 @@
         .fa-bullets > li {
             margin-left: -2em;
         }
+        .white {
+            color: white !important;
+        }
     </style>
 
 	<section class="slide vista vista-cover" id="cover">
 		<h2>Стэк для машинного обучения на исходном коде</h2>
-		<p>Вадим Марковцев, <a href="https://sourced.tech">source{d}</a></p>
+		<p><span class="white">Вадим Марковцев,</span> <a href="https://sourced.tech">source{d}</a></p>
 
 		<style>
             #cover h2 {
@@ -195,6 +198,9 @@
 				bottom: 0;
 				background: rgba(0, 0, 0, 0.6);
 			}
+            #cover > h2 {
+                color: #bababa !important;
+            }
         </style>
     </section>
     
@@ -301,7 +307,7 @@
                 background-color: #1e1e1c;
             }
         </style>
-        Еще пример: <a href="https://www.deepcode.ai/">DeepCode.ai</a>.
+        <span class="white">Еще пример:</span> <a href="https://www.deepcode.ai/">DeepCode.ai</a>.
     </section>
 
     <section class="slide">
@@ -420,7 +426,12 @@
                 height: 400px;
                 top: 120px;
                 right: 50px;
-                background-image: url("pictures/rooted_white.png");
+                background-image: url("pictures/rooted_black.png");
+            }
+            @media not print {
+                #rooted {
+                    background-image: url("pictures/rooted_white.png");
+                }
             }
         </style>
     </section>
