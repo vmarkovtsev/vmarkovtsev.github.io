@@ -1,0 +1,37 @@
+graph AST {
+  def -- function_name;
+  def -- arguments;
+  def -- body;
+  arguments -- arg1;
+  arguments -- arg2;
+  arguments -- arg3;
+  arg3 -- expr31;
+  arg3 -- expr32;
+  body -- comment;
+  body -- if;
+  if -- condition;
+  if -- true_branch;
+  if -- false_branch;
+  condition -- isinstance;
+  isinstance -- ii1;
+  isinstance -- ii2;
+  ii2 -- ii21;
+  ii2 -- ii22;
+  def [label="function definition", style=filled, fillcolor="#cb7832", fontcolor="white"];
+  function_name [label="identifier\nvalue: nearest_neighbors", style=filled, fillcolor="#bababa", fontcolor="white"];
+  arg1 [label="identifier\nvalue: self", style=filled, fillcolor="#bababa", fontcolor="white"];
+  arg2 [label="identifier\nvalue: origin", style=filled, fillcolor="#bababa", fontcolor="white"];
+  arg3 [label="keyword argument"];
+  expr31 [label="identifier\nvalue: k", style=filled, fillcolor="#bababa", fontcolor="white"];
+  expr32 [label="literal\nvalue: 10", style=filled, fillcolor="#6896ba", fontcolor="white"];
+  comment [label="comment\nvalue: origin can be...", style=filled, fillcolor="#7f7f7f", fontcolor="white"];
+  if [label="conditional", style=filled, fillcolor="#cb7832", fontcolor="white"];
+  condition [label="condition"];
+  true_branch [label="true branch"];
+  false_branch [label="false branch"];
+  isinstance [label="builtin\nvalue: isinstance", style=filled, fillcolor="#cb7832", fontcolor="white"];
+  ii1 [label="identifier\nvalue: origin", style=filled, fillcolor="#bababa", fontcolor="white"];
+  ii2 [label="builtin\nvalue: tuple", style=filled, fillcolor="#cb7832", fontcolor="white"];
+  ii21 [label="builtin\nvalue: tuple", style=filled, fillcolor="#cb7832", fontcolor="white"];
+  ii22 [label="builtin\nvalue: list", style=filled, fillcolor="#cb7832", fontcolor="white"];
+}
