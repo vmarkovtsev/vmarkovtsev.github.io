@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Tensorflow + Go</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@tmarkhor" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="20" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="Aalborg, 08/05/2018" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/codelab-2018-aalborg" />
+    <meta property="og:title" content="Tensorflow + Go" />
+    <meta property="og:description" content="This presentation shows the codelab plan and goes through the main concepts. ML workflow, Hub, Go." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/codelab-2018-aalborg/pictures/cover.png" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/codelab-2018-aalborg/pictures/cover.png" />
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Tensorflow + Go</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+		}
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.5em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -2em;
+        }
+        .inline {
+            display: inline;
+        }
+        .inline > code {
+            display: inline !important;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Tensorflow + Go</h2>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/tensorflow_logo.svg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+        </style>
+    </section>
+    
+    <section class="slide active" id="2">
+        <h2>Follow on your device</h2>
+        <!-- <img> with @media srcset does not work! -->
+        <div class="vista center" id="qrcode-full"></div>
+        <style>
+            #qrcode-full {
+                width: 350px;
+                height: 350px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode-full {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<section class="slide">
+        <h2>Codelab points</h2>
+        <ul>
+            <li>Overview of Tensorflow internals</li>
+            <li>Tensorflow Hub</li>
+            <li>Running Tensorflow models in Go</li>
+            <li>MobileNetv2 101</li>
+            <li>Recurrent Sentiment 101</li>
+            <li>Bonus: better Tensorflow builds</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow terminology</h2>
+        <ul>
+            <li>Tensor</li>
+            <li>Variable</li>
+            <li>Constant</li>
+            <li>Operation</li>
+            <li>Graph</li>
+            <li>Session</li>
+            <li>Device</li>
+        </ul>
+        <div class="vista" id="tensorflow-graph"></div>
+        <style>
+            #tensorflow-graph {
+                position: absolute;
+                right: 100px;
+                top: 180px;
+                width: 600px;
+                height: 400px;
+                background-image: url("pictures/tf_black.svg");
+            }
+            @media not print {
+                #tensorflow-graph {
+                    background-image: url("pictures/tf_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow binaries</h2>
+        <ul>
+            <li>CPU</li>
+            <li>GPU=CUDA</li>
+            <li>OpenCL</li>
+            <li>TPU<sup>*</sup></li>
+            <li>Custom</li>
+        </ul>
+        <span class="important">Default CPU builds lack SSE and AVX.</span>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow binaries</h2>
+        <ul>
+            <li><pre class="inline"><code>_pywrap_tensorflow_internal.so</code></pre><span class="comment"> Python API, ops</span></li>
+            <li><pre class="inline"><code>libtensorflow</code></pre><span class="comment"> C API, ops, [core]</span></li>
+            <li><pre class="inline"><code>libtensorflow_framework</code></pre><span class="comment"> core</span></li>
+            <li><pre class="inline"><code>libtensorflow-core</code></pre><span class="comment"> core + CPU ops</span></li>
+        </ul>
+        <style>
+        .comment {
+            color: lime;
+        }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow binaries for Go</h2>
+        cgo! <a href="https://www.tensorflow.org/install/install_go">Installation.</a>
+        <ul>
+           <li><pre class="inline"><code>libtensorflow</code></pre><span class="comment"> C API, ops, [core]</span></li>
+           <li><pre class="inline"><code>libtensorflow_framework</code></pre><span class="comment"> core</span></li>
+        </ul>
+        <span class="important">Static linkage is not supported in 2018.</span>
+    </section>
+
+    <section class="slide">
+        <h2>Life of a deep learning model</h2>
+        <ol>
+            <li>Research, debug</li>
+            <li>Hyperparameter optimization</li>
+            <li>Export</li>
+            <li>Import</li>
+            <li>Execution</li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow model format zoo</h2>
+        <ul>
+            <li>GraphDef = graph + [variable values<span class="important">*</span>]</li>
+            <li>Checkpoint = variable values</li>
+            <li>Summary (for Tensorboard) = GraphDef + key-value</li>
+            <li>MetaGraph = GraphDef + tags + i/o + Checkpoint</li>
+            <li>SavedModel = one or more MetaGraph-s</li>
+            <li>ModuleDef (aka Hub) = special SavedModel</li>
+        </ul>
+        <span class="important">* 2GB limit.</span>
+    </section>
+
+    <section class="slide">
+        <h2>Formats supported by Go</h2>
+        <ul>
+            <li>GraphDef = graph + [variable values]</li>
+            <li>SavedModel = one or more MetaGraph-s <span class="important">incompatible with ModuleDef</span></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Imagenet</h2>
+        <ul>
+            <li>14.2mm labelled photos from Flickr</li>
+            <li>1000 classes</li>
+            <li>Est. 2009, last rev. 2011</li>
+            <li>State-of-the-art: 86% accuracy</li>
+            <li>Deep learning hype ignition</li>
+            <li><a href="http://www.image-net.org/">Link</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Action plan</h2>
+        <ul>
+            <li>Study Tensorflow Hub</li>
+            <li>Inspect models</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shrink">Action</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Links</h2>
+        <ul>
+            <li>hub2graph <a href="https://github.com/tensorflow/hub/pull/21"></a></li>
+            <li>model2tb <a href="https://github.com/src-d/tensorflow-codelab/blob/master/model2tb"></a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Action plan</h2>
+        <ul>
+            <li>Load <a href="https://research.googleblog.com/2018/04/mobilenetv2-next-generation-of-on.html">MobileNetv2</a></li>
+            <li>Read an image</li>
+            <li>Classify it</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shrink">Action</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Action plan</h2>
+        <ul>
+            <li>Load <a href="https://github.com/vmarkovtsev/bidisentiment">BiDiSentiment</a></li>
+            <li>Classify text</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shrink">Action</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Building Tensorflow</h2>
+        <ul>
+            <li>Bazel - Python</li>
+            <li>Bazel - dynamic, C API</li>
+            <li>autotools - static, no GPU, no C API</li>
+        </ul>
+        ~40 minutes on i7-7500U (2x2 threads) laptop.
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <p>My contacts:</p>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/tmarkhor">tmarkhor</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+        </ul>
+        <div class="vista" id="qrcode"></div>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                position: absolute;
+                left: 550px;
+                top: 150px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
