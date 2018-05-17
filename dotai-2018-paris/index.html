@@ -196,14 +196,84 @@
         </style>
     </section>
 
-    <section class="slide">
-        <h2>Origins</h2>
-        <ul class="no-bullets fa-bullets">
-            <li><i class="fa fa-inverse fa-github-alt monofa" aria-hidden="true"></i>GitHub phenomenon</li>
-            <li><span class="monofa">💰</span>Big companies have big 💩 code</li>
-            <li><span class="monofa">📜</span>We write code as in 2000</li>
-            <li><span class="monofa">🚀</span>Machine Learning progress</li>
-        </ul>
+    <section class="slide" id="fail">
+        <div class="vista"></div>
+        <style>
+            #fail {
+                background-color: #2b2b2b;
+            }
+            #fail > div {
+                width: 100%;
+                height: calc(100% - 80px);
+                background-image: url("pictures/fail.png");
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="code-ai">
+        <h2 class="shout small-shout">📜 Code assistants can be smarter</h2>
+        <style>
+            #code-ai {
+                background-image: url("pictures/code.jpg");
+            }
+            #code-ai::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista">
+        <h2 class="shout">How?</h2>
+    </section>
+
+    <section class="slide vista vista-cover" id="github">
+        <h2 class="shout small-shout"><i class="fa fa-inverse fa-github-alt" aria-hidden="true"></i> GitHub</h2>
+        <style>
+            #github {
+                background-image: url("pictures/github.png");
+            }
+            #github > h2 > i {
+                color: inherit !important;
+            }
+            .small-shout {
+                font-size: 400% !important;
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+            #github::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="ml">
+        <h2 class="shout small-shout">🚀 Machine Learning</h2>
+        <style>
+            #ml {
+                background-image: url("pictures/wise.jpg");
+            }
+            #ml::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+        </style>
     </section>
 
     <section class="slide vista vista-cover" id="dragons">
@@ -853,8 +923,24 @@ $$
         </ul>
     </section>
 
-    <section class="slide">
-        <h2 class="shout">Recap</h2>
+    <section class="slide vista">
+        <h2>Recap</h2>
+        <ul class="no-bullets margin-bottom">
+            <li>The way we code can be improved...</li>
+            <li>&emsp;...using naturalness in code.</li>
+        </ul><ul class="no-bullets">
+            <li>Identifier embeddings capture it...</li>
+            <li>&emsp;...leveraging the context.</li>
+        </ul>
+        <style>
+            .margin-bottom {
+                margin-bottom: 100px !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista">
+        <h2 class="shout">MLonCode is fun</h2>
     </section>
 
 	<section class="slide">
