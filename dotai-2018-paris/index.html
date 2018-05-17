@@ -253,16 +253,16 @@
                 top: 0;
                 right: 0;
                 bottom: 0;
-                background-color: rgba(0, 0, 0, 0.6);
+                background-color: rgba(0, 0, 0, 0.65);
             }
         </style>
     </section>
 
-    <section class="slide vista vista-cover" id="ml">
+    <section class="slide vista" id="ml">
         <h2 class="shout small-shout">🚀 Machine Learning</h2>
         <style>
             #ml {
-                background-image: url("pictures/wise.jpg");
+                background-image: url("pictures/ml.png");
             }
             #ml::before {
                 content: "";
@@ -271,7 +271,7 @@
                 top: 0;
                 right: 0;
                 bottom: 0;
-                background-color: rgba(0, 0, 0, 0.7);
+                background-color: rgba(0, 0, 0, 0.75);
             }
         </style>
     </section>
@@ -923,9 +923,9 @@ $$
         </ul>
     </section>
 
-    <section class="slide vista">
+    <section class="slide vista vista-cover" id="recap">
         <h2>Recap</h2>
-        <ul class="no-bullets margin-bottom">
+        <ul class="no-bullets">
             <li>The way we code can be improved...</li>
             <li>&emsp;...using naturalness in code.</li>
         </ul><ul class="no-bullets">
@@ -933,8 +933,27 @@ $$
             <li>&emsp;...leveraging the context.</li>
         </ul>
         <style>
-            .margin-bottom {
+            #recap > h2, #recap > ul {
+                position: relative;
+                z-index: 1;
+            }
+            #recap > ul {
+                font-size: 130%;
+            }
+            #recap ul:first-of-type {
                 margin-bottom: 100px !important;
+            }
+            #recap {
+                background-image: url("pictures/wise.jpg");
+            }
+            #recap::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.85);
             }
         </style>
     </section>
