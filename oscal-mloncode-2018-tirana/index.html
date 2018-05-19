@@ -10,7 +10,7 @@
     <meta name="twitter:label1" content="Number of slides" />
     <meta name="twitter:data1" content="25" />
     <meta name="twitter:label2" content="Where and when" />
-    <meta name="twitter:data2" content="Tirana, 20/05/2018" />
+    <meta name="twitter:data2" content="Tirana, Albania - 19/05/2018" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="http://vmarkovtsev.github.io/oscal-mloncode-2018-tirana" />
     <meta property="og:title" content="Machine Learning on Open Source Code" />
@@ -210,14 +210,63 @@
         </style>
         </section>
 
-    <section class="slide">
-        <h2>Origins</h2>
-        <ul class="no-bullets fa-bullets">
-            <li><i class="fa fa-inverse fa-github-alt monofa" aria-hidden="true"></i>GitHub phenomenon</li>
-            <li><span class="monofa">💰</span>Big companies have big 💩 code</li>
-            <li><span class="monofa">📜</span>We write code as in 2000</li>
-            <li><span class="monofa">🚀</span>Machine Learning progress</li>
-        </ul>
+    <section class="slide vista vista-cover" id="github">
+        <h2 class="shout small-shout"><i class="fa fa-inverse fa-github-alt" aria-hidden="true"></i> GitHub</h2>
+        <style>
+            #github {
+                background-image: url("pictures/github.png");
+            }
+            #github > h2 > i {
+                color: inherit !important;
+            }
+            .small-shout {
+                font-size: 400% !important;
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+            #github::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.65);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista">
+        <video width="820" controls>
+            <source src="pictures/duplex.mp4" type="video/mp4">
+        </video>
+        <style>
+            video {
+                position: relative;
+                top: -50px;
+            }
+            video::-webkit-media-controls-panel {
+                -webkit-transform: translateZ(0);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="ml">
+        <h2 class="shout small-shout">🚀 Machine Learning</h2>
+        <style>
+            #ml {
+                background-image: url("pictures/ml.png");
+            }
+            #ml::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.75);
+            }
+        </style>
     </section>
     
     <section class="slide vista vista-cover" id="dragons">
@@ -448,11 +497,29 @@
     <section class="slide">
         <h2>source{d} engine</h2>
         <ul>
-            <li>siva loader in Spark</li>
+            <li>siva loader for Apache Spark</li>
             <li>Classification, parsing</li>
             <li>Apache license</li>
             <li><a href="https://github.com/src-d/engine">GitHub</a></li>
         </ul>
+    </section>
+
+    <section class="slide vista" id="ast">
+        <h2>AST</h2>
+        <style>
+            #ast {
+                background: url("pictures/ast_black.svg");
+            }
+            @media not print {
+                #ast {
+                    background: black url("pictures/ast_white.svg");
+                }
+            }
+            #ast > h2 {
+                position: absolute;
+                bottom: 50px;
+            }
+        </style>
     </section>
 
     <section class="slide">
@@ -545,7 +612,7 @@
     <section class="slide">
         <h2>Summary</h2>
         <ul class="no-bullets fa-bullets">
-            <li><i class="fa fa-thumbs-up monofa" aria-hidden="true"></i>Machine Learning on Open Source Code is fun</li>
+            <li><i class="fa fa-thumbs-up monofa" aria-hidden="true"></i>MLonCode is fun</li>
             <li><i class="fa fa-database monofa" aria-hidden="true"></i>There is data</li>
             <li><i class="fa fa-cutlery monofa" aria-hidden="true"></i>There are tools</li>
             <li><i class="fa fa-users monofa" aria-hidden="true"></i>Community is forming</li>
