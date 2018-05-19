@@ -1,1 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1" width="682.259" height="516.397"><path d="M187 457.397h463l29 57H158" fill="#ff99cb"/><path d="M218 398.397h402l30 59H187" fill="#ffcb99"/><path d="M250 335.397h338l32 63H218" fill="#feff99"/><path d="M283 271.397h273l32 64H250" fill="#cefecc"/><path d="M317 205.397h205l34 66H283" fill="#cff"/><path d="M353 134.397h133l36 71H317" fill="#ca9bfb"/><path d="M420 4.397l66 130H353" fill="#e1e1e1"/><path d="M420 4.397l-262 510h521zm-420 130h486m-486 71h522m-522 66h556m-556 64h588m-588 63h620m-620 59h650m-650 57h158" fill="none" stroke="#fff" stroke-width="4"/><text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-.545" y="436.889" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff"><tspan x="-.545" y="436.889" font-size="30">clone</tspan></text><text y="495.142" x="-.545" style="line-height:125%;-inkscape-font-specification:Ubuntu" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff"><tspan y="495.142" x="-.545" font-size="30">discover</tspan></text><text y="247.505" x="-.545" style="line-height:125%;-inkscape-font-specification:Ubuntu" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff"><tspan y="247.505" x="-.545" font-size="30">classify</tspan></text><text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-.545" y="374.636" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff"><tspan x="-.545" y="374.636" font-size="30">checkout</tspan></text><text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-1.415" y="312.398" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff"><tspan x="-1.415" y="312.398" font-size="30">filter</tspan></text><text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-1.415" y="177.652" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff"><tspan x="-1.415" y="177.652" font-size="30">parse</tspan></text><text y="116.999" x="-.305" style="line-height:125%;-inkscape-font-specification:Ubuntu" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff"><tspan y="116.999" x="-.305" font-size="30">analyze</tspan></text></svg>
+<svg 
+    xmlns="http://www.w3.org/2000/svg" version="1" width="682.259" height="516.397">
+    <path d="M187 457.397h463l29 57H158" fill="#ff99cb"/>
+    <path d="M218 398.397h402l30 59H187" fill="#ffcb99"/>
+    <path d="M250 335.397h338l32 63H218" fill="#feff99"/>
+    <path d="M283 271.397h273l32 64H250" fill="#cefecc"/>
+    <path d="M317 205.397h205l34 66H283" fill="#cff"/>
+    <path d="M353 134.397h133l36 71H317" fill="#ca9bfb"/>
+    <path d="M420 4.397l66 130H353" fill="#ffffff"/>
+    <path d="M420 4.397l-262 510h521zm-420 130h486m-486 71h522m-522 66h556m-556 64h588m-588 63h620m-620 59h650m-650 57h158" fill="none" stroke="#808080" stroke-width="4"/>
+    <text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-.545" y="436.889" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff">
+        <tspan x="-.545" y="436.889" font-size="30">clone</tspan>
+    </text>
+    <text y="495.142" x="-.545" style="line-height:125%;-inkscape-font-specification:Ubuntu" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff">
+        <tspan y="495.142" x="-.545" font-size="30">discover</tspan>
+    </text>
+    <text y="247.505" x="-.545" style="line-height:125%;-inkscape-font-specification:Ubuntu" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff">
+        <tspan y="247.505" x="-.545" font-size="30">classify</tspan>
+    </text>
+    <text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-.545" y="374.636" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff">
+        <tspan x="-.545" y="374.636" font-size="30">checkout</tspan>
+    </text>
+    <text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-1.415" y="312.398" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff">
+        <tspan x="-1.415" y="312.398" font-size="30">filter</tspan>
+    </text>
+    <text style="line-height:125%;-inkscape-font-specification:Ubuntu" x="-1.415" y="177.652" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff">
+        <tspan x="-1.415" y="177.652" font-size="30">parse</tspan>
+    </text>
+    <text y="116.999" x="-.305" style="line-height:125%;-inkscape-font-specification:Ubuntu" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0" fill="#fff">
+        <tspan y="115.000" x="-.305" font-size="30">analyze</tspan>
+    </text>
+</svg>
