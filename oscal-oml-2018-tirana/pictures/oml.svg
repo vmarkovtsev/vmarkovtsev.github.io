@@ -1,0 +1,70 @@
+<svg 
+    xmlns="http://www.w3.org/2000/svg" width="570" height="397" id="svg134">
+    <defs id="defs4">
+        <style id="style2">@import url(https://fonts.googleapis.com/css?family=Pacifico);</style>
+    </defs>
+    <text x="-3.431" y="219.854" style="line-height:normal" dy="50.497" id="text6" font-weight="400" font-size="127.757" font-family="Pacifico" fill="#808080">tensorflow</text>
+    <text x="135.562" y="179.842" style="line-height:normal" dy="26.734" id="text8" font-weight="400" font-size="67.636" font-family="Pacifico" fill="#808080">sklearn</text>
+    <text x="227.896" y="119.842" style="line-height:normal" dy="26.734" id="text10" font-weight="400" font-size="67.636" font-family="Pacifico" fill="#808080">keras</text>
+    <text x="153.115" y="297.963" style="line-height:normal" dy="19.308" id="text12" font-weight="400" font-size="48.848" font-family="Pacifico" fill="#808080">fasttext</text>
+    <text x="269.681" y="325.963" style="line-height:normal" dy="19.308" id="text14" font-weight="400" font-size="48.848" font-family="Pacifico" fill="#808080">pytorch</text>
+    <text x="-61.687" y="205.895" style="line-height:normal" dy="19.308" transform="rotate(-56.119)" id="text16" font-weight="400" font-size="48.848" font-family="Pacifico" fill="#808080">mxnet</text>
+    <text x="261.185" y="75.587" style="line-height:normal" dy="17.822" id="text18" font-weight="400" font-size="45.091" font-family="Pacifico" fill="#808080">xgboost</text>
+    <text x="65.525" y="341.212" style="line-height:normal" dy="16.337" id="text20" font-weight="400" font-size="41.333" font-family="Pacifico" fill="#808080">predictionio</text>
+    <text x="202.087" y="32.836" style="line-height:normal" dy="14.852" id="text22" font-weight="400" font-size="37.576" font-family="Pacifico" fill="#808080">deeplearning4j</text>
+    <text x="230.788" y="380.836" style="line-height:normal" dy="14.852" id="text24" font-weight="400" font-size="37.576" font-family="Pacifico" fill="#808080">theano</text>
+    <text x="374.31" y="280.836" style="line-height:normal" dy="14.852" id="text26" font-weight="400" font-size="37.576" font-family="Pacifico" fill="#808080">spacy</text>
+    <text x="385.98" y="122.46" style="line-height:normal" dy="13.367" id="text28" font-weight="400" font-size="33.818" font-family="Pacifico" fill="#808080">paddlepaddle</text>
+    <text x="58.084" y="174.46" style="line-height:normal" dy="13.367" id="text30" font-weight="400" font-size="33.818" font-family="Pacifico" fill="#808080">caffe2</text>
+    <text x="338.676" y="358.46" style="line-height:normal" dy="13.367" id="text32" font-weight="400" font-size="33.818" font-family="Pacifico" fill="#808080">gensim</text>
+    <text x="79" y="80.084" style="line-height:normal" dy="11.882" id="text34" font-weight="400" font-size="30.061" font-family="Pacifico" fill="#808080">lightgbm</text>
+    <text x="62.63" y="300.084" style="line-height:normal" dy="11.882" id="text36" font-weight="400" font-size="30.061" font-family="Pacifico" fill="#808080">pattern</text>
+    <text x="53.668" y="136.084" style="line-height:normal" dy="11.882" id="text38" font-weight="400" font-size="30.061" font-family="Pacifico" fill="#808080">golearn</text>
+    <text x="435.668" y="182.084" style="line-height:normal" dy="11.882" transform="rotate(-.477)" id="text40" font-weight="400" font-size="30.061" font-family="Pacifico" fill="#808080">php-ml</text>
+    <text x="107.531" y="32.084" style="line-height:normal" dy="11.882" id="text42" font-weight="400" font-size="30.061" font-family="Pacifico" fill="#808080">vowpal</text>
+    <text x="110.324" y="112.084" style="line-height:normal" dy="11.882" id="text44" font-weight="400" font-size="30.061" font-family="Pacifico" fill="#808080">leaf</text>
+    <text x="231.177" y="161.709" style="line-height:normal" dy="10.396" id="text46" font-weight="400" font-size="26.303" font-family="Pacifico" fill="#808080">aerosolve</text>
+    <text x="146.8" y="373.709" style="line-height:normal" dy="10.396" id="text48" font-weight="400" font-size="26.303" font-family="Pacifico" fill="#808080">corenlp</text>
+    <text x="410.442" y="89.709" style="line-height:normal" dy="10.396" id="text50" font-weight="400" font-size="26.303" font-family="Pacifico" fill="#808080">dsstne</text>
+    <text x="186.997" y="129.709" style="line-height:normal" dy="10.396" id="text52" font-weight="400" font-size="26.303" font-family="Pacifico" fill="#808080">dlib</text>
+    <text x="519.459" y="-57.404" style="line-height:normal" dy="8.911" transform="rotate(42.353)" id="text54" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">lasagne</text>
+    <text x="84.076" y="51.333" style="line-height:normal" dy="8.911" id="text56" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">chainer</text>
+    <text x="445.808" y="51.572" style="line-height:normal" dy="8.911" transform="rotate(12.065)" id="text58" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">nervana</text>
+    <text x="379.502" y="387.333" style="line-height:normal" dy="8.911" id="text60" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">edward</text>
+    <text x="374.222" y="394.21" style="line-height:normal" dy="8.911" transform="rotate(-14.185)" id="text62" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">faiss</text>
+    <text x="310.926" y="99.333" style="line-height:normal" dy="8.911" id="text64" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">annoy</text>
+    <text x="32.435" y="427.677" style="line-height:normal" dy="8.911" transform="rotate(-75.7)" id="text66" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">pymc3</text>
+    <text x="451.505" y="311.333" style="line-height:normal" dy="8.911" id="text68" font-weight="400" font-size="22.545" font-family="Pacifico" fill="#808080">cntk</text>
+    <text x="75.147" y="374.957" style="line-height:normal" dy="7.426" id="text70" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">hyperopt</text>
+    <text x="55.324" y="202.957" style="line-height:normal" dy="7.426" id="text72" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">catboost</text>
+    <text x="47.319" y="110.957" style="line-height:normal" dy="7.426" id="text74" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">shogun</text>
+    <text x="79.093" y="326.957" style="line-height:normal" dy="7.426" id="text76" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">accord</text>
+    <text x="36.231" y="286.957" style="line-height:normal" dy="7.426" id="text78" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">mlpack</text>
+    <text x="374.577" y="110.957" style="line-height:normal" dy="7.426" id="text80" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">libsvm</text>
+    <text x="492.095" y="202.957" style="line-height:normal" dy="7.426" id="text82" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">dynet</text>
+    <text x="448.103" y="66.957" style="line-height:normal" dy="7.426" id="text84" font-weight="400" font-size="18.788" font-family="Pacifico" fill="#808080">bigdl</text>
+    <text x="432.127" y="360.581" style="line-height:normal" dy="5.941" id="text86" font-weight="400" font-size="15.03" font-family="Pacifico" fill="#808080">starspace</text>
+    <text x="88.817" y="-224.725" style="line-height:normal" dy="5.941" transform="rotate(88.12)" id="text88" font-weight="400" font-size="15.03" font-family="Pacifico" fill="#808080">singa</text>
+    <text x="67.027" y="18.206" style="line-height:normal" dy="4.456" id="text90" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">bayesian-belief-networks</text>
+    <text x="259.636" y="58.206" style="line-height:normal" dy="4.456" id="text92" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">brainstorm</text>
+    <text x="287.151" y="18.206" style="line-height:normal" dy="4.456" id="text94" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">vectorflow</text>
+    <text x="258.913" y="282.206" style="line-height:normal" dy="4.456" id="text96" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">bidmach</text>
+    <text x="304.248" y="266.206" style="line-height:normal" dy="4.456" id="text98" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">nmslib</text>
+    <text x="267.768" y="154.206" style="line-height:normal" dy="4.456" id="text100" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">caret</text>
+    <text x="331.385" y="158.206" style="line-height:normal" dy="4.456" id="text102" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">torch</text>
+    <text x="232.523" y="154.206" style="line-height:normal" dy="4.456" id="text104" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">veles</text>
+    <text x="75.761" y="291.251" style="line-height:normal" dy="4.456" transform="rotate(-26.867)" id="text106" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">encog</text>
+    <text x="105.671" y="328.966" style="line-height:normal" dy="4.456" transform="rotate(-17.136)" id="text108" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">snap</text>
+    <text x="255.543" y="110.206" style="line-height:normal" dy="4.456" id="text110" font-weight="400" font-size="11.273" font-family="Pacifico" fill="#808080">stan</text>
+    <text x="265.031" y="291.83" style="line-height:normal" dy="2.97" id="text112" font-weight="400" font-size="7.515" font-family="Pacifico" fill="#808080">opennn</text>
+    <text x="315.748" y="279.83" style="line-height:normal" dy="2.97" id="text114" font-weight="400" font-size="7.515" font-family="Pacifico" fill="#808080">igraph</text>
+    <text x="263.06" y="45.238" style="line-height:normal" dy="2.97" transform="rotate(43.906)" id="text116" font-weight="400" font-size="7.515" font-family="Pacifico" fill="#808080">deepcl</text>
+    <text x="267.374" y="215.83" style="line-height:normal" dy="2.97" id="text118" font-weight="400" font-size="7.515" font-family="Pacifico" fill="#808080">lore</text>
+    <text x="339.783" y="167.83" style="line-height:normal" dy="2.97" id="text120" font-weight="400" font-size="7.515" font-family="Pacifico" fill="#808080">jsat</text>
+    <text x="141.353" y="206.699" style="line-height:normal" dy="1.485" transform="rotate(-35.437)" id="text122" font-weight="400" font-size="3.758" font-family="Pacifico" fill="#808080">MachineLearning.jl</text>
+    <text x="268.006" y="221.454" style="line-height:normal" dy="1.485" id="text124" font-weight="400" font-size="3.758" font-family="Pacifico" fill="#808080">pipecnn</text>
+    <text x="267.467" y="-243.433" style="line-height:normal" dy="1.485" transform="rotate(76.278)" id="text126" font-weight="400" font-size="3.758" font-family="Pacifico" fill="#808080">ranger</text>
+    <text x="271.642" y="229.454" style="line-height:normal" dy="1.485" id="text128" font-weight="400" font-size="3.758" font-family="Pacifico" fill="#808080">weka</text>
+    <text x="260.751" y="213.454" style="line-height:normal" dy="1.485" id="text130" font-weight="400" font-size="3.758" font-family="Pacifico" fill="#808080">mir</text>
+    <text x="359.336" y="93.613" style="line-height:normal" dy="1.485" transform="rotate(19.583)" id="text132" font-weight="400" font-size="3.758" font-family="Pacifico" fill="#808080">sse</text>
+</svg>

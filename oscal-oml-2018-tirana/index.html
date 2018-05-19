@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>State of Open Source Machine Learning</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="27" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="Tirana, Albania, May 20, 2018" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/oscal-oml-2018-tirana" />
+    <meta property="og:title" content="State of Open Source Machine Learning" />
+    <meta property="og:description" content="What can be learnt from 64 open source machine learning projects?" />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/oscal-oml-2018-tirana/pictures/cover.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/oscal-oml-2018-tirana/pictures/cover.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>State of Open Source Machine Learning</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+		}
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.5em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -2em;
+        }
+        .shout {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        
+        .part > h2 {
+            font-family: "Uroob";
+            color: black;
+        }
+        .part {
+            background-color: white;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>State of Open Source Machine Learning</h2>
+		<p>Vadim Markovtsev<br><a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+                color: white;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:25px;
+                color: white;
+            }
+            #cover a {
+                color: white;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.6);
+			}
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Overview</h2>
+    </section>
+
+    <section class="slide" id="oml-projects">
+        <h2 id="oml-link"><a href="https://data.world/vmarkovtsev/open-ml">data</a></h2>
+        <h2>64 open ML projects</h2>
+        <object type="image/svg+xml" data="pictures/oml.svg" id="oml">
+            Word cloud with open machine learning project names.
+        </object>
+        <style>
+            #oml-projects {
+                display: inline-block;
+            }
+            #oml-link {
+                float: right;
+            }
+            #oml {
+                display: block;
+                margin: auto;
+            }
+            @media print {
+                #oml {
+                    width: 100%;
+                    height: 400px;
+                    background-image: url("pictures/oml.svg");
+                    background-size: contain !important;
+                    background-repeat: no-repeat !important;
+                    background-position: center !important;
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Alignment</h2>
+        <img src="pictures/alignment.svg" class="center">
+    </section>
+
+    <section class="slide">
+        <h2>Projects by year</h2>
+        <img src="pictures/years.svg" class="stretch">
+        <style>
+            .stretch {
+                width: 100%;
+                height: 400px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Projects by interface language</h2>
+        <img src="pictures/interface_bubbles.svg" class="stretch">
+    </section>
+
+    <section class="slide">
+        <h2>Projects by implementation language</h2>
+        <img src="pictures/implementation_bubbles.svg" class="stretch">
+    </section>
+
+    <section class="slide">
+        <h2>Projects by license</h2>
+        <img src="pictures/licenses.svg" class="stretch">
+    </section>
+
+    <section class="slide">
+        <h2>☆ Stars</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td>peak 1</td>
+                    <td>&lt; 1000</td>
+                    <td>28% (18)</td>
+                </tr>
+                <tr>
+                    <td>peak 2</td>
+                    <td>2000 - 4000</td>
+                    <td>25% (16)</td>
+                </tr>
+                <tr>
+                    <td>top</td>
+                    <td>100,000</td>
+                    <td>Tensorflow</td>
+                </tr>
+                <tr>
+                    <td>2nd</td>
+                    <td>29,000</td>
+                    <td>Keras</td>
+                </tr>
+                <tr>
+                    <td>3rd</td>
+                    <td>28,000</td>
+                    <td>sklearn</td>
+                </tr>
+            </tbody>
+        </table>
+        <img src="pictures/topstars.svg" id="topstars">
+        <style>
+            #topstars {
+                width: 100%;
+                height: 160px;
+                margin-top: -10px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow</h2>
+        <div class="project">
+            <ul>
+                <li>Deep learning</li>
+                <li>Disclosed in 2015</li>
+                <li>Governed by Google</li>
+                <li>Written in C++</li>
+                <li>Main API is Python</li>
+                <li>1,500 contributors</li>
+                <li>11,500 GitHub issues</li>
+            </ul>
+            <img src="pictures/tensorflow_logo.svg">
+        </div>
+        <style>
+            .project {
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+                align-content: stretch;
+                position: relative;
+            }
+            .project > ul {
+                margin-right: 100px;
+            }
+            .project > img {
+                object-fit: contain;
+                flex: 1 1 auto;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Keras</h2>
+        <div class="project">
+            <ul>
+                <li>Deep learning</li>
+                <li>Appeared in 2015</li>
+                <li>Governed by Francois Chollet</li>
+                <li>Written in Python</li>
+                <li>API is Python</li>
+                <li>660 contributors</li>
+                <li>7200 GitHub issues</li>
+            </ul>
+            <img src="pictures/keras_logo.svg">
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>sklearn</h2>
+        <div class="project">
+            <ul>
+                <li>Generic Machine Learning</li>
+                <li>Appeared in 2010</li>
+                <li>Independent group governance</li>
+                <li>Written in Python</li>
+                <li>API is Python</li>
+                <li>1080 contributors</li>
+                <li>5000 GitHub issues</li>
+            </ul>
+            <img src="pictures/sklearn_logo.svg">
+        </div>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Community relations</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Middle-term forecast</h2>
+        <div class="infograph" id="info-forecast">
+            <div class="info-forecast-row"><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span></div>
+            <div class="info-forecast-row"><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span><span class="info-good"></span></div>
+            <div class="info-forecast-row"><span class="info-good"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span></div>
+            <div class="info-forecast-row"><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-stop"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span><span class="info-dead"></span></div>
+        </div>
+        <style>
+            .infograph {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 400px;
+                text-align: center;
+                text-decoration: none;
+            }
+            #info-forecast {
+                font-size: 135%;
+            }
+            #info-forecast span {
+                padding-left: 5px;
+                padding-right: 6px;
+                margin-left: -1px;
+            }
+            #info-forecast > div > span:first-child {
+                padding-left: 0;
+            }
+            #info-forecast > div > span:last-child {
+                padding-right: 0;
+            }
+            #info-forecast span::before {
+                font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+            }
+            .info-good::before {
+                content: "🚀";
+            }
+            .info-stop::before {
+                content: "😑";
+                color: #ff1700;
+            }
+            .info-dead::before {
+                content: "💀";
+                color: grey;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">What makes them fail?</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Contributors</h2>
+        <img src="pictures/contributors.svg" class="stretch">
+    </section>
+
+    <section class="slide">
+        <h2>Bus factor</h2>
+        <p>How many core developers can be excluded to kill the project?</p>
+        <a href="https://en.wikipedia.org/wiki/Bus_factor">Wikipedia</a>
+    </section>
+
+    <section class="slide">
+        <h2>Bus factor</h2>
+        <img src="pictures/cores.svg" class="stretch">
+    </section>
+
+    <section class="slide">
+        <h2>Contribution guidelines</h2>
+        <p>Document which describes how to help the project.</p>
+        <a href="https://help.github.com/articles/setting-guidelines-for-repository-contributors/">Reference.</a>
+    </section>
+
+    <section class="slide">
+        <h2>Contribution guidelines</h2>
+        <img src="pictures/contribs.svg" class="stretch">
+    </section>
+
+    <section class="slide">
+        <h2>Code of conduct</h2>
+        <p>Document which specifies the communication norms. It improves
+            the diversity and helps to maintain a welcoming environment.</p>
+        <a href="https://www.contributor-covenant.org/">Example.</a>
+    </section>
+
+    <section class="slide">
+        <h2>Code of conduct</h2>
+        <img src="pictures/codes.svg" class="stretch">
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Open source machine learning</h2>
+        <ul>
+            <li>Half is owned by companies</li>
+            <li>Hype started in 2013, peak in 2015</li>
+            <li>Python rules</li>
+            <li>Apache license is the most popular</li>
+            <li>Top: Tensorflow, Keras, sklearn</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">No community - no future</h2>
+        <style>
+            .shout-small {
+                font-size: 3.5em !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Open source machine learning</h2>
+        <ul>
+            <li>Bus factor should be &gt;1</li>
+            <li>Contribution guidelines</li>
+            <li>Code of conduct</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li>
+                <i class="fa fa-medium monofa" aria-hidden="true"></i>
+                <a href="https://medium.com/sourced">sourced</a>
+            </li>
+        </ul>
+        <div class="vista" id="qrcode"></div>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                position: absolute;
+                left: 550px;
+                top: 150px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
