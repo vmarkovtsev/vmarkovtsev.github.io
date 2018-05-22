@@ -27,6 +27,6 @@
         <tspan x="-1.415" y="177.652" font-size="30">parse</tspan>
     </text>
     <text y="116.999" x="-.305" style="line-height:125%;-inkscape-font-specification:Ubuntu" font-weight="400" font-size="12.5" font-family="Ubuntu" letter-spacing="0" word-spacing="0">
-        <tspan y="116.999" x="-.305" font-size="30">analyze</tspan>
+        <tspan y="113.000" x="-.305" font-size="30">calculate matrix</tspan>
     </text>
 </svg>

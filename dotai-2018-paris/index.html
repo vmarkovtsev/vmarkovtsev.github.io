@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@tmarkhor" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="???" />
+    <meta name="twitter:data1" content="55" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="May 31, 2018, Paris" />
     <meta property="og:type" content="article" />
@@ -156,6 +156,9 @@
             float: left;
             width: 50%;
         }
+        a {
+            color: white !important;
+        }
     </style>
 
 	<section class="slide vista vista-cover" id="cover">
@@ -232,6 +235,32 @@
         <h2 class="shout">How?</h2>
     </section>
 
+    <section class="slide vista" id="ml">
+        <h2 class="shout small-shout">🚀 Machine Learning</h2>
+        <style>
+            #ml {
+                background-image: url("pictures/ml.png");
+            }
+            #ml::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.75);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="duplex">
+        <style>
+            #duplex {
+                background-image: url("pictures/duplex.png");
+            }
+        </style>
+    </section>
+
     <section class="slide vista vista-cover" id="github">
         <h2 class="shout small-shout"><i class="fa fa-inverse fa-github-alt" aria-hidden="true"></i> GitHub</h2>
         <style>
@@ -258,25 +287,7 @@
         </style>
     </section>
 
-    <section class="slide vista" id="ml">
-        <h2 class="shout small-shout">🚀 Machine Learning</h2>
-        <style>
-            #ml {
-                background-image: url("pictures/ml.png");
-            }
-            #ml::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                background-color: rgba(0, 0, 0, 0.75);
-            }
-        </style>
-    </section>
-
-    <section class="slide vista vista-cover" id="dragons">
+    <section class="slide vista vista-cover dragons">
         <div></div>
         <h2>Machine Learning on Source Code</h2>
         <style>
@@ -284,10 +295,10 @@
               font-family: CartaMarinaBold;
               src: url("Carta Marina Bold.woff2") format("woff2")
             }
-            #dragons {
+            .dragons {
                 background: url("pictures/here_be_dragons.jpg") #000;
             }
-            #dragons h2 {
+            .dragons h2 {
                 position: absolute;
                 left: 507px;
                 top: 92px;
@@ -296,7 +307,7 @@
                 color: #000;
                 font-family: CartaMarinaBold;
             }
-            #dragons div {
+            .dragons div {
                 position: absolute;
                 left: 527px;
                 width: 240px;
@@ -305,6 +316,20 @@
                 background: radial-gradient(circle at center, #bababa 0, rgba(186, 186, 186, 0) 75%)
             }
         </style>
+    </section>
+
+    <section class="slide vista vista-cover dragons"  id="dragons-mloncode">
+        <div></div>
+        <h2>MLonCode</h2>
+        <style>
+            #dragons-mloncode h2 {
+                top: 167px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Code naturalness</h2>
     </section>
     
     <section class="slide">
@@ -431,9 +456,9 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
     </section>
 
     <section class="slide">
-        <h2 class="shout">How to estimate \(V_i \cdot V_j\) ?</h2>
+        <h2 class="shout math-shout">How to estimate \(V_i \cdot V_j\) ?</h2>
         <style>
-        .shout > span {
+        .math-shout > span {
             font-weight: inherit !important;
             font-size: inherit !important;
             font-family: inherit !important;
@@ -450,6 +475,15 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
 <code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
 <code>            <span class="hl-reserved">self</span>.socket.close()</code>
 <code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Splitting and normalization</h2>
+        <pre>
+            <code>_tcp_socket_connect -> [tcp, socket, connect]</code>
+            <code>AuthenticationError -> [authentication, error]</code>
+            <code>authentication, authenticate -> authenticate</code>
         </pre>
     </section>
 
@@ -488,6 +522,19 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
         </style>
     </section>
 
+    <section class="slide vista" id="all2all1">
+        <style>
+            #all2all1 {
+                background-image: url("pictures/all2all_1_black.svg");
+            }
+            @media not print {
+                #all2all1 {
+                    background-image: url("pictures/all2all_1_white.svg");
+                }
+            }
+        </style>
+    </section>
+
     <section class="slide">
             <pre><code><span class="hl-keyword">class</span> Database:</code>
 <code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
@@ -502,10 +549,23 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
         <div class="context ctx2"></div>
         <style>
             .ctx2 {
-                width: 760px;
+                width: 700px;
                 height: 352px;
                 top: 156px;
-                left: 93px;
+                left: 153px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all2">
+        <style>
+            #all2all2 {
+                background-image: url("pictures/all2all_2_black.svg");
+            }
+            @media not print {
+                #all2all2 {
+                    background-image: url("pictures/all2all_2_white.svg");
+                }
             }
         </style>
     </section>
@@ -532,6 +592,19 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
         </style>
     </section>
 
+    <section class="slide vista" id="all2all3">
+        <style>
+            #all2all3 {
+                background-image: url("pictures/all2all_3_black.svg");
+            }
+            @media not print {
+                #all2all3 {
+                    background-image: url("pictures/all2all_3_white.svg");
+                }
+            }
+        </style>
+    </section>
+
     <section class="slide">
             <pre><code><span class="hl-keyword">class</span> Database:</code>
 <code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
@@ -550,6 +623,19 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
                 height: 50px;
                 top: 207px;
                 left: 213px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all4">
+        <style>
+            #all2all4 {
+                background-image: url("pictures/all2all_4_black.svg");
+            }
+            @media not print {
+                #all2all4 {
+                    background-image: url("pictures/all2all_4_white.svg");
+                }
             }
         </style>
     </section>
@@ -576,6 +662,19 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
         </style>
     </section>
 
+    <section class="slide vista" id="all2all5">
+        <style>
+            #all2all5 {
+                background-image: url("pictures/all2all_5_black.svg");
+            }
+            @media not print {
+                #all2all5 {
+                    background-image: url("pictures/all2all_5_white.svg");
+                }
+            }
+        </style>
+    </section>
+
     <section class="slide">
             <pre><code><span class="hl-keyword">class</span> Database:</code>
 <code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
@@ -594,6 +693,19 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
                 height: 50px;
                 top: 307px;
                 left: 270px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all6">
+        <style>
+            #all2all6 {
+                background-image: url("pictures/all2all_6_black.svg");
+            }
+            @media not print {
+                #all2all6 {
+                    background-image: url("pictures/all2all_6_white.svg");
+                }
             }
         </style>
     </section>
@@ -620,6 +732,19 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
         </style>
     </section>
 
+    <section class="slide vista" id="all2all7">
+        <style>
+            #all2all7 {
+                background-image: url("pictures/all2all_7_black.svg");
+            }
+            @media not print {
+                #all2all7 {
+                    background-image: url("pictures/all2all_7_white.svg");
+                }
+            }
+        </style>
+    </section>
+
     <section class="slide">
             <pre><code><span class="hl-keyword">class</span> Database:</code>
 <code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
@@ -642,6 +767,19 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
         </style>
     </section>
 
+    <section class="slide vista" id="all2all8">
+        <style>
+            #all2all8 {
+                background-image: url("pictures/all2all_8_black.svg");
+            }
+            @media not print {
+                #all2all8 {
+                    background-image: url("pictures/all2all_8_white.svg");
+                }
+            }
+        </style>
+    </section>
+
     <section class="slide">
             <pre><code><span class="hl-keyword">class</span> Database:</code>
 <code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
@@ -660,110 +798,6 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
                 height: 50px;
                 top: 407px;
                 left: 272px;
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all1">
-        <style>
-            #all2all1 {
-                background-image: url("pictures/all2all_1_black.svg");
-            }
-            @media not print {
-                #all2all1 {
-                    background-image: url("pictures/all2all_1_white.svg");
-                }
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all2">
-        <style>
-            #all2all2 {
-                background-image: url("pictures/all2all_2_black.svg");
-            }
-            @media not print {
-                #all2all2 {
-                    background-image: url("pictures/all2all_2_white.svg");
-                }
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all3">
-        <style>
-            #all2all3 {
-                background-image: url("pictures/all2all_3_black.svg");
-            }
-            @media not print {
-                #all2all3 {
-                    background-image: url("pictures/all2all_3_white.svg");
-                }
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all4">
-        <style>
-            #all2all4 {
-                background-image: url("pictures/all2all_4_black.svg");
-            }
-            @media not print {
-                #all2all4 {
-                    background-image: url("pictures/all2all_4_white.svg");
-                }
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all5">
-        <style>
-            #all2all5 {
-                background-image: url("pictures/all2all_5_black.svg");
-            }
-            @media not print {
-                #all2all5 {
-                    background-image: url("pictures/all2all_5_white.svg");
-                }
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all6">
-        <style>
-            #all2all6 {
-                background-image: url("pictures/all2all_6_black.svg");
-            }
-            @media not print {
-                #all2all6 {
-                    background-image: url("pictures/all2all_6_white.svg");
-                }
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all7">
-        <style>
-            #all2all7 {
-                background-image: url("pictures/all2all_7_black.svg");
-            }
-            @media not print {
-                #all2all7 {
-                    background-image: url("pictures/all2all_7_white.svg");
-                }
-            }
-        </style>
-    </section>
-
-    <section class="slide vista" id="all2all8">
-        <style>
-            #all2all8 {
-                background-image: url("pictures/all2all_8_black.svg");
-            }
-            @media not print {
-                #all2all8 {
-                    background-image: url("pictures/all2all_8_white.svg");
-                }
             }
         </style>
     </section>
@@ -810,24 +844,45 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_1 \right\rVert \left\l
         </style>
     </section>
 
-    <section class="slide" id="pmi">
-        <p>\(C_{ij} =\) number of times \(i\) and \(j\) were together <i class="fa fa-heart" aria-hidden="true"></i></p>
+    <section class="slide">
+        <h2>Incidence matrix \(C_{ij}\)</h2>
+        <ul>
+            <li>\(C_{ij} =\) number of times \(i\) and \(j\) were together <i class="fa fa-heart inline" aria-hidden="true"></i></li>
+            <li>Also known as the <span class="bold">co-occurrence matrix</span></li>
+        </ul>
+        <style>
+            .inline {
+                display: inline;
+            }
+            .bold {
+                font-weight: bold;
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="pmi">      
+        <h2>Pointwise Mutual Information</h2>
 $$
 V_i \cdot V_j = PMI_{ij} = \log\frac{C_{ij} \sum C}{\sum_{k = 1}^N C_{ik}\sum_{k = 1}^N C_{jk}}
 $$
 <style>
-    #pmi > p, #pmi > span {
-        font-size: 1.5em;
+    #pmi {
+        display: flex;
+        flex-direction: column;
     }
-    #pmi > p {
-        margin-top: 50px;
-        margin-bottom: 140px;
+    #pmi > span {
+        margin-top: 100px;
+        font-size: 1.5em;
     }
 </style>
     </section>
 
     <section class="slide">
         <h2 class="shout">Representation Learning on Explicit Matrix</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout small-shout">Stochastic Gradient Descent</h2>
     </section>
 
     <section class="slide">
@@ -854,12 +909,27 @@ $$
             <li><i class="fa fa-check monofa" aria-hidden="true"></i>Multi-GPU</li>
             <li><i class="fa fa-check monofa" aria-hidden="true"></i>Multi-node</li>
             <li><i class="fa fa-check monofa" aria-hidden="true"></i>Quality tricks</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i><a href="https://arxiv.org/abs/1602.02215">Paper on ArXiV</a></li>
             <li><i class="fa fa-check monofa" aria-hidden="true"></i><a href="https://github.com/src-d/tensorflow-swivel">Tensorflow implementation</a></li>
         </ul>
     </section>
 
-    <section class="slide">
-        <h2 class="shout">Data Pipeline</h2>
+    <section class="slide vista vista-cover" id="pipeline">
+        <h2 class="shout">Dataset Extraction</h2>
+        <style>
+            #pipeline {
+                background-image: url("pictures/pipeline.jpg");
+            }
+            #pipeline::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+        </style>
     </section>
 
     <section class="slide vista" id="mloncode-pyramid">
@@ -878,7 +948,7 @@ $$
     </section>
 
     <section class="slide">
-        <h2 class="shout">pga.sourced.tech</h2>
+        <h2 class="shout shout-small">Public Git Archive<br>pga.sourced.tech</h2>
     </section>
 
     <section class="slide">
@@ -907,24 +977,38 @@ $$
         <p>“bug” <span class="compare">-</span> “test” <span class="compare">+</span> “expect” <span class="compare">=</span> “suppress”</p>
         <p>“database” <span class="compare">-</span> “query” <span class="compare">+</span> “tune” <span class="compare">=</span> “settings”</p>
         <p>“send” <span class="compare">-</span> “receive” <span class="compare">+</span> “pop” <span class="compare">=</span> “push”</p>
+        <div id="analogies" class="vista"></div>
         <style>
             .compare {
                 color: #fff01f;
+            }
+            #analogies {
+                position: absolute;
+                bottom: 50px;
+                right: 50px;
+                width: 500px;
+                height: 300px;
+                background-image: url("pictures/analogy_black.png");
+            }
+            @media not print {
+                #analogies {
+                    background-image: url("pictures/analogy_white.png");
+                }
             }
         </style>
     </section>
 
     <section class="slide">
-        <h2>Misprints</h2>
+        <h2>Typos</h2>
         <ul>
-            <li>recieve = receive</li>
-            <li>grey = gray</li>
-            <li>calback = callbak = callback</li>
+            <li>recieve <span class="compare">=</span> receive</li>
+            <li>grey <span class="compare">=</span> gray</li>
+            <li>calback <span class="compare">=</span> callbak <span class="compare">=</span> callback</li>
         </ul>
     </section>
 
     <section class="slide vista vista-cover" id="recap">
-        <h2>Recap</h2>
+        <h2>Conclusion</h2>
         <ul class="no-bullets">
             <li>The way we code can be improved...</li>
             <li>&emsp;...using naturalness in code.</li>
@@ -959,7 +1043,13 @@ $$
     </section>
 
     <section class="slide vista">
-        <h2 class="shout">MLonCode is fun</h2>
+        <h2 class="shout">#MLonCode is fun<span class="color-emoji">🤓</span></h2>
+        <style>
+            .color-emoji {
+                font-size: 120px;
+                font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+            }
+        </style>
     </section>
 
 	<section class="slide">
@@ -972,6 +1062,7 @@ $$
             <li><i class="fa fa-trophy monofa" aria-hidden="true"></i><a href="https://github.com/src-d/awesome-machine-learning-on-source-code">Awesome #MLonCode</a></li>
         </ul>
         <div class="vista" id="qrcode"></div>
+        <a id="qrcode-link" href="http://bit.ly/2jWassK">bit.ly/2jWassK</a>
         <style>
             #qrcode {
                 width: 350px;
@@ -985,6 +1076,12 @@ $$
                 #qrcode {
                     background-image: url("pictures/qrcode_white.svg");
                 }
+            }
+            #qrcode-link {
+                position: absolute;
+                left: 615px;
+                top: 500px;
+                font-size: 150%;
             }
         </style>
     </section>
