@@ -264,14 +264,6 @@
         </style>
     </section>
 
-    <section class="slide vista vista-cover" id="duplex">
-        <style>
-            #duplex {
-                background-image: url("pictures/duplex.png");
-            }
-        </style>
-    </section>
-
     <section class="slide vista vista-cover" id="github">
         <h2 class="shout small-shout"><i class="fa fa-inverse fa-github-alt" aria-hidden="true"></i> GitHub</h2>
         <style>
@@ -421,7 +413,7 @@ distance(V_1, V_2) < distance(V_1, V_3)
 \)
             </p><p>
 \(
-distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_i \right\rVert \left\lVert V_j \right\rVert}
+distance(V_i, V_j) = \arccos \frac{V_i \cdot V_j}{\left\lVert V_i \right\rVert \left\lVert V_j \right\rVert}
 \)
             </p>
         </div>
@@ -430,9 +422,6 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_i \right\rVert \left\l
         <div class="math-label" id="frac"></div>
         <style>
             .math-center {
-                display: table;
-                margin-left: auto;
-                margin-right: auto;
                 font-size: 1.4em;
             } 
             p.skip {
@@ -450,18 +439,18 @@ distance(V_i, V_j) = - \frac{V_i \cdot V_j}{\left\lVert V_i \right\rVert \left\l
             }
             #scalar-product {
                 bottom: 95px;
-                right: 110px;
+                right: 100px;
             }
             #norm {
-                right: 178px;
+                right: 168px;
                 bottom: 50px;
             }
             #frac {
                 height: 2px;
                 width: 210px;
                 background-color: #fff01f;
-                bottom: 103px;
-                right: 105px;
+                bottom: 104px;
+                right: 95px;
             }
         </style>
     </section>
@@ -1034,18 +1023,40 @@ $$
 
     <section class="slide" id="dist">
         $$
-        \min \left( distance(X, \text{"setting"}) + distance(X, \text{"get"}) + distance(X, \text{"key"}) \right)
+        \min \left( distance(X, \text{"settings"}) + distance(X, \text{"get"}) + distance(X, \text{"key"}) \right)
         $$
         <style>
             #dist > span {
                 margin-top: 200px;
-                margin-left: -25px;
+                margin-left: -28px;
             }
         </style>
     </section>
 
     <section class="slide">
-        <h2 class="shout">set</h2>
+        <h2>set</h2>
+        <h2 id="suggest-save">save</h2>
+        <h2 id="suggest-step">step</h2>
+        <h2 id="suggest-sneak">sneak</h2>
+        <h2 id="suggest-sum">sum</h2>
+        <h2 id="suggest-ssl">ssl</h2>
+        <style>
+            #suggest-save {
+                margin-left: 150px;
+            }
+            #suggest-step {
+                margin-left: 300px;
+            }
+            #suggest-sneak {
+                margin-left: 450px;
+            }
+            #suggest-sum {
+                margin-left: 600px;
+            }
+            #suggest-ssl {
+                margin-left: 750px;
+            }
+        </style>
     </section>
 
     <section class="slide vista vista-cover" id="recap">
@@ -1087,7 +1098,7 @@ $$
         <h2 class="shout">#MLonCode is fun<span class="color-emoji">🤓</span></h2>
         <style>
             .color-emoji {
-                font-size: 120px;
+                font-size: 110px;
                 font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
             }
         </style>
