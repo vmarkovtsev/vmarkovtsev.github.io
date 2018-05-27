@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="???" />
+    <meta name="twitter:data1" content="13" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="Gothenburg, Sweden, 29/05/2018" />
     <meta property="og:type" content="article" />
@@ -24,7 +24,7 @@
 	<header class="caption">
 		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
 		<h1>Public Git Archive</h1>
-		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+		<p>Vadim Markovtsev, Waren Long, <a href="https://sourced.tech">source{d}</a> - <a href="https://2018.msrconf.org">MSR'18</a>.</p>
 	</header>
 
 	<style>
@@ -163,6 +163,11 @@
         .part {
             background: radial-gradient(circle at center, #fff01f 0, black 130%)
         }
+        .shout-small {
+            font-size: 400% !important;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
     </style>
 
 	<section class="slide vista vista-cover" id="cover">
@@ -214,33 +219,131 @@
         </style>
     </section>
 
-    <section class="slide vista">
-        <h2>Processing</h2>
-        <ul>
-            <li>Based on GHTorrent</li>
-            <li>borges</li>
-            <li>siva</li>
-            <li>borges-indexer</li>
-        </ul>
-    </section>
-
-    <section class="slide vista">
-        <h2>Fetching</h2>
-        PGA tool
-    </section>
-
-    <section class="slide vista">
-        <h2>Using</h2>
-        <ul>
-            <li>siva unpack</li>
-            <li>go-git</li>
-        </ul>
-    </section>
-
-    <section class="slide vista">
-        <h2>Using</h2>
-        engine
+    <section class="slide">
+        <h2>Language stats</h2>
+        <img src="pictures/lang_code_comment.svg" id="code-stats">
+        <img src="pictures/lang_stats.svg" id="lang-stats">
+        <style>
+            #code-stats, #lang-stats {
+                width: 400px;
+            }
+        </style>
     </section>    
+
+    <section class="slide">
+        <h2>Generation</h2>
+        <ol>
+            <li>Fetch GHTorrent</li>
+            <li>Threshold by <i class="fa fa-star" aria-hidden="true"></i>50</li>
+            <li>Clone with <a href="https://github.com/src-d/borges">borges</a></li>
+            <li>Pack to <a href="https://github.com/src-d/go-siva">siva</a></li>
+            <li>Index with <a href="https://github.com/src-d/datasets/tree/master/PublicGitArchive/borges-indexer">borges-indexer</a></li>
+        </ol>
+    </section>
+
+    <section class="slide vista" id="funnel">
+        <style>
+            #funnel {
+                background-image: url("pictures/funnel_white.svg");
+                background-size: 60% !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">90% of repositories constitute 50% of the disk size</h2>
+    </section>
+
+    <section class="slide vista" id="siva">
+        <h2>siva</h2>
+        <style>
+            #siva {
+                text-align: center;
+            }
+            #siva > h2 {
+                font-size: 400%;
+            }
+            #siva {
+                background-image: url("pictures/rooted_black.png");
+                background-size: 80% !important;
+            }
+            @media not print {
+                #siva {
+                    background-image: url("pictures/rooted_white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="get-pga">
+        <h2>Getting PGA</h2>
+        <a href="https://pga.sourced.tech">pga.sourced.tech</a>
+        <pre><code class="bold">pga list</code> - download and list the index</pre>
+        <pre><code class="bold">pga get</code> - download the siva files</pre>
+        <style>
+            #get-pga > a {
+                display: block;
+                margin-bottom: 100px;
+                font-size: 200%;
+            }
+            #get-pga code {
+                display: inline;
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="using">
+        <h2>Using PGA</h2>
+        <ol>
+            <li><pre><code class="bold">siva unpack</code></pre> + regular Git</li>
+            <li><i class="fa fa-github-alt" aria-hidden="true"></i> <a href="https://github.com/src-d/go-git">go-git</a></li>
+            <li><i class="fa fa-github-alt" aria-hidden="true"></i> <a href="https://github.com/src-d/engine">source{d} engine</a></li>
+        </ol>
+        <style>
+            #using code, #using pre {
+                display: inline;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <pre><code>&gt;&gt;&gt; <span class="hl-keyword">from</span> sourced.engine <span class="hl-keyword">import</span> Engine</code>
+        <code>&gt;&gt;&gt; engine = Engine(spark, <span class="hl-string">"/path/to/siva/files"</span>, <span class="hl-string">"siva"</span>)</code>
+        <code>&gt;&gt;&gt; engine.repositories.references.head_ref \
+        .commits.tree_entries.blobs \
+        .classify_languages() \
+        .filter(<span class="hl-string">'lang = "Python"'</span>) \
+        .extract_uasts() \
+        .query_uast(<span class="hl-string">'//*[@roleIdentifier]'</span>) \
+        .extract_tokens(<span class="hl-string">"result"</span>, <span class="hl-string">"tokens"</span>) \
+        .select(<span class="hl-string">"blob_id"</span>, <span class="hl-string">"path"</span>, <span class="hl-string">"tokens"</span>)</code>
+        </pre>
+        <style>
+            .hl-keyword {
+                color: #cc8242;
+                font-weight: bold;
+            }
+            .hl-def {
+                color: #ffc66d;
+            }
+            .hl-reserved {
+                color: #94558D;
+            }
+            .hl-string {
+                color: #6a8759;
+            }
+        </style>
+    </section>    
+
+    <section class="slide">
+        <h2>Legal</h2>
+        <ul>
+            <li>PGA contains personal information</li>
+            <li>All Git data is stored in the USA</li>
+            <li>Ability to exclude any repository from the dataset</li>
+            <li>Index license: <a href="">CC-BY-NC-SA 4.0</a> &gt; <a href="https://opendatacommons.org/licenses/odbl/">ODBL</a></p>
+        </ul>
+    </section>
 
     <section class="slide vista" id="licenses">
         <h2>Licenses</h2>
@@ -255,18 +358,6 @@
                 bottom: 50px;
             }
         </style>
-    </section>
-
-    <section class="slide">
-        <h2>Licensing</h2>
-        <ul>
-            <li><a href="https://help.github.com/articles/github-terms-of-service/">GitHub Terms of Service</a></li>
-            <li>We do not own the code</li>
-            <li>GDPR</li> 
-        </ul>
-        <p><span class="bold">Solution:</span> store all the data in the USA.</p>
-        <br>
-        <p>Index: <a href="">CC-BY-NC-SA 4.0</a>, to be changed to <a href="https://opendatacommons.org/licenses/odbl/">ODBL</a>.</p>
     </section>
 
 	<section class="slide" id="contacts">
