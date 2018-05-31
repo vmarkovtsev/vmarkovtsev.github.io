@@ -1,0 +1,90 @@
+Hi! I am Vadim, the Lead Machine Learning engineer at source{d} and a Google Developer Expert in Machine Learning. I am going to talk about something completely non-standard: machine learning on source code, or how  we call it internally and force on Twitter, MlonCode.
+
+Let me begin with a quick example: here you can see a Python code snippet. It basically defines a class named Settings with two methods: get and the mysterious second one which begins with s. The question is, what will we type next? The autocompletion suggestions inside all IDEs I checked out were very far from being helpful. Yet it is rather evident that we will type "set". Obviously, this requires some deeper understanding of the source code internals rather than just purely mechanical parsing and ad-hoc autocompletion ranking.
+
+So obviously the modern code assistants can be smarter, and the way they are currently implemented does not really allow for using any advanced insights. How can we fix this?
+The first part of my talk will try to answer.
+
+There are two recent trends which I'd like to highlight. The first is the insane progress of Machine Learning. I feel that there is no need to go verbose here: you have definitely heard about deep learning and the fantastic natural language processing achievements such as dramatically better machine translation and robots passing the Turing test and scheduling haircuts on the phone. Not for robots themselves but rather for their owners of course.
+
+The second trend is the enormous growth of open source software. The number of public repositories on GitHub doubles every few years. We estimate the overall size of Git data to be petabyte-scale. Yet few folks have realized yet that this data can be analysed, not just used for the primary role. Notably, Mining Software Repositories community has - I've just returned from their conference in Gothenburg.
+
+So machine learning on source code fuses these two trends: it combines the cool new machine learning approaches with the huge amount of publicly available source code as the input. We call it MLonCode because it is so faster and easier to say.
+
+There is an incredible source code property which plays the crucial part in doing mloncode: code naturalness. It is the core difference between how humans write code and how machines execute it. I will illustrate this.
+
+As you know, there are two most difficult problems in software development: cache invalidation and naming. So this Python snippet is apparently devoted to the latter problem: how do you think we should name this class? It contains three methods: connect, query and close, the first two methods have certain arguments. Hm, query, sql, dbname... So what's your version?
+
+Right, it is "Database". Do you find it funny: we do not really know the actual contents of those methods yet we are pretty confident about the class name.
+
+The second example is an illustration of some weird code which, em, smells. Smells is a pretty good word actually: maybe the code of the methods does make sense, but the names clearly do not. Nobody should name a serious, respectable class Foo or create a function "do" with an absolutely shady argument "really". We are likely to execute the code, but we are not 100% sure mmm? Those "lazy" identifiers are called metasyntactic by the way.
+
+These examples show how the source code is natural: it is written by humans, for humans. There are many other examples which you can imagine: comments, readability, etc. The code naturalness can be employed to make our software development experience more pleasant, less self-repeating. The second part of my talk demonstrates one of the ways how the code naturalness can be captured, measured and how it delivers that promise.
+
+This way is inspired by the "embed and conquer" paradigm in machine learning: let's calculate source code identifier embeddings.
+
+Identifier embeddings are a mapping from names of classes, functions, variables to dense vectors in some artificial algebraic space. We want to define the distance between the vectors in such a way that those identifiers which are related to each other are close and those which have nothing to do with each other appear far away. The distance definition is reduced to the definition of the scalar product between vectors if we say that we take the cosine distance metric - that is, the angle between vectors.
+
+So far so good, now we need to find a proper way to estimate the scalar product between any pair of vectors so that the distances satisfy our ultimate requirement of reflecting the similarity. Here is how to do it. I return back to code snippets - remember, this is machine learning on source code.
+
+We see the Python class named Database. It has a method named connect with some obvious arguments, it kind of opens the connection and tries to authorize. We are going to extract identifiers from this snippet and embed them.
+
+In order to keep the vocabulary size compact, we do splitting and normalization. Parts of identifiers separated by an underscore or case switch are distinguished. Similar words alias to the single delegate.
+
+Now the core idea is to traverse the code in a greedy fashion. First take the full snippet and perform the extraction. We connect the extracted tokens all to all in a graph. The nodes of the graph are tokens and the edge weights are the corresponding multiplied frequencies. Here how this graph looks like.
+
+The edge weight corresponds to it's thickness and brightness.
+
+We do the next step and extract identifiers from all the code but the class name. So we walk the abstract syntax tree of this code. We then sum the old edge weights with the new, freshly calculated ones and get the new graph.
+
+As you see, those identifiers which often appear together in the same abstract syntax subtree are connected with bigger weights.
+
+Now we just take the method signature and repeat the procedure.
+
+Then the first line.
+
+Then the try-except block.
+
+Then all the possible subtrees of this try-except block.
+
+Finally, we come to this graph. Look attentively at it: does it resemble anything?
+
+dot logo, of course!
+
+Well, apart from resembling a dot logo indeed, this graph defines the node incidence matrix, or, as it called more often in our case, the co-occurrence matrix. The value of each cell is the weight of the corresponding edge connecting the pair of indexed nodes.
+
+So why have I just showed all of this? It is the pointwise mutual information - PMI definition. PMI equals to the scalar product of vectors on one hand, and to the function on the elements of the co-occurrence matrix on the other. It is theoretically proven that such a way to define the scalar product satisfies the distance similarity requirement I mentioned earlier. This is our missing scalar product estimation! Yes!
+
+We have fully stated our identifier embeddings problem now: given the co-occurrence matrix of source code identifiers and the PMI equation, calculate the dense vectors for each identifier to minimize the difference between their scalar products and the real PMI values. There is a nice name for it: representation learning on explicit co-occurrence matrix. It contrasts to regular word2vec methods CBOW and skip-gram which perform representation learning on implicit co-occurrence matrix.
+
+We will iteratively converge to the best solution through stochastic gradient descent - SGD. It propagates the scalar product - PMI differences to the embedding vectors.
+
+There is a problem though which prevents from doing it in a brute-force way: the co-occurence matrix is typically large. Switching from our toy snippet example to the whole GitHub will result in the vocabulary of million tokens. Multiplying such large matrices is very slow: the operation scales qubically with the number of rows. The matrix is very sparse though, but still is huge.
+
+So instead we shard this matrix into small matrices with roughly the same amount of elements. We shuffle the rows and columns for that. SGD runs on each shard independently, and several shards can be processed in parallel.
+
+I've just described how Swivel works. Swivel appeared in 2016 at Google. It has a nice Tensorflow implementation, scales very well and is accelerated by GPUs. It is claimed to work better than regular word2vec or Glove. Here I must note that any data which can be represented as a matrix can be embedded with Swivel - by no means it has any custom dependencies on source code identifier internals.
+
+I also need to say a few words about the source code processing pipeline to run the tree traversal for identifier co-occurrence matrix calculation on the actual software projects. It can be summarized as a pyramid and is typical for various MLonCode tasks. We start with finding the software repositories we want to process - e.g. by querying GitHub API, then clone them, determine the main branch and take the latest revision of that branch, exclude irrelevant files and classify the rest by programming language. Then parse the files and perform the AST traversal.
+
+It is tedious to do first two steps; especially, effcient cloning is hard. So there is a dataset which we at source{d} created - public git archive or simply PGA - which contains 180k top-starred GitHub repositories, they are already cloned and available through HTTP. It saves up 100x cloning time.
+
+I am approaching the final part of my talk with the results of training identifier embeddings on the PGA dataset.
+
+We are able to find other metasyntactic identifiers as they tend to appear together and thus are discovered by looking at nearest neighbors to foo.
+
+Analogies are also present and are specific to programming. E.g. send is to receive as push is to pop.
+
+We can even find typos! Those pairs are very close to each other.
+
+Returning to our example from the beginning: what will we type next?
+
+We minimize the sum of distances from the candidate to all the three existing identifiers and this is the sorted result:
+
+set is the closest but there are also save and step or even sneak. Sneaking settings hehe.
+
+To summarize: our coding experience can be better, and the code naturalness can help there. Identifier embeddings capture the naturalness by exploiting the context, inherent structure of the source. And last but not least:
+
+MLonCode is much fun!
+
+Thank you.
