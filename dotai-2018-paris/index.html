@@ -18,7 +18,12 @@
     <meta property="og:image" content="https://vmarkovtsev.github.io/dotai-2018-paris/pictures/cover.png" />
     <meta property="twitter:image" content="https://vmarkovtsev.github.io/dotai-2018-paris/pictures/cover.png" />
     <link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
-    
+    <style>
+        @font-face {
+            font-family: "Uroob";
+            src: url("Uroob-Regular.woff2") format('woff2');
+        }
+    </style>
 </head>
 <body class="shower list">
 
@@ -861,7 +866,7 @@ distance(V_i, V_j) = \arccos \frac{V_i \cdot V_j}{\left\lVert V_i \right\rVert \
     </section>
 
     <section class="slide" id="pmi">      
-        <h2>Pointwise Mutual Information</h2>
+        <h2>Pointwise Mutual Information (PMI)</h2>
 $$
 V_i \cdot V_j = PMI_{ij} = \log\frac{C_{ij} \sum C}{\sum_{k = 1}^N C_{ik}\sum_{k = 1}^N C_{jk}}
 $$
@@ -909,9 +914,14 @@ $$
             <li><i class="fa fa-check monofa" aria-hidden="true"></i>Multi-GPU</li>
             <li><i class="fa fa-check monofa" aria-hidden="true"></i>Multi-node</li>
             <li><i class="fa fa-check monofa" aria-hidden="true"></i>Quality tricks</li>
-            <li><i class="fa fa-check monofa" aria-hidden="true"></i><a href="https://arxiv.org/abs/1602.02215">Paper on ArXiV</a></li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i><a href="https://arxiv.org/abs/1602.02215"><span class="italic">Swivel: Improving Embeddings by Noticing What's Missing</span> by Shazeer et.al.</a></li>
             <li><i class="fa fa-check monofa" aria-hidden="true"></i><a href="https://github.com/src-d/tensorflow-swivel">Tensorflow implementation</a></li>
         </ul>
+        <style>
+            .italic {
+                font-style: italic;
+            }
+        </style>
     </section>
 
     <section class="slide vista vista-cover" id="pipeline">
