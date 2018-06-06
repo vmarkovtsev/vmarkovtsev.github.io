@@ -2,7 +2,7 @@ Hi! I am Vadim, the Lead Machine Learning engineer at source{d} and a Google Dev
 
 Let me begin with a quick example: here you can see a Python code snippet. It basically defines a class named Settings with two methods: get and the mysterious second one which begins with s. The question is, what will we type next? The autocompletion suggestions inside all IDEs I checked out were very far from being helpful. Yet it is rather evident that we will type "set". Obviously, this requires some deeper understanding of the source code internals rather than just purely mechanical parsing and ad-hoc autocompletion ranking.
 
-So obviously the modern code assistants can be smarter, and the way they are currently implemented does not really allow for using any advanced insights. How can we fix this?
+So apparently the modern code assistants can be smarter, and the way they are currently implemented does not really allow for using any advanced insights. How can we fix this?
 The first part of my talk will try to answer.
 
 There are two recent trends which I'd like to highlight. The first is the insane progress of Machine Learning. I feel that there is no need to go verbose here: you have definitely heard about deep learning and the fantastic natural language processing achievements such as dramatically better machine translation and robots passing the Turing test and scheduling haircuts on the phone. Not for robots themselves but rather for their owners of course.
