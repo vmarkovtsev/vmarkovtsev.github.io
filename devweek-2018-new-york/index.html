@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="45" />
+    <meta name="twitter:data1" content="47" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="New York, USA - 19/06/2018" />
     <meta property="og:type" content="article" />
@@ -459,6 +459,14 @@
         </style>
     </section>
 
+    <section class="slide vista" id="amloncode">
+        <style>
+            #amloncode {
+                background: url("pictures/amloncode.png") white;
+            }
+        </style>
+    </section>
+
     <section class="slide">
         <h2 id="mloncode-stack-h">Tools for MLonCode</h2>
         <figure>
@@ -553,6 +561,22 @@
 </code></pre>
     </section>
 
+    <section class="slide">
+        <h2>How to parse</h2>
+        <ul>
+            <li>Regular expressions - <a href="http://pygments.org/">Pygments</a>,
+                <a href="https://highlightjs.org/">highlight.js</a></li>
+            <li><span class="box">Abstract syntax tree (AST)</span> - <a href="http://www.antlr.org/">ANTLR</a></li>
+            <li>Compilation</li>
+        </ul>
+        <style>
+            .box {
+                border: 1px solid white;
+                padding: 0 0.2em 0.1em 0.2em;
+            }
+        </style>
+    </section>
+
     <section class="slide vista" id="ast">
         <h2>AST</h2>
         <style>
@@ -566,23 +590,7 @@
             }
             #ast > h2 {
                 position: absolute;
-                bottom: 50px;
-            }
-        </style>
-    </section>
-
-    <section class="slide">
-        <h2>How to parse</h2>
-        <ul>
-            <li>Regular expressions - <a href="http://pygments.org/">Pygments</a>,
-                <a href="https://highlightjs.org/">highlight.js</a></li>
-            <li><span class="box">Abstract syntax tree (AST)</span> - <a href="http://www.antlr.org/">ANTLR</a></li>
-            <li>Compilation</li>
-        </ul>
-        <style>
-            .box {
-                border: 1px solid white;
-                padding: 0 0.2em 0.1em 0.2em;
+                bottom: 100px;
             }
         </style>
     </section>
@@ -713,6 +721,10 @@
     </section>
 
     <section class="slide">
+        <h2 class="shout">Identifier embeddings</h2>
+    </section>
+
+    <section class="slide">
         <div class="math-center">
             <p class="skip">
 \(
@@ -831,12 +843,11 @@ V_i \cdot V_j = PMI_{ij} = \log\frac{C_{ij} \sum C}{\sum_{k = 1}^N C_{ik}\sum_{k
         </ul>
     </section>
 
-    <section class="slide vista" id="amloncode">
-        <style>
-            #amloncode {
-                background: url("pictures/amloncode.png") white;
-            }
-        </style>
+    <section class="slide">
+        <pre><code>&gt;&gt;&gt; <span class="hl-keyword">from</span> sourced.ml.models <span class="hl-keyword">import</span> Id2Vec
+&gt;&gt;&gt; m = Id2Vec().load()
+&gt;&gt;&gt; <span class="hl-reserved">print</span>(m.embeddings[m[<span class="hl-string">"foo"</span>]])
+        </code></pre>
     </section>
 
     <section class="slide part">
