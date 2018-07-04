@@ -1,0 +1,77 @@
+<svg 
+    xmlns="http://www.w3.org/2000/svg" width="680" height="548" class="bubble2">
+    <g class="bubble" transform="translate(315.645 177.905)">
+        <circle r="133.773" fill="#54c88a"/>
+        <text dy="3.6" pointer-events="none" x="-.156" y="14.056" text-anchor="middle">
+            <tspan font-family="monospace" font-size="64">python</tspan>
+        </text>
+    </g>
+    <g class="bubble" transform="translate(119.374 329.932)">
+        <circle r="84.593" fill="#bbd442"/>
+        <text dy="3.6" pointer-events="none" x=".046" y="10.318" text-anchor="middle">
+            <tspan font-family="monospace" font-size="37.333">multi</tspan>
+        </text>
+    </g>
+    <g class="bubble" transform="translate(265.878 457.434)">
+        <circle r="72.435" fill="#85c4ed"/>
+        <text dy="3.6" pointer-events="none" x="1.75" y="5.228" text-anchor="middle">
+            <tspan font-family="monospace" font-size="32">java</tspan>
+        </text>
+    </g>
+    <g class="bubble" transform="translate(544.696 243.631)">
+        <circle r="62.999" fill="#ffc59c"/>
+        <text dy="3.6" pointer-events="none" x=".745" y="5.388" text-anchor="middle">
+            <tspan font-family="monospace" font-size="29.333">c++</tspan>
+        </text>
+    </g>
+    <g class="bubble" transform="translate(528 432.832)">
+        <circle r="51.805" fill="#4fb27a"/>
+        <text dy="3.6" pointer-events="none" x="-.958" y="2.374" text-anchor="middle">
+            <tspan font-family="monospace" font-size="21.333">r</tspan>
+        </text>
+    </g>
+    <g class="bubble" transform="translate(427.048 369.812)">
+        <circle r="51.805" fill="#741699"/>
+        <text dy="3.6" pointer-events="none" x="-.021" y="4.353" text-anchor="middle" fill="#fff">
+            <tspan font-family="monospace" font-size="21.333">cmdline</tspan>
+        </text>
+    </g>
+    <g class="bubble" transform="translate(626.415 301.53)">
+        <circle r="37.218" fill="#ff7364"/>
+        <text dy="3.6" pointer-events="none" x=".333" y="3.359" text-anchor="middle">
+            <tspan font-family="monospace" font-size="18.667">d</tspan>
+        </text>
+    </g>
+    <g class="bubble" transform="translate(575.092 142.134)">
+        <circle r="26.903" fill="#f1c40f"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle">julia</text>
+    </g>
+    <g class="bubble" transform="translate(400.425 465.126)">
+        <circle r="26.903" fill="#dc8345"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle">rust</text>
+    </g>
+    <g class="bubble" transform="translate(495.621 79.675)">
+        <circle r="26.903" fill="#e74c3c"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle">php</text>
+    </g>
+    <g class="bubble" transform="translate(571.517 354.457)">
+        <circle r="26.903" fill="#096c34"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle" fill="#fff">c#</text>
+    </g>
+    <g class="bubble" transform="translate(104.691 164.523)">
+        <circle r="26.903" fill="#4d1567"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle" fill="#fff">go</text>
+    </g>
+    <g class="bubble" transform="translate(520.798 138.374)">
+        <circle r="26.903" fill="#98460c"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle" fill="#fff">lua</text>
+    </g>
+    <g class="bubble" transform="translate(341.625 381.723)">
+        <circle r="26.903" fill="#daf16b"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle">.net</text>
+    </g>
+    <g class="bubble" transform="translate(418.563 516.443)">
+        <circle r="26.903" fill="#f9d543"/>
+        <text dy=".3em" font-family="monospace" pointer-events="none" text-anchor="middle">scala</text>
+    </g>
+</svg>
