@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Splitting source code identifiers using BiLSTM</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="???" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="July 19th, Oxford, Great Britain" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/ml4p-2018-oxford" />
+    <meta property="og:title" content="Splitting source code identifiers using BiLSTM" />
+    <meta property="og:description" content="Presentation of the paper 'Splitting source code identifiers using Bidirectional LSTM Recurrent Neural Network' for Machine Learning for Programming workshop at Federated Logic Conference 2018." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/ml4p-2018-oxford/pictures/cover.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/ml4p-2018-oxford/pictures/cover.jpg" />
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Splitting source code identifiers using BiLSTM</h1>
+		<p>Vadim Markovtsev, Waren Long, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 20px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -2em;
+        }
+        .black {
+            color: #202020 !important;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: black;
+        }
+        .part {
+            background: radial-gradient(circle at center, #ffffff 0, black 130%)
+        }
+        .marked {
+            font-weight: bold;
+            color: red;
+        }
+        @media not print {
+            .show-black {
+                display: none !important;
+            }
+        }
+        @media print {
+            .show-white {
+                display: none !important;
+            }
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Splitting source code identifiers using BiLSTM</h2>
+		<p>Vadim Markovtsev, Waren Long, Egor Bulychev<br><a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+        </style>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">Objective</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Naming conventions</h2>
+        <pre>
+            <code>UpperCamelCase</code>
+            <code>lowerCamelCase</code>
+            <code>lower_underscore</code>
+            <code>UPPER_UNDERSCORE</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problem</h2>
+        <pre>
+            <code>FooBarBaz = [foo, bar, baz]</code>
+            <code>foobarbaz = ?</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Applications</h2>
+        <ul>
+            <li>Core vocabulary size reduction
+                <ul>
+                    <li>e.g. in topic modeling, identifier embeddings</li>
+                </ul>
+            </li>
+            <li>Automatic naming fix
+                <ul>
+                    <li>e.g. <code>Foo<span class="marked">b</span>arBaz → Foo<span class="marked">B</span>arBaz</code></li>
+                </ul>
+            </li>
+            <li>Typing without "Shift"</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Novelty</h2>
+        <ul>
+            <li>No prior research</li>
+            <li>Huge dataset - 49 million distinct identifiers</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Dataset</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Baselines</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">BiLSTM</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Results</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Comparison</h2>
+        <img src="pictures/comparison_black.png" class="full-img show-black">
+        <img src="pictures/comparison_white.png" class="full-img show-white">
+        <style>
+            .full-img {
+                height: 400px;
+                display: table;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>What we did</h2>
+        <ul>
+            <li>Extracted 49 million distinct identifiers from PGA</li>
+            <li>Used heuristics to generate the labeled dataset of 41.7 million samples</li>
+            <li>Trained several ML models to split identifiers</li>
+            <li>Found that the character-level bidirectional LSTM performed the best</li>
+            <li>Reduced the core vocabulary size by 2 times</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Future work</h2>
+        <ul>
+            <li>Bootstrap the training
+                <ul>
+                    <li>Apply the first generation model after splitting with heuristics</li>
+                    <li>Train the second generation model on the new dataset</li>
+                    <li>...repeat?</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+            <li><i class="fa fa-trophy monofa" aria-hidden="true"></i><a href="https://github.com/src-d/awesome-machine-learning-on-source-code">Awesome #MLonCode</a></li>
+        </ul>
+        <div class="vista" id="qrcode"></div>
+        <a href="http://bit.ly/2mlUh9d" id="bitly">bit.ly/2mlUh9d</a>
+        <style>
+            #qrcode {
+                width: 350px;
+                height: 350px;
+                position: absolute;
+                left: 550px;
+                top: 150px;
+                background-image: url("pictures/qrcode_black.svg");
+            }
+            @media not print {
+                #qrcode {
+                    background-image: url("pictures/qrcode_white.svg");
+                }
+            }
+            #bitly {
+                position: absolute;
+                bottom: 90px;
+                right: 200px;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
