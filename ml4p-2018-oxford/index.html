@@ -122,7 +122,6 @@
 		}
 		code.inline-no-offset {
 			margin-left: 0 !important;
-			padding-left: 50px !important;
 		}
 		.part-teaser {
 			text-align: center;
@@ -257,12 +256,87 @@
         <h2>Novelty</h2>
         <ul>
             <li>No prior research</li>
-            <li>Huge dataset - 49 million distinct identifiers</li>
+            <li>Huge dataset - 49.2 million distinct identifiers</li>
         </ul>
     </section>
 
     <section class="slide part">
         <h2 class="shout">Dataset</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Processing</h2>
+        <ol>
+            <li>Extract distinct identifiers from big code</li>
+            <li>Split them by naming convention heuristics</li>
+            <li>Use the resulting sequencies as labels</li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Public Git Archive (PGA)</h2>
+        <ul>
+            <li><span class="bold">182,014</span> GitHub top-starred repos</li>
+            <li><span class="bold">3 TB</span> on disk</li>
+            <li><span class="bold">54,5 million</span> files in HEAD</li>
+            <li><span class="bold">15,9 billion</span> lines of code in HEAD</li>
+            <li><span class="bold">455</span> programming languages</li>
+        </ul>
+        <a href="https://pga.sourced.tech" id="pga">pga.sourced.tech</a>
+        <style>
+            .bold {
+                font-weight: bold;
+            }
+            #pga {
+                font-size: 200%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Identifiers extraction</h2>
+        <ul>
+            <li><a href="https://github.com/src-d/ml">sourced-ml</a></li>
+            <li><a href="https://github.com/src-d/engine">sourced-engine</a></li>
+            <li><a href="https://doc.bblf.sh">Babelfish</a></li>
+            <li><a href="http://pygments.org/">Pygments</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Heuristics</h2>
+        <ul class="two-cols no-bullets" id="id-heur-split-ex">
+            <li><code class="inline-no-offset">UpperCamelCase -&gt; [upper, camel, case]</code></li>
+            <li><code class="inline-no-offset">camelCase -&gt; [camel, case]</code></li>
+            <li><code class="inline-no-offset">FRAPScase -&gt; [fraps, case]</code></li>
+            <li><code class="inline-no-offset">SQLThing -&gt; [sqlt, hing]</code></li>
+            <li><code class="inline-no-offset">_Astra -&gt; [astra]</code></li>
+            <li><code class="inline-no-offset">CAPS_CONST -&gt; [caps, const]</code></li>
+            <li><code class="inline-no-offset">_something_SILLY_ -&gt; [something, silly]</code></li>
+            <li><code class="inline-no-offset">blink182 -&gt; [blink]</code></li>
+            <li><code class="inline-no-offset">FooBar100500Bingo -&gt; [foo, bar, bingo]</code></li>
+            <li><code class="inline-no-offset">Man45var -&gt; [man, var]</code></li>
+            <li><code class="inline-no-offset">method_name -&gt; [method, name]</code></li>
+            <li><code class="inline-no-offset">Method_Name -&gt; [method, name]</code></li>
+            <li><code class="inline-no-offset">101dalms -&gt; [dalms]</code></li>
+            <li><code class="inline-no-offset">101_dalms -&gt; [dalms]</code></li>
+            <li><code class="inline-no-offset">101_DalmsBug -&gt; [dalms, bug]</code></li>
+            <li><code class="inline-no-offset">101_Dalms45Bug7 -&gt; [dalms, bug]</code></li>
+            <li><code class="inline-no-offset">wdSize -&gt; [wd, size, wdsize]</code></li>
+            <li><code class="inline-no-offset">Glint -&gt; [glint]</code></li>
+            <li><code class="inline-no-offset">foo_BAR -&gt; [foo, bar]</code></li>
+        </ul>
+        <style>
+        #id-heur-split-ex { 
+            font-size: 0.6em;
+        }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Per language</h2>
+        <img src="pictures/matrix_inter_vocab_black.svg" class="full-img show-black">
+        <img src="pictures/matrix_inter_vocab_white.svg" class="full-img show-white">
     </section>
 
     <section class="slide part">
@@ -271,6 +345,12 @@
 
     <section class="slide part">
         <h2 class="shout">BiLSTM</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Single layer</h2>
+        <img src="pictures/bilstm_black.png" class="full-img show-black">
+        <img src="pictures/bilstm_white.png" class="full-img show-white">
     </section>
 
     <section class="slide part">
@@ -298,8 +378,8 @@
     <section class="slide">
         <h2>What we did</h2>
         <ul>
-            <li>Extracted 49 million distinct identifiers from PGA</li>
-            <li>Used heuristics to generate the labeled dataset of 41.7 million samples</li>
+            <li>Extracted 49.2 million distinct identifiers from PGA</li>
+            <li>Used heuristics to generate the labeled dataset of 34.4 million samples</li>
             <li>Trained several ML models to split identifiers</li>
             <li>Found that the character-level bidirectional LSTM performed the best</li>
             <li>Reduced the core vocabulary size by 2 times</li>
@@ -316,6 +396,7 @@
                     <li>...repeat?</li>
                 </ul>
             </li>
+            <li>Do not completely discard non-alpha characters</li>
         </ul>
     </section>
 
