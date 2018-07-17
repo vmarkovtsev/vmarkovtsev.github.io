@@ -24,7 +24,7 @@
 	<header class="caption">
 		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
 		<h1>Splitting source code identifiers using BiLSTM</h1>
-		<p>Vadim Markovtsev, Waren Long, <a href="https://sourced.tech">source{d}</a>.</p>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
 	</header>
 
 	<style>
@@ -183,7 +183,9 @@
 
 	<section class="slide vista vista-cover" id="cover">
 		<h2>Splitting source code identifiers using BiLSTM</h2>
-		<p>Vadim Markovtsev, Waren Long, Egor Bulychev<br><a href="https://sourced.tech">source{d}</a></p>
+        <p>Vadim Markovtsev, Waren Long, Egor Bulychev<br>
+           Romain Keramitas, Konstantin Slavnov, Gabor Markowski<br>
+           <a href="https://sourced.tech">source{d}</a></p>
 
 		<style>
             #cover h2 {
@@ -282,12 +284,12 @@
             <li><span class="bold">15,9 billion</span> lines of code in HEAD</li>
             <li><span class="bold">455</span> programming languages</li>
         </ul>
-        <a href="https://pga.sourced.tech" id="pga">pga.sourced.tech</a>
+        <a href="https://pga.sourced.tech" class="big-link">pga.sourced.tech</a>
         <style>
             .bold {
                 font-weight: bold;
             }
-            #pga {
+            .big-link {
                 font-size: 200%;
             }
         </style>
@@ -298,9 +300,42 @@
         <ul>
             <li><a href="https://github.com/src-d/ml">sourced-ml</a></li>
             <li><a href="https://github.com/src-d/engine">sourced-engine</a></li>
-            <li><a href="https://doc.bblf.sh">Babelfish</a></li>
-            <li><a href="http://pygments.org/">Pygments</a></li>
+            <li><a href="https://doc.bblf.sh">Babelfish</a> - AST parser</li>
+            <li><a href="http://pygments.org/">Pygments</a> - regexp parser</li>
         </ul>
+        Result: <span class="bold">49.2</span> million distinct identifiers.
+    </section>
+
+    <section class="slide">
+        <h2>Labels</h2>
+        <ul>
+            <li>Use the naming conventions</li>
+            <li>10% of the identifiers do not follow them</li>
+            <li>Other 10% are split to the same sequence</li>
+        </ul>
+        Result: <span class="bold">35.6</span> million distinct labeled samples.
+    </section>
+
+    <section class="slide">
+        <h2>Example</h2>
+        <p><code class="inline-no-offset">FooBarBaz -&gt; [foo, bar, baz]</code></p>
+        <p>X: <code>foobarbaz</code></p>
+        <p>Y: <code>[foo, bar, baz]</code></p>
+    </section>
+
+    <section class="slide">
+        <h2>Length threshold</h2>
+        <ul>
+            <li>We exclude too long samples</li>
+            <li>Actual threshold: 40 chars when merged</li>
+        </ul>
+        Result: <span class="bold">34.4</span> million distinct labeled samples.
+    </section>
+
+    <section class="slide">
+        <h2>Why 40?</h2>
+        <img src="pictures/lenhist_black.png" class="full-img show-black">
+        <img src="pictures/lenhist_white.png" class="full-img show-white">
     </section>
 
     <section class="slide">
@@ -334,6 +369,19 @@
     </section>
 
     <section class="slide">
+        <h2>Released</h2>
+        <ul>
+            <li>49.2 raw identifiers after extraction and filtering</li>
+            <li>Raw identifiers per language, filtered
+                <ul>
+                    <li>Java, C#, C, C++, Go, Python, Ruby, Objective-C, Javascript, PHP, Shell</li>
+                </ul>
+            </li>
+        </ul>
+        <a class="big-link" href="http://bit.ly/2zO8rJP">bit.ly/2zO8rJP</a>
+    </section>
+
+    <section class="slide">
         <h2>Per language</h2>
         <img src="pictures/matrix_inter_vocab_black.svg" class="full-img show-black">
         <img src="pictures/matrix_inter_vocab_white.svg" class="full-img show-white">
@@ -341,6 +389,22 @@
 
     <section class="slide part">
         <h2 class="shout">Baselines</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Unsmoothed character-level model</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Dynamic programming</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Gradient boosting on decision trees</h2>
+    </section>
+
+    <section class="slide">
+        <h2>character-level Convolutional Neural Network</h2>
     </section>
 
     <section class="slide part">
@@ -353,8 +417,46 @@
         <img src="pictures/bilstm_white.png" class="full-img show-white">
     </section>
 
+    <section class="slide">
+        <h2>Architecture</h2>
+        <ul>
+            <li>CharRNN</li>
+            <li>Prediction based on the two reading directions</li>
+            <li>Two layers</li>
+            <li>256 neurons each</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Training performance</h2>
+        <ul>
+            <li>10 epochs: ~3 hours</li>
+            <li>2 NVIDIA GTX 1080 cards</li>
+        </ul>
+        <img src="pictures/curve_black.png" class="curve-img show-black">
+        <img src="pictures/curve_white.png" class="curve-img show-white">
+        <style>
+        .curve-img {
+            position: absolute;
+            object-fit: contain;
+            right: 50px;
+            bottom: 40px;
+            width: 600px;
+            height: 400px;
+        }
+        </style>
+    </section>
+
     <section class="slide part">
-        <h2 class="shout">Results</h2>
+        <h2 class="shout">Evaluation</h2>
+    </section>
+
+    <section class="slide">
+        <h2>How we evaluated</h2>
+        <ul>
+            <li>80% train, 20% validation</li>
+            <li>Precision, Recall and F1</li>
+        </ul>
     </section>
 
     <section class="slide">
@@ -368,6 +470,80 @@
                 margin-left: auto;
                 margin-right: auto;
             }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Comparison</h2>
+        <table class="table-80pct">
+        <tr>
+            <th scope="col">Model</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F<sub>1</sub></th>
+        </tr>
+        <tr>
+            <th>Char. ML LM → ∨ ←</th>
+            <td>0.563</td>
+            <td>0.936</td>
+            <td>0.703</td>
+        </tr>
+        <tr>
+            <th>Char. ML LM → ∧ ←</th>
+            <td>0.966</td>
+            <td>0.573</td>
+            <td>0.719</td>
+        </tr>
+        <tr>
+            <th>Stat. dyn. prog., Wiki</th>
+            <td>0.741</td>
+            <td>0.912</td>
+            <td>0.818</td>
+        </tr>
+        <tr>
+            <th>Stat. dyn. prog., Zipf</th>
+            <td>0.937</td>
+            <td>0.783</td>
+            <td>0.853</td>
+        </tr>
+        <tr>
+            <th>Stat. dyn. prog., posterior</th>
+            <td>0.931</td>
+            <td>0.892</td>
+            <td>0.911</td>
+        </tr>
+        <tr>
+            <th>GBDT</th>
+            <td>0.931</td>
+            <td>0.924</td>
+            <td>0.928</td>
+        </tr>
+        <tr>
+            <th>Char. CNN</th>
+            <td>0.922</td>
+            <td>0.938</td>
+            <td>0.930</td>
+        </tr>
+        <tr>
+            <th>Char. BiGRU</th>
+            <td>0.945</td>
+            <td>0.955</td>
+            <td>0.949</td>
+        </tr>
+        <tr>
+            <th scope="row">Char. BiLSTM</th>
+            <th class="marked">0.947</th>
+            <th class="marked">0.958</th>
+            <th class="marked">0.952</th>
+        </tr>
+        </table>
+        <style>
+        .table-80pct th, .table-80pct td {
+            font-size: 80%;
+        }
+        .table-80pct tr > th:first-child {
+            padding-left: 100px;
+        }
         </style>
     </section>
 
