@@ -393,10 +393,39 @@
 
     <section class="slide">
         <h2>Unsmoothed character-level model</h2>
+        <ul>
+            <li>Use the maximum likelihood to estimate the probabilities $$P(\underline{\mbox{ }}|foo) = \frac{count(foo\underline{\mbox{ }})}{count(foo*)}$$</li>
+            <li>The char-level LM makes the <i>Markov assumption</i></li>
+            <li>2 models are trained independently for forward and backward direction</li>
+            <li>Depth is set to 11 and the implementation based on <a href="https://github.com/vmarkovtsev/CharStatModel">CharStatModel</a></li>
+        </ul>
+
     </section>
 
-    <section class="slide">
+    <section class="slide" id="dp">
+        <div class="vista"></div>
         <h2>Dynamic programming</h2>
+        <br>
+        <ul>
+            <li>Training :</li>
+            <ul>
+                <li>Wikipedia corpus</li>
+                <li>source{d} dataset of identifiers</li>
+            </ul>
+            <br>
+            <li>Assuming <a href="https://en.wikipedia.org/wiki/Zipf%27s_law">Zipf's law</a> prior or posterior</li>
+            <li>Implementation based on <a href="https://github.com/keredson/wordninja">wordninja</a></li>
+        </ul>
+         <style>
+            #dp > div {
+                position: absolute;
+                left: 45%;
+                top: 30%;
+                width: 60%;
+                height: 60%;
+                background-image: url("pictures/dp.png");
+            }
+        </style>
     </section>
 
     <section class="slide">
@@ -612,6 +641,7 @@
 
 	<div class="progress"></div>
 
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML"></script>
 	<script src="shower/shower.min.js"></script>
 	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
 	<script>
