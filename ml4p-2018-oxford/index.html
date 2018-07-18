@@ -254,14 +254,6 @@
         </ul>
     </section>
 
-    <section class="slide">
-        <h2>Novelty</h2>
-        <ul>
-            <li>No prior research</li>
-            <li>Huge dataset - 49.2 million distinct identifiers</li>
-        </ul>
-    </section>
-
     <section class="slide part">
         <h2 class="shout">Dataset</h2>
     </section>
@@ -393,18 +385,72 @@
 
     <section class="slide">
         <h2>Unsmoothed character-level model</h2>
+        <ul>
+            <li>Use the maximum likelihood to estimate the probabilities $$P(\underline{\mbox{ }}|foo) = \frac{count(foo\underline{\mbox{ }})}{count(foo*)}$$</li>
+            <li>The char-level LM makes the <i>Markov assumption</i></li>
+            <li>2 models are trained independently in both directions, (AND, OR) combined</li>
+            <li>Depth is set to 11</li>
+            <li>Implementation based on <a href="https://github.com/vmarkovtsev/CharStatModel">CharStatModel</a></li>
+        </ul>
+
     </section>
 
-    <section class="slide">
+    <section class="slide" id="dp">
+        <div class="vista"></div>
         <h2>Dynamic programming</h2>
+        <br>
+        <ul>
+            <li>Training :</li>
+            <ul>
+                <li>Wikipedia corpus</li>
+                <li>Our dataset</li>
+            </ul>
+            <br>
+            <li>Assuming <a href="https://en.wikipedia.org/wiki/Zipf%27s_law">Zipf's law</a> prior or posterior</li>
+            <li>Implementation based on <a href="https://github.com/keredson/wordninja">wordninja</a></li>
+        </ul>
+         <style>
+            #dp > div {
+                position: absolute;
+                left: 45%;
+                top: 30%;
+                width: 60%;
+                height: 60%;
+                background-image: url("pictures/dp.png");
+            }
+        </style>
     </section>
 
     <section class="slide">
         <h2>Gradient boosting on decision trees</h2>
+        <img src="pictures/foobarbaz_black.png" class="full-img show-black">
+        <img src="pictures/foobarbaz_white.png" class="full-img show-white">
     </section>
 
     <section class="slide">
-        <h2>character-level Convolutional Neural Network</h2>
+        <h2>Gradient boosting on decision trees</h2>
+        <ul>
+            <li>XGBoost</li>
+            <li>Window length is 10</li>
+            <li>Tree depth is 30</li>
+            <li>Number of trees is 50</li>
+            <li>80% negative samples</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Character-level Convolutional Neural Network</h2>
+        <ul>
+            <li>One-hot encoding</li>
+            <li>3 stacked 1D Inception layers (ReLU)</li>
+            <li>Time-distributed fully-connected layer with binary outputs (sigmoid)</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Character-level Convolutional Neural Network</h2>
+        <img src="pictures/cnn_black.png" class="full-img show-black">
+        <img src="pictures/cnn_white.png" class="full-img show-white">
     </section>
 
     <section class="slide part">
@@ -466,6 +512,8 @@
         <style>
             .full-img {
                 height: 400px;
+                max-width: 800px;
+                object-fit: contain;
                 display: table;
                 margin-left: auto;
                 margin-right: auto;
@@ -612,7 +660,8 @@
 
 	<div class="progress"></div>
 
-	<script src="shower/shower.min.js"></script>
+    <script src="shower/shower.min.js"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML"></script>
 	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
 	<script>
     function fullscreen() {
