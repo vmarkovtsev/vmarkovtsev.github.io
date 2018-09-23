@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Scalable Language-Agnostic Analysis of Source Code and VCS History</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="???" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="Madrid, September 25, 2018" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/icsme-2018-madrid" />
+    <meta property="og:title" content="Scalable Language-Agnostic Analysis of Source Code and VCS History" />
+    <meta property="og:description" content="This talk is an introduction to the source{d} tech stack in particular Engine and Hercules. source{d} Engine is devoted to an SQL interface over arbitrary number of Git repositories with the ability to extract Abstract Syntax Trees from files in various programming languages. Those trees are expressed in the same format named “Universal AST”. Hercules gathers deep insights from the history of a single Git project such as line burndown and ownership through time or temporarily coupled units." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/icsme-2018-madrid/pictures/cover.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/icsme-2018-madrid/pictures/cover.jpg" />
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Scalable Language-Agnostic Analysis of Source Code and VCS History</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        .black {
+            color: #202020 !important;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            font-family: "Uroob";
+            color: black;
+        }
+        .part {
+            background: radial-gradient(circle at center, #ffffff 0, black 130%)
+        }
+        table {
+            margin-top: -30px;
+        }
+        .slide th:first-child, .slide td:first-child {
+            padding-left: 100px;
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Scalable Language-Agnostic Analysis of Source Code and VCS History</h2>
+		<p>Vadim Markovtsev<br><a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.75);
+			}
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Huge codebases</h2>
+        <table>
+        <tbody>
+            <tr>
+                <th scope="col"></th>
+                <th>LoC, 10⁶</th>
+            </tr>
+            <tr>
+                <td><span style="color: #ffffff">Chrome</span></td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td><span style="color: #ffd0d0">Windows 10</span></td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td><span style="color: #ffb0b0">Facebook</span></td>
+                <td>70</td>
+            </tr>
+            <tr>
+                <td><span style="color: #ff9090">Eclipse Foundation</span></td>
+                <td>160</td>
+            </tr>
+            <tr>
+                <td><span style="color: #ff8080">Apache Foundation</span></td>
+                <td>190</td>
+            </tr>
+            <tr>
+                <td><span style="color: #ff5050">Google</span></td>
+                <td>2,000</td>
+            </tr>
+            <tr>
+                <td><span style="color: #ff3030">GitHub</span></td>
+                <td>>56,000</td>
+            </tr>
+        </tbody>
+        </table>
+    </section>
+
+    <section class="slide">
+        <h2>Problems</h2>
+        <ul>
+            <li>Discover repositories</li>
+            <li>Gather them together → dataset</li>
+            <li>Run simple analysis</li>
+            <li>Run advanced analysis (e.g., ML-driven)</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>source{d} solutions</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-times monofa" aria-hidden="true"></i>Discover repositories</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Gather them together → dataset</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Run simple analysis</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Run advanced analysis (e.g., ML-driven)</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">borges</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Features</h2>
+        <ul>
+            <li>Does scalable code retrieval</li>
+            <li>Can work with HDFS</li>
+            <li><a href="https://github.com/src-d/borges">Open source</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>siva</h2>
+        <ul>
+            <li>Archive format similar to TAR</li>
+            <li>Low-cost append</li>
+            <li>Constant-time random file access</li>
+            <li>Effective <code>git push</code> inside</li>
+        </ul>
+        <img class="siva black" src="pictures/siva-black.png">
+        <img class="siva white" src="pictures/siva-white.png">
+        <style>
+            .siva {
+                height: 180px;
+                margin-top: -20px;
+                margin-left: auto;
+                margin-right: auto;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Challenges</h2>
+        <ul>
+            <li>Git packfiles require efficient <code>seek()</code></li>
+            <li>HDFS does <mark class="important">not</mark> provide efficient <code>seek()</code></li>
+            <li>Git repositories are <mark class="important">unbalanced</mark></li>
+            <li>Metadata must be stored separately</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Engine</h2>
+    </section>
+    
+    <section class="slide">
+        <h2>Features</h2>
+        <ul>
+            <li>Language-agnostic code and Git analysis</li>
+            <li>... with SQL syntax</li>
+            <li>... with GUI</li>
+            <li>Provides APIs</li>
+            <li><a href="https://github.com/src-d/engine">Open source</a></li>
+        </ul>
+        <img src="pictures/work-in-progress.png" id="wip">
+        <style>
+            #wip {
+                position: absolute;
+                right: 100px;
+                bottom: 100px;
+                width: 300px;
+                transform: rotate(-20deg);
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Easy to try</h2>
+       <pre>
+           <code>$ srcd init /path/to/git/repos</code>
+           <code>$ srcd web sql</code>
+       </pre>
+    </section>
+
+    <section class="slide vista" id="gitbase-web">
+        <style>
+            #gitbase-web {
+                background-image: url("pictures/gitbase-web.png");
+            }
+        </style>
+    </section>
+
+    <section class="slide" >
+        <h2>Top 10 repositories by commit count</h2>
+        <code>$ srcd sql "</code>
+        <pre id="gitbase-sql">
+<code><span class="hl-keyword">SELECT</span> repository_id<span style='color:#d2cd86; '></span>,</span> commit_count <span class="hl-keyword">FROM</span> (</code>
+<code>    <span class="hl-keyword">SELECT</span> r.repository_id, <span class="hl-reserved">COUNT</span>(*) <span class="hl-keyword">AS</span> commit_count</code>
+<code>    <span class="hl-keyword">FROM</span> ref_commits <span class="hl-keyword">AS</span> r</code>
+<code>    <span class="hl-keyword">WHERE</span> r.ref_name = <span class="hl-string">'HEAD'</span></code>
+<code>    <span class="hl-keyword">GROUP</span> <span class="hl-keyword">BY</span> r.repository_id</code>
+<code>) <span class="hl-keyword">ORDER</span> <span class="hl-keyword">BY</span> commit_count <span class="hl-keyword">DESC</span> <span class="hl-keyword">LIMIT</span> 10"</code>
+        </pre>
+        <style>
+            #gitbase-sql {
+                margin-top: 0;
+            }
+            .hl-keyword {
+                color: #cc8242;
+                font-weight: bold;
+            }
+            .hl-def {
+                color: #ffc66d;
+            }
+            .hl-reserved {
+                color: #94558D;
+            }
+            .hl-string {
+                color: #6a8759;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Examples</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Any Git statistics</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>cloc</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Get specific files</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>REGEXP over file contents at each revision</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Query code</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>How to parse</h2>
+        <ul>
+            <li>Regular expressions - <a href="http://pygments.org/">Pygments</a>,
+                <a href="https://highlightjs.org/">highlight.js</a></li>
+            <li><span class="box">Abstract syntax tree (AST)</span> - <a href="http://www.antlr.org/">ANTLR</a></li>
+            <li>Compilation</li>
+        </ul>
+        <style>
+            .box {
+                border: 1px solid white;
+                padding: 0 0.2em 0.1em 0.2em;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>  </h2>
+        <a href="https://doc.bblf.sh"><img class="center" src="pictures/bblfsh-logo.png"></a>
+        <img class="vista center black bblfsh-arch" src="pictures/bblfsh-arch-black.png">
+        <img class="vista center white bblfsh-arch" src="pictures/bblfsh-arch-white.png">
+        <style>
+            .bblfsh-arch {
+                width: 600px;
+                height: 100px;
+            }
+        </style>
+    </section>
+
+    <section class="slide visited">
+        <h2><i class="fa fa-sitemap" aria-hidden="true"></i> Universal AST</h2>
+        <ul>
+            <li>± uniform structure across languages</li>
+            <li>± standard node types (roles)</li>
+            <li>XPath queries</li>
+            <li>4 traversal orders</li>
+        </ul>
+        <pre>
+            <code>$ srcd web parse</code>
+        </pre>
+    </section>
+
+    <section class="slide vista" id="bblfsh-web">
+        <style>
+            #bblfsh-web {
+                background-image: url("pictures/bblfsh-web.gif");
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Challenges</h2>
+        Cool, hardcore tech details about indices and caches from Antonio
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Hercules</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Features</h2>
+        <ul>
+            <li>Advanced Git analysis CLI</li>
+            <li>Integrated with the ecosystem</li>
+            <li><a href="https://github.com/src-d/hercules">Open source</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Line burndown</h2>
+        <p><code>git blame foo.py</code></p>
+        <div id="obj" class="blame">
+            <div><span><span class="f2014">●</span>2014</span>
+                <pre><code class="b2014">class Foo:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2014">    print("!")</code></pre>
+            </div>
+            <div><span><span class="f2015">●</span>2015</span><pre><code class="b2014">class Foo:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2015">    print("?")</code>
+<code class="b2015"> </code>
+<code class="b2015">  def baz(self):</code>
+<code class="b2014">    print("!")</code></pre></div>
+            <div><span><span class="f2016">●</span>2016</span><pre><code class="b2016">class FooBarBaz:</code>
+<code class="b2014">  def bar(self):</code>
+<code class="b2016">    """..."""</code>
+<code class="b2016">    print("yo")</code>
+<code class="b2015"> </code>
+<code class="b2015">  def baz(self):</code>
+<code class="b2014">    print("!")</code></pre></div>
+        </div>
+        <style>
+            #obj code:not(:only-child)::before {
+                opacity: 1;
+            }
+            #obj pre {
+                margin: 0;
+            }
+            #obj {
+                display: flex;
+                height: 400px;
+            }
+            #obj > div {
+                flex-grow: 1;
+                flex-basis: 0;
+                height: 100%;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            #obj > div:first-child {
+                padding-left: 0;
+            }
+            #obj > div:last-child {
+                padding-right: 8px;
+            }
+            #obj > div > span {
+                text-align: center;
+                width: 100%;
+                display: block;
+            }
+            .blame code {
+                font-size: 0.8em !important;
+                margin-left: 2.5em !important;
+                margin-top: -1px !important;
+                width: auto !important;
+                color: black !important;
+                padding-left: 1px !important;
+            }
+            .blame code:before {
+                color: #585a5e !important;
+                width: calc(2.5em + 1px) !important;
+                margin-left: -2.5em !important;
+                padding-left: 0.5em !important;
+            }
+            .b2014, .b2014:before {
+                background: #CB8C1D !important;
+            }
+            .b2015, .b2015:before {
+                background: #F1684E !important;
+            }
+            .b2016, .b2016:before {
+                background: #4EB1BA !important;
+            }
+            .f2014 {
+                color: #CB8C1D;
+            }
+            .f2015 {
+                color: #F1684E;
+            }
+            .f2016 {
+                color: #4EB1BA;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Line burndown</h2>
+        <img class="vista obj-plot black" src="pictures/objective_black.svg">
+        <img class="vista obj-plot white" src="pictures/objective_white.svg">
+        <style>
+            .obj-plot {
+                width: 100%;
+                height: 400px;
+                margin-top: -25px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="linux">
+        <h2>Linux</h2>
+        <style>
+            #linux > h2 {
+                position: relative;
+                left: 200px;
+            }
+            #linux {
+                background-image: url("pictures/linux_black.png");
+            }
+            @media not print {
+                #linux {
+                    background-image: url("pictures/linux_white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Reproduce</h2>
+        <pre>
+            <code>hercules --burndown --first-parent --pb \
+    git://github.com/torvalds/linux | \
+    labours.py -m project</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Line overwrite matrix</h2>
+        <img class="vista matrix-plot black" src="pictures/matrix_black.png">
+        <img class="vista matrix-plot white" src="pictures/matrix_white.png">
+        <style>
+            .matrix-plot {
+                width: 100%;
+                height: 500px;
+                position: relative;
+                top: -120px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Reproduce</h2>
+        <pre>
+            <code>hercules --burndown --burndown-people --pb \
+    git://github.com/tensorflow/tensorflow | \
+    labours.py -m churn_matrix</code>
+        </pre>
+    </section>
+
+    <section class="slide vista" id="couples">
+        <style>
+            #couples {
+                background-image: url("pictures/couples.png");
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Reproduce</h2>
+        <pre>
+            <code>hercules --couples --pb \
+    git://github.com/tensorflow/tensorflow | \
+    labours.py -m couples</code>
+        </pre>
+        It is also possible to embed developers, functions and classes.
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li>borges + Engine = <span class="emoji">💪</span> code/Git analysis platform</li>
+            <li>Hercules gains <span class="emoji">👍</span> insights from Git</li>
+            <li>All of those are open source and easy to <span class="emoji">👐</span></li>
+            <li><span class="emoji">👀</span> the live demo later today!</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+        </ul>
+        <img class="qrcode black" src="pictures/qrcode_black.svg">
+        <img class="qrcode white" src="pictures/qrcode_white.svg">
+        <a href="http://bit.ly/2QMOY0Q" id="bitly">bit.ly/2QMOY0Q</a>
+        <style>
+            .qrcode {
+                width: 380px;
+                height: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            #bitly {
+                position: absolute;
+                bottom: 70px;
+                right: 167px;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
