@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="32" />
+    <meta name="twitter:data1" content="33" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="Madrid, September 25, 2018" />
     <meta property="og:type" content="article" />
@@ -412,7 +412,7 @@
         <h2>Features</h2>
         <ul>
             <li>Language-agnostic code and Git analysis</li>
-            <li>... with SQL syntax</li>
+            <li>... with SQL syntax - <a href="https://github.com/src-d/gitbase">gitbase</a></li>
             <li>... with GUI</li>
             <li>Provides APIs</li>
             <li><a href="https://github.com/src-d/engine">Open source</a></li>
@@ -447,14 +447,13 @@
 
     <section class="slide" >
         <h2>Top 10 repositories by commit count</h2>
-        <code>$ srcd sql "</code>
         <pre id="gitbase-sql">
 <code><span class="hl-keyword">SELECT</span> repository_id<span style='color:#d2cd86; '></span>,</span> commit_count <span class="hl-keyword">FROM</span> (</code>
 <code>    <span class="hl-keyword">SELECT</span> r.repository_id, <span class="hl-reserved">COUNT</span>(*) <span class="hl-keyword">AS</span> commit_count</code>
 <code>    <span class="hl-keyword">FROM</span> ref_commits <span class="hl-keyword">AS</span> r</code>
 <code>    <span class="hl-keyword">WHERE</span> r.ref_name = <span class="hl-string">'HEAD'</span></code>
 <code>    <span class="hl-keyword">GROUP</span> <span class="hl-keyword">BY</span> r.repository_id</code>
-<code>) <span class="hl-keyword">ORDER</span> <span class="hl-keyword">BY</span> commit_count <span class="hl-keyword">DESC</span> <span class="hl-keyword">LIMIT</span> 10"</code>
+<code>) <span class="hl-keyword">ORDER</span> <span class="hl-keyword">BY</span> commit_count <span class="hl-keyword">DESC</span> <span class="hl-keyword">LIMIT</span> 10</code>
         </pre>
         <style>
             #gitbase-sql {
@@ -537,9 +536,35 @@
         </style>
     </section>
 
+    <section class="slide" >
+        <h2>Number of functions per Go file</h2>
+        <pre id="func-num">
+<code><span class="hl-keyword">SELECT</span> files.repository_id, files.file_path,</code>
+<code>    <span class="hl-reserved">ARRAY_LENGTH</span>(<span class="hl-reserved">UAST</span>(</code>
+<code>        files.blob_content,</code>
+<code>        <span class="hl-reserved">LANGUAGE</span>(files.file_path, files.blob_content),</code>
+<code>        <span class="hl-string">'//*[@roleFunction and @roleDeclaration]'</span>)</code>
+<code>    ) <span class="hl-keyword">as</span> functions</code>
+<code><span class="hl-keyword">FROM</span> files <span class="hl-keyword">NATURAL</span> <span class="hl-keyword">JOIN</span> refs</code>
+<code><span class="hl-keyword">WHERE</span> <span class="hl-reserved">LANGUAGE</span>(files.file_path, files.blob_content) = <span class="hl-string">'Go'</span></code>
+<code>      <span class="hl-keyword">AND</span> refs.ref_name <span style='color:#d2cd86; '>=</span> <span class="hl-string">'HEAD'</span></code>
+</pre>
+        <style>
+            #func-num {
+                font-size: 80%;
+            }
+        </style>
+    </section>
+
     <section class="slide">
         <h2>Challenges</h2>
-        Cool, hardcore tech details about indices and caches from Antonio
+        <ul>
+            <li>Logical planning of the queries</li>
+            <li>Performance optimization</li>
+            <li>Indexes</li>
+            <li>Caches</li>
+            <li>Efficient loading Git data from disk</li>
+        </ul>
     </section>
 
     <section class="slide part">
