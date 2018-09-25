@@ -452,7 +452,8 @@
 <code>    <span class="hl-keyword">FROM</span> ref_commits <span class="hl-keyword">AS</span> r</code>
 <code>    <span class="hl-keyword">WHERE</span> r.ref_name = <span class="hl-string">'HEAD'</span></code>
 <code>    <span class="hl-keyword">GROUP</span> <span class="hl-keyword">BY</span> r.repository_id</code>
-<code>) <span class="hl-keyword">ORDER</span> <span class="hl-keyword">BY</span> commit_count <span class="hl-keyword">DESC</span> <span class="hl-keyword">LIMIT</span> 10</code>
+<code>) <span class="hl-keyword">AS</span> q</code>
+<code><span class="hl-keyword">ORDER</span> <span class="hl-keyword">BY</span> commit_count <span class="hl-keyword">DESC</span> <span class="hl-keyword">LIMIT</span> 10</code>
         </pre>
         <style>
             #gitbase-sql {
@@ -539,10 +540,10 @@
         <h2>Number of functions per Go file</h2>
         <pre id="func-num">
 <code><span class="hl-keyword">SELECT</span> files.repository_id, files.file_path,</code>
-<code>    <span class="hl-reserved">ARRAY_LENGTH</span>(<span class="hl-reserved">UAST</span>(</code>
+<code>    <span class="hl-reserved">ARRAY_LENGTH</span>(<span class="hl-reserved">uast_extract</span>(<span class="hl-reserved">UAST</span>(</code>
 <code>        files.blob_content,</code>
 <code>        <span class="hl-reserved">LANGUAGE</span>(files.file_path, files.blob_content),</code>
-<code>        <span class="hl-string">'//*[@roleFunction and @roleDeclaration]'</span>)</code>
+<code>        <span class="hl-string">'//*[@roleFunction and @roleDeclaration]'</span>), <span class="hl-string">'token'</span>)</code>
 <code>    ) <span class="hl-keyword">as</span> functions</code>
 <code><span class="hl-keyword">FROM</span> files <span class="hl-keyword">NATURAL</span> <span class="hl-keyword">JOIN</span> refs</code>
 <code><span class="hl-keyword">WHERE</span> <span class="hl-reserved">LANGUAGE</span>(files.file_path, files.blob_content) = <span class="hl-string">'Go'</span></code>
