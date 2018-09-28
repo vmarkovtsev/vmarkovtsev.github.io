@@ -331,7 +331,7 @@
 
     <section class="slide">
         <h2>Line burndown</h2>
-        <p><code>git blame foo.py</code></p>
+        <p><code>git blame foo.go</code></p>
         <div id="obj" class="blame">
             <div><span><span class="f2014">●</span>2014</span>
                 <pre><code class="b2014">func foo() {</code>
@@ -472,10 +472,10 @@
         <a href="https://drive.google.com/file/d/0B-w8jGUJto0iaWRjcFZUZy15NVU">"How to blame"</a> by Alberto Cortes.
         <ol>
             <li>Trace the commits chain backwards starting from HEAD.
-                <pre><code class="inline-no-offset">&lt;root&gt; D ← E ← F ← G ← H ← I <span class="success">HEAD</span></code></pre>
+                <pre><code class="inline-no-offset">&lt;root&gt; D &lt; E &lt; F &lt; G &lt; H &lt; I <span class="success">HEAD</span></code></pre>
             </li>
             <li>Diff starting from the root along the path from (1).
-                <pre><code class="inline-no-offset"><span class="success">&lt;root&gt;</span> D → E → F → G → H → I HEAD</code></pre>
+                <pre><code class="inline-no-offset"><span class="success">&lt;root&gt;</span> D &gt; E &gt; F &gt; G &gt; H &gt; I HEAD</code></pre>
             </li>
         </ol>
     </section>
