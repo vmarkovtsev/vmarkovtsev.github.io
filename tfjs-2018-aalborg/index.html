@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TensorFlow.js</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="33" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="Aalborg - December 10th, 2018" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/tfjs-2018-aalborg" />
+    <meta property="og:title" content="TensorFlow.js" />
+    <meta property="og:description" content="TensorFlow.js enables training and applying ML models in a web browser or in node.js. How does it work? What are the current limitations? Examples?" />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/tfjs-2018-aalborg/pictures/cover.png" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/tfjs-2018-aalborg/pictures/cover.png" />
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>TensorFlow.js</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        .black {
+            color: #202020 !important;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: black;
+        }
+        .part {
+            background: radial-gradient(circle at center, #ffffff 0, black 130%)
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0 0.3em 0.1em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .slide .shout a {
+            background: none;
+            color: #bababa;
+        }
+        .slide .shout a code {
+            background: none;
+        }
+        .slide .shout a:hover {
+            color: white;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>TensorFlow.js</h2>
+        <p>Vadim Markovtsev<br><a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            #cover h2 {
+                margin:30px 0 0;
+                text-align:center;
+                font-size:70px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align:center;
+                font-style:italic;
+                font-size:20px;
+            }
+			#cover {
+				background: url("pictures/tensorflow_logo.svg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Intro</h2>
+    </section>
+    
+    <section class="slide">
+        <h2 class="shout">JavaScript™ belongs to Oracle</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Deep Learning is all about linalg</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">JavaScript sucks at linalg</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">JavaScript <span class="highlight">no more</span> sucks at linalg</h2>
+        <style>
+            .highlight {
+                color: lime;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">JavaScript even has autodiff now</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">TensorFlow.js</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Quick facts</h2>
+        <ul>
+            <li>Started in 2017 as deeplearn.js</li>
+            <li>Rebranded in 2018</li>
+            <li>Written in TypeScript</li>
+            <li>~10 developers from Google (Brain)</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Official features</h2>
+        <ul>
+            <li>Develop ML in the browser</li>
+            <li>Run existing models</li>
+            <li>Retrain existing models</li>
+        </ul>
+    </section>
+
+    <section class="slide vista" id="feature1">
+        <style>
+            #feature1 {
+                background-image: url("pictures/feature1.jpg");
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="feature2">
+        <style>
+            #feature2 {
+                background-image: url("pictures/feature2.jpg");
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="feature3">
+        <video src="pictures/feature3.mp4" autoplay loop muted></video>
+        <h2>Run Existing models</h2>
+        <style>
+            #feature3 {
+                padding: 0;
+            }
+            #feature3 > video {
+                width: 100%;
+                height: 100%;
+            }
+            #feature3 > h2 {
+                -webkit-transform: translateZ(0);
+                z-index: 100;
+                text-align: center;
+                position: relative;
+                top: -100px;
+                font-family: impact;
+                font-size: 2.5em;
+                text-transform: uppercase;
+                color: white;
+                letter-spacing: 1px;
+                text-shadow:2px 2px 0 #000,
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                0px 2px 0 #000,
+                2px 0px 0 #000,
+                0px -2px 0 #000,
+                -2px 0px 0 #000,
+                2px 2px 5px #000;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">API levels <div class="fork"><span>{</span><div><span>Core</span><span>Keras</span></div></div></h2>
+        <style>
+            .fork {
+                display: inline-flex;
+                flex-direction: row;
+                align-items: center;
+            }
+            .fork span {
+                display: block;
+            }
+            .fork > span {
+                font-size: 1.4em;
+                vertical-align: middle;
+            }
+            .fork > div {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 0.1em;
+            }
+            .fork > div > span:last-child {
+                position: relative;
+                top: 0.175em;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Core API</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Core API</h2>
+        <ul>
+            <li>Copied from Python; naming convention changed</li>
+            <li>Eager-only</li>
+            <li>A few quirks
+                <ul>
+                    <li>There are API differences</li>
+                    <li>No <code>tf.nn</code></li>
+                    <li>Semi-manual memory management</li>
+                    <li>Models must be converted to a "web friendly" format</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow model formats zoo</h2>
+        <ol>
+            <li>GraphDef = graph + [variable values - 2GB limit]</li>
+            <li>Checkpoint = variable values</li>
+            <li>Summary (aka Tensorboard) = GraphDef + key-value</li>
+            <li>MetaGraph = GraphDef + tags + i/o + Checkpoint</li>
+            <li>SavedModel = one or more MetaGraph-s</li>
+            <li>ModuleDef (aka Hub) = special SavedModel</li>
+            <li>Keras = hdf5 with arch and weights</li>
+            <li><span class="emoji">🎉</span> TensorFlow.js = GraphDef + JSON + sharded weights</li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Execution modes</h2>
+        <ul>
+            <li>Browser: WebGL backend</li>
+            <li>Node.js: libtensorflow backend</li>
+            <li class="important">No device pinning/selection</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Semi-manual memory management</h2>
+        <ul>
+            <li>There are various JS engines</li>
+            <li>There are various GC implementations</li>
+            <li>We allocate memory like hungry <span class="emoji">🐺</span></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Semi-manual memory management</h2>
+        <pre id="tidy"><code><span class="hl-keyword">const</span> y = tf.tidy(() => {</code>
+<code>   <span class="hl-keyword">const</span> one = tf.scalar(<span class="hl-string">1</span>);</code>
+<code>   <span class="hl-keyword">const</span> a = tf.scalar(<span class="hl-string">2</span>);</code>
+<code>   <span class="hl-keyword">const</span> b = a.square();</code>
+<code>   <span class="hl-reserved">console</span>.log(<span class="hl-string">'numTensors (in tidy): '</span> + tf.memory().numTensors);</code>
+<code>   <span class="hl-keyword">return</span> b.add(one);</code>
+<code>});</code>
+<code><span class="hl-reserved">console</span>.log(<span class="hl-string">'numTensors (outside tidy): '</span> + tf.memory().numTensors);</code>
+<code>y.print();  <span class="hl-c">// y = 2 ^ 2 + 1</span></code>
+        </pre>
+        <style>
+            #tidy {
+                font-size: 85%;
+            }
+            .hl-keyword {
+                color: #cc8242;
+                font-weight: bold;
+            }
+            .hl-def {
+                color: #ffc66d;
+            }
+            .hl-reserved {
+                color: #94558D;
+            }
+            .hl-string {
+                color: #6a8759;
+            }
+            .hl-c {
+                color: #a0a0a0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>TensorBuffer</h2>
+        <ul>
+            <li><code>tf.Tensor</code> is immutable</li>
+            <li><code>tf.TensorBuffer</code> is mutable</li>
+            <li>No efficient <code>set()</code></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Keras API</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Keras is <mark class="important">not</mark> <a href="https://www.tensorflow.org/guide/keras"><code>tf.keras</code></a></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Keras API</h2>
+        <ul>
+            <li><code>tf.layers</code> - do not confuse with Python's</li>
+            <li>No CuDNN</li>
+            <li><a href="https://github.com/tensorflow/tfjs/issues/709">Tensors may leak</a></li>
+            <li>Advanced parameters not supported</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Live demo 1</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Mobilenet</h2>
+        <button id="load-mobilenet-tfjs" onclick="load_mobilenet_tfjs()">Load tfjs</button>
+        <button id="load-mobilenet-model" style="display: none" onclick="load_mobilenet_model()">Load model</button>
+        <button id="file-button" style="display: none" onclick="document.getElementById('file').click();">Classify image</button>
+        <input type="file" id="file" name="file" style="display: none" onchange="load_img(this)"/>
+        <div id="img-container">
+            <img style="display: none" width=224 height=224 id="file-img" onload="predict(this)">
+            <ol id="predictions"></ol>
+        </div>
+        <div class="status" id="mobilenet-status"></div>
+
+        <script src="imagenet_classes.js"></script>
+        <script>
+            const MOBILENET_ALPHA = "0.50";  // https://github.com/fchollet/deep-learning-models/blob/master/mobilenet.py#L29
+            const MOBILENET_MODEL_PATH =
+                `https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_${MOBILENET_ALPHA}_224/model.json`;
+
+            function report_mobilenet_status(message, t0) {
+                const t1 = performance.now();
+                document.getElementById("mobilenet-status").textContent = message + " (" + ((t1 - t0)|0) + "ms)";
+            }
+
+            function load_mobilenet_tfjs() {
+                const t0 = performance.now();
+                function onload() {
+                    report_mobilenet_status("Loaded tfjs", t0);
+                    document.getElementById("load-mobilenet-tfjs").style = "display: none";
+                    document.getElementById("load-mobilenet-model").style = "display: inline-block";
+                }
+                if (typeof tf === 'undefined') {
+                    const script = document.createElement("script");
+                    script.onload = onload;
+                    script.src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs";
+                    document.body.appendChild(script);
+                } else {
+                    onload();
+                }
+            }
+
+            async function load_mobilenet_model() {
+                const t0 = performance.now();
+                mobilenet = await tf.loadModel(MOBILENET_MODEL_PATH);
+                tf.tidy(() => {
+                    return mobilenet.predict(tf.zeros([1].concat(mobilenet.input.shape.slice(1))));
+                }).dispose();
+                document.getElementById("file-button").style = "";
+                document.getElementById("load-mobilenet-model").style = "display: none";
+                report_mobilenet_status("Loaded model", t0);
+            }
+
+            async function load_img(input) {
+                const t0 = performance.now();
+                const file = input.files[0];
+                const img = document.getElementById("file-img");
+                img.t0 = t0;
+                img.src = URL.createObjectURL(await new Response(file).blob());
+                img.style = "";
+            }
+
+            async function predict(img) {
+                const logits = await tf.tidy(() => {
+                    const data = tf.fromPixels(img).toFloat();
+                    const offset = tf.scalar(127.5);
+                    const normalized = data.sub(offset).div(offset);
+                    const batched = normalized.reshape([1].concat(mobilenet.input.shape.slice(1)));
+                    return mobilenet.predict(batched);
+                }).data();
+                // the rest of the code shows the classes
+                const valuesAndIndices = [];
+                for (let i = 0; i < logits.length; i++) {
+                  valuesAndIndices.push({value: logits[i], index: i});
+                }
+                valuesAndIndices.sort((a, b) => {
+                  return b.value - a.value;
+                });
+                const predictionsList = document.getElementById("predictions");
+                predictionsList.innerHTML = "";
+                for (let i = 0; i < 5; i++) {
+                    const li = document.createElement("li");
+                    li.textContent = IMAGENET_CLASSES[valuesAndIndices[i].index] + " " + valuesAndIndices[i].value;
+                    predictionsList.appendChild(li);
+                }
+                report_mobilenet_status("Classified", img.t0);
+            }
+        </script>
+
+        <style>
+            section button {
+                font-size: 25px;
+                display: block;
+                margin-bottom: 20px;
+            }
+            #img-container {
+                display: flex;
+                flex-direction: row;
+            }
+            #file-img {
+                margin-right: 50px;
+            }
+            .status {
+                position: absolute;
+                left: 100px;
+                bottom: 50px;
+            }
+            #predictions {
+                margin-top: -12px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Live demo 2</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Progressive GAN</h2>
+        <button id="load-progan-tfjs" onclick="load_progan_tfjs()">Load tfjs</button>
+        <button id="load-progan-model" style="display: none" onclick="load_progan_model()">Load model</button>
+        <button id="generate" style="display: none" onclick="generate()">Generate</button>
+        <img id="progan-canvas" style="display: none">
+        <div class="status" id="progan-status"></div>
+        <script>
+            const PROGAN_MODEL_PATH = "progan/tensorflowjs_model.pb";
+            const PROGAN_WEIGHTS_PATH = "progan/weights_manifest.json";
+
+            function report_progan_status(message, t0) {
+                const t1 = performance.now();
+                document.getElementById("progan-status").textContent = message + " (" + ((t1 - t0)|0) + "ms)";
+            }
+
+            function load_progan_tfjs() {
+                const t0 = performance.now();
+                function onload() {
+                    report_progan_status("Loaded tfjs", t0);
+                    document.getElementById("load-progan-tfjs").style = "display: none";
+                    document.getElementById("load-progan-model").style = "";
+                }
+                if (typeof tf === 'undefined') {
+                    const script = document.createElement("script");
+                    script.onload = onload;
+                    script.src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs";
+                    document.body.appendChild(script);
+                } else {
+                    onload();
+                }
+            }
+
+            async function load_progan_model() {
+                const t0 = performance.now();
+                progan = await tf.loadFrozenModel(PROGAN_MODEL_PATH, PROGAN_WEIGHTS_PATH);
+                tf.tidy(() => {
+                    return progan.predict(tf.randomNormal([1, progan.inputs[0].shape[1]]));
+                }).dispose();
+                //mobilenet.predict(tf.zeros([1].concat(mobilenet.input.shape.slice(1)))).dispose();
+                document.getElementById("generate").style = "";
+                document.getElementById("load-progan-model").style = "display: none";
+                report_progan_status("Loaded model", t0);
+            }
+
+            async function generate() {
+                const t0 = performance.now();
+                const pixelsTensor = tf.tidy(() => {
+                    const rawPixels = progan.predict(tf.randomNormal([1, progan.inputs[0].shape[1]]));
+                    return tf.mul(rawPixels, tf.scalar(255)).asType('int32');
+                });
+                const width = pixelsTensor.shape[1], height = pixelsTensor.shape[2];
+                const pixels = await pixelsTensor.data();
+                pixelsTensor.dispose();
+                // the rest of the code visualizes the image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = width;
+                canvas.height = height;
+                var imgdata = ctx.createImageData(width, height);
+                const buffer = new Uint8ClampedArray(width * height * 4);
+                for (let y = 0; y < height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        const posBuffer = (y * width + x) * 4;
+                        const posPixels = (y * width + x) * 3;
+                        buffer[posBuffer  ] = pixels[posPixels];
+                        buffer[posBuffer+1] = pixels[posPixels+1];
+                        buffer[posBuffer+2] = pixels[posPixels+2];
+                        buffer[posBuffer+3] = 255;  // set alpha channel
+                    }
+                }
+                imgdata.data.set(buffer);
+                ctx.putImageData(imgdata, 0, 0);
+                const img = document.getElementById("progan-canvas");
+                img.src = canvas.toDataURL();
+                img.style = "";
+                report_progan_status("Generated", t0);
+            }
+        </script>
+        <style>
+            #progan-canvas {
+                width: 128;
+                height: 128;
+                margin-top: 50px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Examples</h2>
+        <a href="https://github.com/tensorflow/tfjs-examples">github.com/tensorflow/tfjs-examples</a>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Live demo 3</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Installation for Node.js</h2>
+        <pre><code>npm install @tensorflow/tfjs @tensorflow/tfjs-node</code></pre>
+        <pre><code>                          or @tensorflow/tfjs-node-gpu</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>ijavascript</h2>
+        <pre><code>npm install ijavascript-await</code></pre>
+        <ul>
+            <li>Node.js driver for Jupyter</li>
+            <li>Deals with async/await</li>
+            <li>Good integration into the notebook</li>
+        </ul>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li>Much fun and easy</li>
+            <li>Very early days</li>
+            <li>PoCs work</li>
+            <li>TensorFlow is getting even more complex inside</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="http://bit.ly/2OwCKXP" id="bitly">bit.ly/2OwCKXP</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
