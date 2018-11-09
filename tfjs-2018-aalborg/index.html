@@ -499,10 +499,10 @@
 
     <section class="slide">
         <h2>Mobilenet</h2>
-        <button id="load-mobilenet-tfjs" onclick="load_mobilenet_tfjs()">Load tfjs</button>
-        <button id="load-mobilenet-model" style="display: none" onclick="load_mobilenet_model()">Load model</button>
+        <button id="load-mobilenet-tfjs" onclick="loadMobilenetTfjs()">Load tfjs</button>
+        <button id="load-mobilenet-model" style="display: none" onclick="loadMobilenetModel()">Load model</button>
         <button id="file-button" style="display: none" onclick="document.getElementById('file').click();">Classify image</button>
-        <input type="file" id="file" name="file" style="display: none" onchange="load_img(this)"/>
+        <input type="file" id="file" name="file" style="display: none" onchange="loadImg(this)"/>
         <div id="img-container">
             <img style="display: none" width=224 height=224 id="file-img" onload="predict(this)">
             <ol id="predictions"></ol>
@@ -515,15 +515,15 @@
             const MOBILENET_MODEL_PATH =
                 `https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_${MOBILENET_ALPHA}_224/model.json`;
 
-            function report_mobilenet_status(message, t0) {
+            function reportMobilenetStatus(message, t0) {
                 const t1 = performance.now();
                 document.getElementById("mobilenet-status").textContent = message + " (" + ((t1 - t0)|0) + "ms)";
             }
 
-            function load_mobilenet_tfjs() {
+            function loadMobilenetTfjs() {
                 const t0 = performance.now();
                 function onload() {
-                    report_mobilenet_status("Loaded tfjs", t0);
+                    reportMobilenetStatus("Loaded tfjs", t0);
                     document.getElementById("load-mobilenet-tfjs").style = "display: none";
                     document.getElementById("load-mobilenet-model").style = "display: inline-block";
                 }
@@ -537,7 +537,7 @@
                 }
             }
 
-            async function load_mobilenet_model() {
+            async function loadMobilenetModel() {
                 const t0 = performance.now();
                 mobilenet = await tf.loadModel(MOBILENET_MODEL_PATH);
                 tf.tidy(() => {
@@ -545,10 +545,10 @@
                 }).dispose();
                 document.getElementById("file-button").style = "";
                 document.getElementById("load-mobilenet-model").style = "display: none";
-                report_mobilenet_status("Loaded model", t0);
+                reportMobilenetStatus("Loaded model", t0);
             }
 
-            async function load_img(input) {
+            async function loadImg(input) {
                 const t0 = performance.now();
                 const file = input.files[0];
                 const img = document.getElementById("file-img");
@@ -580,7 +580,7 @@
                     li.textContent = IMAGENET_CLASSES[valuesAndIndices[i].index] + " " + valuesAndIndices[i].value;
                     predictionsList.appendChild(li);
                 }
-                report_mobilenet_status("Classified", img.t0);
+                reportMobilenetStatus("Classified", img.t0);
             }
         </script>
 
@@ -614,8 +614,8 @@
 
     <section class="slide">
         <h2>Progressive GAN</h2>
-        <button id="load-progan-tfjs" onclick="load_progan_tfjs()">Load tfjs</button>
-        <button id="load-progan-model" style="display: none" onclick="load_progan_model()">Load model</button>
+        <button id="load-progan-tfjs" onclick="loadProganTfjs()">Load tfjs</button>
+        <button id="load-progan-model" style="display: none" onclick="loadProganModel()">Load model</button>
         <button id="generate" style="display: none" onclick="generate()">Generate</button>
         <img id="progan-canvas" style="display: none">
         <div class="status" id="progan-status"></div>
@@ -623,15 +623,15 @@
             const PROGAN_MODEL_PATH = "progan/tensorflowjs_model.pb";
             const PROGAN_WEIGHTS_PATH = "progan/weights_manifest.json";
 
-            function report_progan_status(message, t0) {
+            function reportProganStatus(message, t0) {
                 const t1 = performance.now();
                 document.getElementById("progan-status").textContent = message + " (" + ((t1 - t0)|0) + "ms)";
             }
 
-            function load_progan_tfjs() {
+            function loadProganTfjs() {
                 const t0 = performance.now();
                 function onload() {
-                    report_progan_status("Loaded tfjs", t0);
+                    reportProganStatus("Loaded tfjs", t0);
                     document.getElementById("load-progan-tfjs").style = "display: none";
                     document.getElementById("load-progan-model").style = "";
                 }
@@ -645,7 +645,7 @@
                 }
             }
 
-            async function load_progan_model() {
+            async function loadProganModel() {
                 const t0 = performance.now();
                 progan = await tf.loadFrozenModel(PROGAN_MODEL_PATH, PROGAN_WEIGHTS_PATH);
                 tf.tidy(() => {
@@ -654,7 +654,7 @@
                 //mobilenet.predict(tf.zeros([1].concat(mobilenet.input.shape.slice(1)))).dispose();
                 document.getElementById("generate").style = "";
                 document.getElementById("load-progan-model").style = "display: none";
-                report_progan_status("Loaded model", t0);
+                reportProganStatus("Loaded model", t0);
             }
 
             async function generate() {
@@ -688,7 +688,7 @@
                 const img = document.getElementById("progan-canvas");
                 img.src = canvas.toDataURL();
                 img.style = "";
-                report_progan_status("Generated", t0);
+                reportProganStatus("Generated", t0);
             }
         </script>
         <style>
