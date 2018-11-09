@@ -22,6 +22,14 @@
         .shower {
             --slide-ratio: calc(16 / 9);
         }
+        @font-face {
+          font-family: "Source Sans Pro";
+          src: url("SourceSansPro-Regular.ttf");
+        }
+        @font-face {
+          font-family: "Lato";
+          src: url("Lato-Regular.ttf");
+        }
     </style>
 </head>
 <body class="shower list">
@@ -216,29 +224,26 @@
         <p>Vadim Markovtsev<br><a href="https://sourced.tech">source{d}</a></p>
 
 		<style>
+            .slide {
+                font-family: "Source Sans Pro", sans-serif;
+            }
             #cover h2 {
-                margin:30px 0 0;
-                text-align:center;
-                font-size:70px;
+                font-family: "Lato", sans-serif !important;
+                font-weight: normal;
+            }
+            #cover h2, #cover p, #cover a {
+                color: #3c3d40 !important;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                font-size: 70px;
             }
             #cover p {
                 margin: 40px 0 0;
-                text-align:center;
-                font-style:italic;
-                font-size:20px;
+                font-size: 20px;
             }
 			#cover {
-				background: url("pictures/tensorflow_logo.svg") black;
-			}
-			#cover h2:before {
-				content: "";
-				position: absolute;
-				z-index: -1;
-				left: 0;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				background: rgba(0, 0, 0, 0.7);
+				background: url("pictures/gdg_1.svg") black;
 			}
         </style>
     </section>
@@ -328,11 +333,11 @@
                 text-align: center;
                 position: relative;
                 top: -100px;
-                font-family: impact;
+                font-family: impact !important;
                 font-size: 2.5em;
                 text-transform: uppercase;
                 color: white;
-                letter-spacing: 1px;
+                letter-spacing: 2px;
                 text-shadow:2px 2px 0 #000,
                 -2px -2px 0 #000,
                 2px -2px 0 #000,
@@ -347,7 +352,7 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout">API levels <div class="fork"><span>{</span><div><span>Core</span><span>Keras</span></div></div></h2>
+        <h2 class="shout">API levels&nbsp;<div class="fork"><span>{</span><div><span>Core</span><span>Keras</span></div></div></h2>
         <style>
             .fork {
                 display: inline-flex;
@@ -734,7 +739,7 @@
         </ul>
     </section>
 
-	<section class="slide">
+	<section class="slide" id="thankyou">
         <h2>Thank you</h2>
         <ul class="no-bullets fa-bullets">
             <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
@@ -743,11 +748,21 @@
             <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
         </ul>
         <div id="qrcode-container">
-            <img class="qrcode black" src="pictures/qrcode_black.svg">
-            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <img class="qrcode" src="pictures/qrcode_black.svg">
             <a href="http://bit.ly/2OwCKXP" id="bitly">bit.ly/2OwCKXP</a>
         </div>
         <style>
+            #thankyou {
+                background: url("pictures/gdg_2.svg");
+                color: #3c3d40 !important;
+            }
+            #thankyou li, #thankyou a, #thankyou h2 {
+                color: #3c3d40 !important;
+            }
+            #thankyou h2 {
+                font-family: Lato, sans-serif;
+                font-weight: normal;
+            }
             #qrcode-container {
                 display: flex;
                 flex-direction: column;
