@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TensorFlow.js</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="37" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="Lisbon - December 8th, 2018" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/tfjs-2018-lisbon" />
+    <meta property="og:title" content="TensorFlow.js" />
+    <meta property="og:description" content="TensorFlow.js enables training and applying ML models in a web browser or in node.js. How does it work? What are the current limitations? Examples?" />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/tfjs-2018-lisbon/pictures/cover.png" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/tfjs-2018-lisbon/pictures/cover.png" />
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+        }
+        @font-face {
+          font-family: "Source Sans Pro";
+          src: url("SourceSansPro-Regular.ttf");
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>TensorFlow.js</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        .black {
+            color: #202020 !important;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: black;
+        }
+        .part {
+            background: radial-gradient(circle at center, #ffffff 0, black 130%)
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0 0.3em 0.1em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .slide .shout a {
+            background: none;
+            color: #bababa;
+        }
+        .slide .shout a code {
+            background: none;
+        }
+        .slide .shout a:hover {
+            color: white;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<style>
+            .slide {
+                font-family: "Source Sans Pro", sans-serif;
+            }
+			#cover {
+				background: url("pictures/cover.svg") white;
+			}
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Intro</h2>
+    </section>
+    
+    <section class="slide">
+        <h2 class="shout">JavaScript™ belongs to Oracle</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Deep Learning is all about linalg</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">JavaScript sucks at linalg</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">JavaScript <span class="highlight">no more</span> sucks at linalg</h2>
+        <style>
+            .highlight {
+                color: lime;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">JavaScript even has autodiff now</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">TensorFlow.js</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Quick facts</h2>
+        <ul>
+            <li>Started in 2017 as deeplearn.js</li>
+            <li>Written in TypeScript</li>
+            <li>~10 developers from Google (Brain)</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Official features</h2>
+        <ul>
+            <li>Develop ML in the browser</li>
+            <li>Run existing models</li>
+            <li>Retrain existing models</li>
+        </ul>
+    </section>
+
+    <section class="slide vista" id="feature1">
+        <style>
+            #feature1 {
+                background-image: url("pictures/feature1.jpg");
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="feature2">
+        <style>
+            #feature2 {
+                background-image: url("pictures/feature2.jpg");
+            }
+        </style>
+    </section>
+
+    <section class="slide" id="feature3">
+        <video src="pictures/feature3.mp4" autoplay loop muted></video>
+        <h2>Run Existing models</h2>
+        <style>
+            #feature3 {
+                padding: 0;
+            }
+            #feature3 > video {
+                width: 100%;
+                height: 100%;
+            }
+            #feature3 > h2 {
+                -webkit-transform: translateZ(0);
+                z-index: 100;
+                text-align: center;
+                position: relative;
+                top: -100px;
+                font-family: impact !important;
+                font-size: 2.5em;
+                text-transform: uppercase;
+                color: white;
+                letter-spacing: 2px;
+                text-shadow:2px 2px 0 #000,
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                0px 2px 0 #000,
+                2px 0px 0 #000,
+                0px -2px 0 #000,
+                -2px 0px 0 #000,
+                2px 2px 5px #000;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">API levels&nbsp;<div class="fork"><span>{</span><div><span>Core</span><span>Keras</span></div></div></h2>
+        <style>
+            .fork {
+                display: inline-flex;
+                flex-direction: row;
+                align-items: center;
+            }
+            .fork span {
+                display: block;
+            }
+            .fork > span {
+                font-size: 1.4em;
+                vertical-align: middle;
+            }
+            .fork > div {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 0.1em;
+            }
+            .fork > div > span:last-child {
+                position: relative;
+                top: 0.175em;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Core API</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Core API</h2>
+        <ul>
+            <li>Copied from Python; naming convention changed</li>
+            <li>Eager-only
+                <ul>
+                    <li class="important">No device pinning/selection</li>
+                </ul>
+            </li>
+            <li>A few quirks
+                <ul>
+                    <li>There are API differences</li>
+                    <li>No <code>tf.nn</code></li>
+                    <li>Semi-manual memory management</li>
+                    <li>"web friendly" model format</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Tensorflow model formats zoo</h2>
+        <ol>
+            <li>GraphDef = graph + [variable values - 2GB limit]</li>
+            <li>Checkpoint = variable values</li>
+            <li>Summary (aka Tensorboard) = GraphDef + key-value</li>
+            <li>MetaGraph = GraphDef + tags + i/o + Checkpoint</li>
+            <li>SavedModel = one or more MetaGraph-s</li>
+            <li>ModuleDef (aka Hub) = special SavedModel</li>
+            <li>Keras = hdf5 with arch and weights</li>
+            <li><span class="emoji">🎉</span> TensorFlow.js = GraphDef + JSON + sharded weights</li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Semi-manual memory management</h2>
+        <ul>
+            <li>There are various JS engines</li>
+            <li>There are various GC implementations</li>
+            <li>We allocate memory like hungry <span class="emoji">🐺</span></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Semi-manual memory management</h2>
+        <pre id="tidy"><code><span class="hl-keyword">const</span> y = tf.tidy(() => {</code>
+<code>   <span class="hl-keyword">const</span> one = tf.scalar(<span class="hl-string">1</span>);</code>
+<code>   <span class="hl-keyword">const</span> a = tf.scalar(<span class="hl-string">2</span>);</code>
+<code>   <span class="hl-keyword">const</span> b = a.square();</code>
+<code>   <span class="hl-reserved">console</span>.log(<span class="hl-string">'numTensors (in tidy): '</span> + tf.memory().numTensors);</code>
+<code>   <span class="hl-keyword">return</span> b.add(one);</code>
+<code>});</code>
+<code><span class="hl-reserved">console</span>.log(<span class="hl-string">'numTensors (outside tidy): '</span> + tf.memory().numTensors);</code>
+<code>y.print();  <span class="hl-c">// y = 2 ^ 2 + 1</span></code>
+        </pre>
+        <style>
+            #tidy {
+                font-size: 85%;
+            }
+            .hl-keyword {
+                color: #cc8242;
+                font-weight: bold;
+            }
+            .hl-def {
+                color: #ffc66d;
+            }
+            .hl-reserved {
+                color: #94558D;
+            }
+            .hl-string {
+                color: #6a8759;
+            }
+            .hl-c {
+                color: #a0a0a0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Tensor IO</h2>
+        <ul>
+            <li><code>tf.Tensor</code> is immutable</li>
+            <li><code>tf.TensorBuffer</code> is mutable</li>
+            <li>No efficient <code>set()</code></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Keras API</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Keras is <mark class="important">not</mark> <a href="https://www.tensorflow.org/guide/keras"><code>tf.keras</code></a></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Keras API</h2>
+        <ul>
+            <li>No CuDNN</li>
+            <li><a href="https://github.com/tensorflow/tfjs/issues/709">Tensors may leak</a></li>
+            <li>Advanced parameters not supported</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Live demo 1</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Mobilenet</h2>
+        <button id="load-mobilenet-tfjs" onclick="loadMobilenetTfjs()">Load tfjs</button>
+        <button id="load-mobilenet-model" onclick="loadMobilenetModel()">Load model</button>
+        <button id="file-button" style="display: none" onclick="document.getElementById('file').click();">Classify image</button>
+        <input type="file" id="file" name="file" style="display: none" onchange="loadImg(this)"/>
+        <div id="img-container">
+            <img style="display: none" width=224 height=224 id="file-img" onload="predict(this)">
+            <ol id="predictions"></ol>
+        </div>
+        <div class="status" id="mobilenet-status"></div>
+
+        <script src="imagenet_classes.js"></script>
+        <script>
+            const MOBILENET_ALPHA = '0.50';  // https://github.com/fchollet/deep-learning-models/blob/master/mobilenet.py#L29
+            const MOBILENET_MODEL_PATH =
+                `https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_${MOBILENET_ALPHA}_224/model.json`;
+
+            function reportMobilenetStatus(message, t0) {
+                const t1 = performance.now();
+                document.getElementById('mobilenet-status').textContent = message + ' (' + ((t1 - t0)|0) + 'ms)';
+            }
+
+            function loadMobilenetTfjs() {
+                const t0 = performance.now();
+                function onload() {
+                    reportMobilenetStatus('Loaded tfjs', t0);
+                    document.getElementById('load-mobilenet-tfjs').style.display = 'none';
+                    document.getElementById('load-mobilenet-model').style.display = 'inline-block';
+                }
+                if (typeof tf === 'undefined') {
+                    const script = document.createElement('script');
+                    script.onload = onload;
+                    script.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs';
+                    document.body.appendChild(script);
+                } else {
+                    onload();
+                }
+            }
+
+            async function loadMobilenetModel() {
+                const t0 = performance.now();
+                mobilenet = await tf.loadModel(MOBILENET_MODEL_PATH);
+                tf.tidy(() => {
+                    return mobilenet.predict(tf.zeros([1].concat(mobilenet.input.shape.slice(1))));
+                }).dispose();
+                document.getElementById('file-button').style = '';
+                document.getElementById('load-mobilenet-model').style = 'display: none';
+                reportMobilenetStatus('Loaded model', t0);
+            }
+
+            async function loadImg(input) {
+                const t0 = performance.now();
+                const file = input.files[0];
+                const img = document.getElementById('file-img');
+                img.t0 = t0;
+                img.src = URL.createObjectURL(await new Response(file).blob());
+                img.style = '';
+            }
+
+            async function predict(img) {
+                const logits = await tf.tidy(() => {
+                    const data = tf.fromPixels(img).toFloat();
+                    const offset = tf.scalar(127.5);
+                    const normalized = data.sub(offset).div(offset);
+                    const batched = normalized.reshape([1].concat(mobilenet.input.shape.slice(1)));
+                    return mobilenet.predict(batched);
+                }).data();
+                // the rest of the code shows the classes
+                const valuesAndIndices = [];
+                for (let i = 0; i < logits.length; i++) {
+                  valuesAndIndices.push({value: logits[i], index: i});
+                }
+                valuesAndIndices.sort((a, b) => {
+                  return b.value - a.value;
+                });
+                const predictionsList = document.getElementById('predictions');
+                predictionsList.innerHTML = '';
+                for (let i = 0; i < 5; i++) {
+                    const li = document.createElement('li');
+                    li.textContent = IMAGENET_CLASSES[valuesAndIndices[i].index] + ' ' + valuesAndIndices[i].value;
+                    predictionsList.appendChild(li);
+                }
+                reportMobilenetStatus('Classified', img.t0);
+            }
+        </script>
+
+        <style>
+            section button {
+                font-size: 25px;
+                display: block;
+                margin-bottom: 20px;
+            }
+            #img-container {
+                display: flex;
+                flex-direction: row;
+            }
+            #file-img {
+                margin-right: 50px;
+            }
+            .status {
+                position: absolute;
+                left: 100px;
+                bottom: 50px;
+            }
+            #predictions {
+                margin-top: -12px;
+            }
+            #load-mobilenet-model {
+                display: none;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Live demo 2</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Progressive GAN</h2>
+        <button id="load-progan-tfjs" onclick="loadProganTfjs()">Load tfjs</button>
+        <button id="load-progan-model" onclick="loadProganModel()">Load model</button>
+        <button id="generate" style="display: none" onclick="generate()">Generate</button>
+        <img id="progan-canvas" style="display: none">
+        <div class="status" id="progan-status"></div>
+        <script>
+            const PROGAN_MODEL_PATH = 'progan/tensorflowjs_model.pb';
+            const PROGAN_WEIGHTS_PATH = 'progan/weights_manifest.json';
+
+            function reportProganStatus(message, t0) {
+                const t1 = performance.now();
+                document.getElementById('progan-status').textContent = message + ' (' + ((t1 - t0)|0) + 'ms)';
+            }
+
+            function loadProganTfjs() {
+                const t0 = performance.now();
+                function onload() {
+                    reportProganStatus('Loaded tfjs', t0);
+                    document.getElementById('load-progan-tfjs').style.display = 'none';
+                    document.getElementById('load-progan-model').style.display = 'inline-block';
+                }
+                if (typeof tf === 'undefined') {
+                    const script = document.createElement('script');
+                    script.onload = onload;
+                    script.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs';
+                    document.body.appendChild(script);
+                } else {
+                    onload();
+                }
+            }
+
+            async function loadProganModel() {
+                const t0 = performance.now();
+                progan = await tf.loadFrozenModel(PROGAN_MODEL_PATH, PROGAN_WEIGHTS_PATH);
+                tf.tidy(() => {
+                    return progan.predict(tf.randomNormal([1, progan.inputs[0].shape[1]]));
+                }).dispose();
+                //mobilenet.predict(tf.zeros([1].concat(mobilenet.input.shape.slice(1)))).dispose();
+                document.getElementById('generate').style = '';
+                document.getElementById('load-progan-model').style.display = 'none';
+                reportProganStatus('Loaded model', t0);
+            }
+
+            async function generate() {
+                const t0 = performance.now();
+                const pixelsTensor = tf.tidy(() => {
+                    const rawPixels = progan.predict(tf.randomNormal([1, progan.inputs[0].shape[1]]));
+                    return tf.mul(rawPixels, tf.scalar(255)).asType('int32');
+                });
+                const width = pixelsTensor.shape[1], height = pixelsTensor.shape[2];
+                const pixels = await pixelsTensor.data();
+                pixelsTensor.dispose();
+                // the rest of the code visualizes the image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = width;
+                canvas.height = height;
+                var imgdata = ctx.createImageData(width, height);
+                const buffer = new Uint8ClampedArray(width * height * 4);
+                for (let y = 0; y < height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        const posBuffer = (y * width + x) * 4;
+                        const posPixels = (y * width + x) * 3;
+                        buffer[posBuffer  ] = pixels[posPixels];
+                        buffer[posBuffer+1] = pixels[posPixels+1];
+                        buffer[posBuffer+2] = pixels[posPixels+2];
+                        buffer[posBuffer+3] = 255;  // set alpha channel
+                    }
+                }
+                imgdata.data.set(buffer);
+                ctx.putImageData(imgdata, 0, 0);
+                const img = document.getElementById('progan-canvas');
+                img.src = canvas.toDataURL();
+                img.style = '';
+                reportProganStatus('Generated', t0);
+            }
+        </script>
+        <style>
+            #progan-canvas {
+                width: 128;
+                height: 128;
+                margin-top: 50px;
+            }
+            #load-progan-model {
+                display: none;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Live demo 3</h2>
+    </section>
+
+    <section class="slide" id="gesture">
+        <h2>Transfer Learning</h2>
+        <div id="no-webcam">
+          No webcam found. <br/>
+          To use this demo, use a device with a webcam.
+        </div>
+        <div class="panel" id="webcam-panel">
+            <div id="webcam-box">
+                <video autoplay playsinline muted id="webcam" width="224" height="224"></video>
+            </div>
+            <div id="status-box">
+                <span id="gesture-status">Load tfjs!</span>
+            </div>
+            <div id="train-panel">
+                <button onclick="gestureLoadTfjs()" id="gesture-loadtfjs">Load tfjs</button>
+                <button onclick="gestureInit()" id="gesture-init">Init</button>
+                <button onclick="gestureTrain()" id="gesture-train">Train</button>
+                <button onclick="predictLoop()" id="gesture-run">Run</button>
+                <span id="loss"></span>
+            </div>
+        </div>
+        <div class="panel">
+            <div id="dataset-panel">
+                <div>
+                    <button onclick="appendActionSample()">Append "action"</button>
+                    <span id="action-counter">0</span>
+                </div>
+                <div>
+                    <button onclick="appendIdleSample()">Append "idle"</button>
+                    <span id="idle-counter">0</span>
+                </div>
+            </div>
+        </div>
+        <style>
+            #gesture > div {
+                font-family: monospace;
+            }
+            #gesture button {
+                font-family: monospace;
+                margin-bottom: 0;
+            }
+            #no-webcam {
+                display: none;
+                margin-bottom: 20px;
+            }
+            .panel {
+                display: inline-block;
+                margin-bottom: 20px;
+                margin-right: 20px;
+            }
+            .panel div {
+                border: 1px solid white;
+                border-radius: 4px;
+                box-sizing: border-box;
+                padding: 20px;
+                margin-right: 20px;
+            }
+            .panel div:last-child {
+                margin-right: 0;
+            }
+            #dataset-panel button {
+                margin-right: 20px;
+            }
+            #webcam-panel {
+                display: flex;
+                align-items: center;
+            }
+            #webcam-box {
+                display: flex;
+                justify-content: center;
+                overflow: hidden;
+                width: 160px;
+                padding: 0 !important;
+            }
+            #webcam {
+                height: 160px;
+                transform: scaleX(-1);
+            }
+            #status-box {
+                width: 260px;
+                text-align: center;
+            }
+            #dataset-panel {
+                display: none;
+            }
+            #dataset-panel > div {
+                display: flex;
+            }
+            #dataset-panel > div {
+                align-items: center;
+            }
+            #dataset-panel button {
+                width: 260px;
+            }
+            #dataset-panel span {
+                width: 2em;
+                text-align: right;
+            }
+            #train-panel {
+                display: flex;
+                align-items: center;
+            }
+            #gesture-init {
+                display: none;
+            }
+            #gesture-train {
+                display: none;
+            }
+            #loss {
+                margin-left: 20px;
+                display: none;
+            }
+            #gesture-run {
+                display: none;
+            }
+        </style>
+        <script>
+            /**
+            * @license
+            * Copyright 2018 Google LLC. All Rights Reserved.
+            * Licensed under the Apache License, Version 2.0 (the "License");
+            * you may not use this file except in compliance with the License.
+            * You may obtain a copy of the License at
+            *
+            * http://www.apache.org/licenses/LICENSE-2.0
+            *
+            * Unless required by applicable law or agreed to in writing, software
+            * distributed under the License is distributed on an "AS IS" BASIS,
+            * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            * See the License for the specific language governing permissions and
+            * limitations under the License.
+            * =============================================================================
+            */
+            /**
+             * A class that wraps webcam video elements to capture Tensor4Ds.
+             */
+            class Webcam {
+                /**
+                 * @param {HTMLVideoElement} webcamElement A HTMLVideoElement representing the webcam feed.
+                 */
+                constructor(webcamElement) {
+                    this.webcamElement = webcamElement;
+                }
+
+                /**
+                 * Captures a frame from the webcam and normalizes it between -1 and 1.
+                 * Returns a batched image (1-element batch) of shape [1, w, h, c].
+                 */
+                capture() {
+                    return tf.tidy(() => {
+                        // Reads the image as a Tensor from the webcam <video> element.
+                        const webcamImage = tf.fromPixels(this.webcamElement);
+
+                        // Crop the image so we're using the center square of the rectangular
+                        // webcam.
+                        const croppedImage = this.cropImage(webcamImage);
+
+                        // Expand the outer most dimension so we have a batch size of 1.
+                        const batchedImage = croppedImage.expandDims(0);
+
+                        // Normalize the image between -1 and 1. The image comes in between 0-255,
+                        // so we divide by 127 and subtract 1.
+                        return batchedImage.toFloat().div(tf.scalar(127)).sub(tf.scalar(1));
+                    });
+                }
+
+                /**
+                 * Crops an image tensor so we get a square image with no white space.
+                 * @param {Tensor4D} img An input image Tensor to crop.
+                 */
+                cropImage(img) {
+                    const size = Math.min(img.shape[0], img.shape[1]);
+                    const centerHeight = img.shape[0] / 2;
+                    const beginHeight = centerHeight - (size / 2);
+                    const centerWidth = img.shape[1] / 2;
+                    const beginWidth = centerWidth - (size / 2);
+                    return img.slice([beginHeight, beginWidth, 0], [size, size, 3]);
+                }
+
+                /**
+                 * Adjusts the video size so we can make a centered square crop without
+                 * including whitespace.
+                 * @param {number} width The real width of the video element.
+                 * @param {number} height The real height of the video element.
+                 */
+                adjustVideoSize(width, height) {
+                    const aspectRatio = width / height;
+                    if (width >= height) {
+                        this.webcamElement.width = aspectRatio * this.webcamElement.height;
+                    } else if (width < height) {
+                        this.webcamElement.height = this.webcamElement.width / aspectRatio;
+                    }
+                }
+
+                async setup() {
+                    return new Promise((resolve, reject) => {
+                        const navigatorAny = navigator;
+                        navigator.getUserMedia = navigator.getUserMedia ||
+                            navigatorAny.webkitGetUserMedia || navigatorAny.mozGetUserMedia ||
+                            navigatorAny.msGetUserMedia;
+                        if (navigator.getUserMedia) {
+                            navigator.getUserMedia(
+                                { video: true },
+                                stream => {
+                                    this.webcamElement.srcObject = stream;
+                                    this.webcamElement.addEventListener('loadeddata', async () => {
+                                        this.adjustVideoSize(
+                                            this.webcamElement.videoWidth,
+                                            this.webcamElement.videoHeight);
+                                        resolve();
+                                    }, false);
+                                },
+                                error => {
+                                    reject();
+                                });
+                        } else {
+                            reject();
+                        }
+                    });
+                }
+            }
+        </script>
+        <script>
+            const webcam = new Webcam(document.getElementById('webcam'));
+            const actionSamples = [];
+            const idleSamples = [];
+            isPredicting = false;
+
+            function getSample() {
+                return tf.tidy(() => mobilenet.predict(webcam.capture()));
+            }
+
+            async function appendActionSample() {
+                actionSamples.push(getSample());
+                document.getElementById('action-counter').textContent = actionSamples.length;
+            }
+
+            async function appendIdleSample() {
+                idleSamples.push(getSample());
+                document.getElementById('idle-counter').textContent = idleSamples.length;
+            }
+
+            async function gestureTrain() {
+                await tf.nextFrame();
+                await tf.nextFrame();
+                const t0 = performance.now();
+                // We parameterize batch size as a fraction of the entire dataset because the
+                // number of examples that are collected depends on how many examples the user
+                // collects. This allows us to have a flexible batch size.
+                const batchSize = Math.floor((actionSamples.length + idleSamples.length) * 0.4);
+                if (!(batchSize > 0)) {
+                    throw new Error(`Too few training samples.`);
+                }
+
+                document.getElementById('loss').style.display = 'inline';
+                isPredicting = false;
+                // Bake the dataset
+                const X = tf.concat2d(actionSamples.concat(idleSamples));
+                const Y = tf.tidy(() => tf.stack(
+                    Array(actionSamples.length).fill(tf.tensor1d([1, 0])).concat(
+                    Array(idleSamples.length).fill(tf.tensor1d([0, 1])))
+                ));
+
+                // Creates a 2-layer fully connected model. By creating a separate model,
+                // rather than adding layers to the mobilenet model, we "freeze" the weights
+                // of the mobilenet model, and only train weights from the new model.
+                model = tf.sequential({
+                  layers: [
+                    // Layer 1.
+                    tf.layers.dense({
+                        inputDim: featuresNumber,
+                        units: 100,
+                        activation: 'relu',
+                        kernelInitializer: 'varianceScaling',
+                        useBias: true
+                    }),
+                    // Layer 2. The number of units of the last layer should correspond
+                    // to the number of classes we want to predict.
+                    tf.layers.dense({
+                        units: 2,
+                        kernelInitializer: 'varianceScaling',
+                        useBias: false,
+                        activation: 'softmax'
+                    })
+                  ]
+                });
+
+                // Creates the optimizer which drives training of the model.
+                const optimizer = tf.train.adam(0.0001);
+                // We use categoricalCrossentropy which is the loss function we use for
+                // categorical classification which measures the error between our predicted
+                // probability distribution over classes (probability that an input is of each
+                // class), versus the label (100% probability in the true class)>
+                model.compile({optimizer: optimizer, loss: 'categoricalCrossentropy'});
+
+                // Train the model! Model.fit() will shuffle X & Y so we don't have to.
+                await model.fit(X, Y, {
+                  batchSize,
+                  epochs: 40,
+                  callbacks: {
+                    onBatchEnd: async (batch, logs) => {
+                        document.getElementById('loss').textContent = 'Loss: ' + logs.loss.toFixed(5);
+                    }
+                  }
+                });
+                X.dispose();
+                Y.dispose();
+                document.getElementById('gesture-train').style.display = 'none';
+                document.getElementById('gesture-run').style.display = 'inline-block';
+                reportGestureStatus('Trained', t0);
+            }
+
+            async function predictLoop() {
+                document.getElementById('gesture-run').style.display = 'none';
+                document.getElementById('gesture-train').style.display = 'inline-block';
+                isPredicting = true;
+                while (isPredicting) {
+                    const predictedClassTensor = tf.tidy(() => {
+                        const predictions = model.predict(getSample());
+                        // Returns the index with the maximum probability. This number corresponds
+                        // to the class the model thinks is the most probable given the input.
+                        return predictions.as1D().argMax();
+                    });
+                    const predictedClass = (await predictedClassTensor.data())[0];
+                    predictedClassTensor.dispose();
+                    document.getElementById('gesture-status').textContent = ['ACTION', 'IDLE'][predictedClass];
+                    await tf.nextFrame();
+                }
+            }
+
+            function reportGestureStatus(message, t0) {
+                const t1 = performance.now();
+                document.getElementById('gesture-status').textContent = message + ' (' + ((t1 - t0)|0) + 'ms)';
+            }
+
+            async function gestureLoadTfjs() {
+                const t0 = performance.now();
+                function onload() {
+                    reportGestureStatus('Loaded tfjs', t0);
+                    document.getElementById('gesture-loadtfjs').style.display = 'none';
+                    document.getElementById('gesture-init').style.display = 'inline-block';
+                }
+                if (typeof tf === 'undefined') {
+                    const script = document.createElement('script');
+                    script.onload = onload;
+                    script.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs';
+                    document.body.appendChild(script);
+                } else {
+                    onload();
+                }
+            }
+
+            async function gestureInit() {
+                const t0 = performance.now();
+                try {
+                    await webcam.setup();
+                } catch (e) {
+                    document.getElementById('no-webcam').style.display = 'block';
+                }
+                const rootPath = 'mobilenetv2_100_224/';
+                mobilenet = await tf.loadFrozenModel(
+                    rootPath + 'tensorflowjs_model.pb',
+                    rootPath + 'weights_manifest.json');
+                // Warm up the model. This uploads weights to the GPU and compiles the WebGL
+                // programs so the first time we collect data from the webcam it will be
+                // quick.
+                const output = getSample();
+                featuresNumber = output.shape[1];
+                output.dispose();
+                document.getElementById('gesture-init').style.display = 'none';
+                document.getElementById('gesture-train').style.display = 'inline-block';
+                document.getElementById('dataset-panel').style.display = 'flex';
+                reportGestureStatus('Initialized', t0);
+            }
+        </script>
+    </section>
+
+    <section class="slide">
+        <h2>Examples</h2>
+        <a href="https://github.com/tensorflow/tfjs-examples">github.com/tensorflow/tfjs-examples</a>
+        <ul>
+            <li>Human pose recognition</li>
+            <li>Playing pacman with gestures</li>
+            <li>Translation (seq2seq)</li>
+            <li>Text classification</li>
+            <li>Many more!</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Live demo 4</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Let's swap out Python with JavaScript</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Installation for Node.js</h2>
+        <pre><code>npm install @tensorflow/tfjs @tensorflow/tfjs-node</code></pre>
+        <pre><code>                          or @tensorflow/tfjs-node-gpu</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>ijavascript</h2>
+        <pre><code>npm install ijavascript-await</code></pre>
+        <ul>
+            <li>Node.js driver for Jupyter</li>
+            <li>Deals with async/await</li>
+            <li>Good integration into the notebook</li>
+        </ul>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li>Much fun and easy</li>
+            <li>Very early days</li>
+            <li>PoCs work</li>
+            <li>TensorFlow is getting even more complex inside</li>
+        </ul>
+    </section>
+
+	<section class="slide" id="thankyou">
+        <div id="qrcode-container">
+            <img class="qrcode" src="pictures/qrcode_black.svg">
+            <a href="http://bit.ly/2Urz262" id="bitly">bit.ly/2Urz262</a>
+        </div>
+        <style>
+            #thankyou {
+                background: url("pictures/thankyou.svg");
+                color: #3c3d40 !important;
+            }
+            #thankyou a {
+                color: #3c3d40 !important;
+            }
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+                font-family: monospace;
+                background: white;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
