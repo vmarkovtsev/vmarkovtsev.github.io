@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Assisted Code Review with source{d} Lookout</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="52" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="Online, 14.01.2019" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/mloncode-meetup-2019-webinar" />
+    <meta property="og:title" content="Assisted Code Review with source{d} Lookout" />
+    <meta property="og:description" content="Ensuring that a codebase is consistent in style is both hard and costly, yet it is extremely important for maintainability and to reduce technical debt. This problem is one of the many pain points we are currently tackling with source{d} Lookout, our brand new assisted code review framework. The purpose of source{d} Lookout is to bring assisted code review to anyone in an easy-to-setup, easy-to-use, easy-to-extend fashion. To achieve that, source{d} Lookout watches Github repos and triggers a set of analyzers when new code is sent for review. The purpose of source{d} Lookout is to bring assisted code review to anyone in an easy-to-setup, easy-to-use, easy-to-extend fashion. To achieve that, source{d} Lookout watches Github repos and triggers a set of analyzers when new code is sent for review or pushed." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/mloncode-meetup-2019-webinar/pictures/cover.png" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/mloncode-meetup-2019-webinar/pictures/cover.png" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Raleway/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Assisted Code Review with source{d} Lookout</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Raleway', sans-serif;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+            background: none;
+            font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        .black {
+            color: #202020 !important;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+        }
+        .part {
+            background: radial-gradient(circle at center, #8719cb 0, #400d9a 130%)
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Assisted Code Review with source{d} Lookout</h2>
+        <p>Vadim Markovtsev</p>
+        <div id="cover-logo">
+            <img src="pictures/sourced_primary_black_back.svg">
+            <p>Machine Learning for</p>
+            <p>Large Scale Code Analysis</p>
+        </div>
+		<style>
+            #cover {
+				background: linear-gradient(90deg, rgba(135,25,203,1) 0%, rgba(64,13,154,1) 100%);
+			}
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 42pt;
+                color: white;
+            }
+            #cover > p {
+                margin: 40px 0 120px 0;
+                text-align: center;
+                font-size: 24pt;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+            }
+            #cover-logo {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            #cover-logo > img {
+                width: 236px;
+                margin-bottom: 12px;
+            }
+            #cover-logo > p {
+                font-family: 'Raleway', sans-serif;
+                font-size: 14pt;
+                font-weight: bold;
+                margin: 0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Plan</h2>
+        <ol>
+            <li>Origins</li>
+            <li>What is Lookout?</li>
+            <li>SDK</li>
+            <li>From scratch: typo detection</li>
+        </ol>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Origins</h2>
+    </section>
+
+    <style>
+        .ghq {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            object-fit: cover;
+        }
+    </style>
+
+    <section class="slide">
+        <img src="pictures/ghq_quotes.png" class="ghq">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ghq_indent.png" class="ghq">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ghq_list_compr.png" class="ghq">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ghq_split.png" class="ghq">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ghq_rename.png" class="ghq">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ghq_comment.png" class="ghq">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ghq_fix_a_typo.png" class="ghq">
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Many efforts target boring stuff</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Boring means automatable</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Automatable ≠ unattended 😔</h2>
+    </section>
+
+    <section class="slide">
+        <h2>When to help?</h2>
+        <ul>
+            <li>While you type = IDE</li>
+            <li>While you check = CI</li>
+            <li>While you review = PR</li>
+            <li>Periodically, asynchronously = cron</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>IDE</h2>
+        <ul>
+            <li class="pro">Instant feedback</li>
+            <li class="pro">Rich information</li>
+            <li class="pro">Rich UI</li>
+            <li class="con">Instant feedback</li>
+            <li class="con">Many different IDEs and languages</li>
+        </ul>
+        <style>
+            .pro, .con {
+                list-style: none;
+            }
+            .pro::before, .con::before {
+                opacity: 1 !important;
+            }
+            .pro::before {
+                content: "+" !important;
+            }
+            .con::before {
+                content: "–" !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>CI</h2>
+        <ul>
+            <li class="pro">Part of the workflow</li>
+            <li class="pro">More time to run</li>
+            <li class="con">No UI</li>
+            <li class="con">Must not be wrong</li>
+            <li class="con">Longer feedback loop</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>PR reviews</h2>
+        <ul>
+            <li class="pro">Part of the workflow</li>
+            <li class="pro">More time to run</li>
+            <li class="pro">UI</li>
+            <li class="con"><em>Should</em> not be wrong</li>
+            <li class="con">Longer feedback loop</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>cron</h2>
+        <ul>
+            <li class="pro">Plenty of time to run</li>
+            <li class="con">Outside of the workflow</li>
+            <li class="con">No UI</li>
+            <li class="con">Longest feedback loop</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Comparison</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th scope="col"></th>
+                    <th align="center">∈ workflow</th>
+                    <th align="center">UI</th>
+                    <th align="center">Feedback</th>
+                    <th align="center">Rich info</th>
+                    <th>FP requirements</th>
+                </tr>
+                <tr>
+                    <th scope="row">IDE</th>
+                    <td align="center">✓</td>
+                    <td align="center">✓✓</td>
+                    <td align="center">instant</td>
+                    <td align="center">✓</td>
+                    <td>low</td>
+                </tr>
+                <tr>
+                    <th scope="row">CI</th>
+                    <td align="center">✓</td>
+                    <td align="center">✗</td>
+                    <td align="center">minutes</td>
+                    <td align="center">✗</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <th scope="row">PR</th>
+                    <td align="center">✓</td>
+                    <td align="center">✓</td>
+                    <td align="center">minutes</td>
+                    <td align="center">✗</td>
+                    <td>lowest</td>
+                </tr>
+                <tr>
+                    <th scope="row">cron</th>
+                    <td align="center">✗</td>
+                    <td align="center">✗</td>
+                    <td align="center">hours</td>
+                    <td align="center">✗</td>
+                    <td>low</td>
+                </tr>
+            </tbody>
+        </table>
+    
+        <style>
+            th[align=center] {
+                text-align: center !important;
+            }
+    
+            table td,
+            table th {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>When to help?</h2>
+        <ul>
+            <li>While you type = IDE</li>
+            <li>While you check = CI</li>
+            <li class="li-selected">While you review = PR</li>
+            <li>Periodically, asynchronously</li>
+        </ul>
+        <style>
+            .li-selected {
+                list-style: none;
+            }
+            .li-selected::before {
+                content: "→" !important;
+                color: white !important;
+                opacity: 1 !important;
+            }
+            .li-selected::after {
+                content: "←";
+                color: white;
+                margin-left: 0.5em;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <iframe class="fullslide" src="https://www.codacy.com/blog/20-of-code-review-comments-are-about-style-and-best-practices/"></iframe>
+        <style>
+            .fullslide {
+                position: relative;
+                top: -81px;
+                left: -100px;
+                width: calc(100% + 200px);
+                height: calc(100% + 81px);
+                border: 0;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">What is Lookout?</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Goals</h2>
+        <ul>
+            <li>Assisted code review platform</li>
+            <li>Tight git/GitHub integration</li>
+            <li>Analyzed language agnostic</li>
+            <li>Implementation language agnostic</li>
+            <li>Batteries included</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Architecture</h2>
+        <img src="pictures/lookout_arch.svg" class="lookout-diagram">
+        <style>
+            .lookout-diagram {
+                width: 800px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_1.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_2.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_3.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_4.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_5.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_6.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/magic.gif" class="fullslide">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_7.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>PR event</h2>
+        <img src="pictures/lookout_comm_8.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>PR event</h2>
+        <img src="pictures/lookout_comm_9.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2 class="shout" id="docs-lookout">docs.sourced.tech/lookout</h2>
+        <style>
+            #docs-lookout {
+                font-size: 70px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">SDK</h2>
+    </section>
+
+    <section class="slide" id="sdk-diagram">
+        <img src="pictures/sdk.svg">
+        <style>
+            #sdk-diagram > img {
+                width: 800px;
+            }
+            #sdk-diagram {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-bottom: 81px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>src-d/lookout-sdk</h2>
+        <ul>
+            <li>Single source of gRPC definitions</li>
+            <li>Low-level API: Go, Python</li>
+            <li>Low-level examples</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>src-d/lookout-sdk-ml</h2>
+        <ul>
+            <li>High-level Python API</li>
+            <li>Stateful analyzers</li>
+            <li>Integrated with source{d} ml ecosystem</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Rule of 👍</h2>
+        <img src="pictures/rule_thumb.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>High-level API</h2>
+        <pre><code><span style="color: #cc8242">class</span> MyAnalyzer(Analyzer):</code>
+<code>    <span style="color: #bbb429">@classmethod</span></code>
+<code>    <span style="color: #cc8242">def</span> <span style="color: #ffc66d">train</span>(<span style="color: #94558D;">cls</span>, <span style="color: #f92672">...</span>) <span style="color: #f92672">-&gt;</span> AnalyzerModel:</code>
+<code>        <span style="color: #808080"># ...</span></code>
+<code></code>
+<code>    <span style="color: #cc8242">def</span> <span style="color: #ffc66d">analyze</span>(<span style="color: #94558D;">self</span>, <span style="color: #f92672">...</span>) <span style="color: #f92672">-&gt;</span> [Comment]:</code>
+<code>        <span style="color: #808080"># do something with self.model</span></code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Train</h2>
+        <pre><code><span style="color: #bbb429">@with_uasts_and_contents</span></code>
+<code><span style="color: #cc8242">def</span> <span style="color: #ffc66d">train</span>(<span style="color: #94558D;">cls</span>,</code>
+<code>          ptr: ReferencePointer,</code>
+<code>          config: Dict[str, Any],</code>
+<code>          data_service: DataService,</code>
+<code>          files: Iterable[File]</code>
+<code>          ) <span style="color: #f92672">-&gt;</span> AnalyzerModel:</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Analyze</h2>
+        <pre><code><span style="color: #bbb429">@with_changed_uasts_and_contents</span></code>
+<code><span style="color: #cc8242">def</span> <span style="color: #ffc66d">analyze</span>(<span style="color: #94558D;">self</span>,</code>
+<code>            ptr_from: ReferencePointer,</code>
+<code>            ptr_to: ReferencePointer,</code>
+<code>            data_service: DataService,</code>
+<code>            changes: Iterable[Change]</code>
+<code>            ) <span style="color: #f92672">-&gt;</span> [Comment]:</code>
+</pre>
+    </section>
+
+    <section class="slide">
+        <h2>Behind the scenes</h2>
+        <ul>
+            <li>gRPC servers and clients</li>
+            <li>Pooling and threading</li>
+            <li>Database of trained models</li>
+            <li>Caches</li>
+            <li>Logging</li>
+            <li>Metrics</li>
+        </ul>
+        <img src="pictures/jackie_chan.svg" id="jackie">
+        <style>
+            #jackie {
+                position: absolute;
+                right: 100px;
+                bottom: 81px;
+                width: 400px;
+                opacity: 0.7;
+            }
+        </style>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">Codelab</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Objective</h2>
+        <pre><code><span style="color: #cc8242">class</span> Packfile:</code></pre>
+        <button class="review" onclick="review1()">Review</button>
+        <style>
+            .review {
+                color: white;
+                font-size: 25px;
+                font-family: Raleway, sans-serif;
+                background: rgba(135,25,203,1);
+            }
+        </style>
+
+        <link rel="stylesheet" type="text/css" href="clippy/clippy.css" media="all">
+        <script src="clippy/jquery-3.3.1.min.js"></script>
+        <script src="clippy/clippy.js"></script>
+        <script type="text/javascript">
+            clippy.load('Clippy', function (agent) {
+                clippyAgent = agent;
+            });
+            function review1() {
+                clippyAgent.show();
+                clippyAgent.moveTo(600, 400);
+                clippyAgent.speak("Did you mean: Backfile?");
+            }
+        </script>
+    </section>
+
+    <section class="slide">
+        <h2>Objective</h2>
+        <pre><code><span style="color: #cc8242">def</span> <span style="color: #ffc66d">read_packfile</span>(<span style="color: #f92672;">...</span>):</code>
+<code>    <span style="color: #808080"># ...</span></code>
+<code> </code>
+<code><span style="color: #cc8242">class</span> Packfile:</code></pre>
+        <button class="review" onclick="review2()">Review</button>
+        <script type="text/javascript">
+            function review2() {
+                clippyAgent.show();
+                clippyAgent.moveTo(600, 400);
+                clippyAgent.speak("Everything is correct, Vadim. You are the best coder in the world.");
+            }
+        </script>
+    </section>
+
+    <section class="slide">
+        <h2>Objective</h2>
+        <pre><code><span style="color: #cc8242">def</span> <span style="color: #ffc66d">read_packfile</span>(<span style="color: #f92672;">...</span>):</code>
+    <code>    <span style="color: #808080"># ...</span></code>
+    <code> </code>
+    <code><span style="color: #cc8242">class</span> Packfle:</code></pre>
+        <button class="review" onclick="review3()">Review</button>
+        <script type="text/javascript">
+            function review3() {
+                clippyAgent.show();
+                clippyAgent.moveTo(600, 400);
+                clippyAgent.speak("Did you mean: Packfile?");
+                setTimeout(() => clippyAgent.hide(), 10000);
+            }
+        </script>
+    </section>
+
+    <section class="slide">
+        <h2>Steps</h2>
+        <ol>
+            <li>Install lookout-sdk-ml and autocorrect</li>
+            <li>Write typos.py</li>
+            <li>Fork a repo, create a PR</li>
+            <li>Generate a new GitHub Personal Access Token</li>
+            <li>Run our analyzer</li>
+        </ol>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li>source{d} decided to build products for assisted code review</li>
+            <li>Lookout is a great platform for assisted code review</li>
+            <li>Writing new analyzers is easy and fun</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/src-d/lookout">src-d/lookout</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/src-d/lookout">src-d/lookout-sdk-ml</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+            <li><i class="fa fa-medium monofa" aria-hidden="true"></i><a href="https://medium.com/sourcedtech">medium.com/sourcedtech</a></li>
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="https://go.sourced.tech/newsletter">go.sourced.tech/newsletter</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/sourcedtech">sourcedtech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">vadimlearning</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="http://bit.ly/2H8U5ra" id="bitly">bit.ly/2H8U5ra</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
