@@ -1,0 +1,62 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="951px" height="556px" viewBox="-0.5 -0.5 951 556">
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="bar-gradient">
+            <stop offset="0%" style="stop-color:#400d9a"/>
+            <stop offset="100%" style="stop-color:rgba(64, 13, 154, 0)"/>
+        </linearGradient>
+        <style>
+            @font-face {
+                font-family: "Source Sans Pro";
+                src: url("../fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf") format("truetype");
+            }
+        </style>
+    </defs>
+    <g>
+        <rect x="119" y="452" width="120" height="72" fill="url(#bar-gradient)" stroke="none" pointer-events="none" rx="5" ry="5"/>
+        <rect x="269" y="378" width="120" height="146" fill="url(#bar-gradient)" stroke="none" pointer-events="none" rx="5" ry="5"/>
+        <rect x="419" y="351" width="120" height="173" fill="url(#bar-gradient)" stroke="none" pointer-events="none" rx="5" ry="5"/>
+        <rect x="569" y="210" width="120" height="314" fill="url(#bar-gradient)" stroke="none" pointer-events="none" rx="5" ry="5"/>
+        <rect x="719" y="89" width="120" height="435" fill="url(#bar-gradient)" stroke="none" pointer-events="none" rx="5" ry="5"/>
+        <path d="M 58.5 523.5 L 58.5 0.0" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-miterlimit="10" pointer-events="none"/>
+        <g transform="translate(154.5,527.5)">
+            <text x="24" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">quotes</text>
+        </g>
+        <g transform="translate(311.5,527.5)">
+            <text x="17" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">lines</text>
+        </g>
+        <g transform="translate(451.5,527.5)">
+            <text x="27" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">naming</text>
+        </g>
+        <g transform="translate(-47.5,256)rotate(-90,60,10)">
+            <text x="60" y="19" fill="#FFFFFF" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">% PR comments</text>
+        </g>
+        <g transform="translate(587.5,527.5)">
+            <text x="41" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">indentation</text>
+        </g>
+        <g transform="translate(724.5,527.5)">
+            <text x="54" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">documentation</text>
+        </g>
+        <path d="M 51 89 L 66 89" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" pointer-events="none"/>
+        <g transform="translate(37.5,75.5)">
+            <text x="4" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">5</text>
+        </g>
+        <path d="M 51 178 L 66 178" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" pointer-events="none"/>
+        <g transform="translate(37.5,164.5)">
+            <text x="4" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">4</text>
+        </g>
+        <path d="M 51 267 L 66 267" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" pointer-events="none"/>
+        <g transform="translate(37.5,253.5)">
+            <text x="4" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">3</text>
+        </g>
+        <path d="M 51 356 L 66 356" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" pointer-events="none"/>
+        <g transform="translate(37.5,342.5)">
+            <text x="4" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">2</text>
+        </g>
+        <path d="M 51 445 L 66 445" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" pointer-events="none"/>
+        <g transform="translate(37.5,431.5)">
+            <text x="4" y="19" fill="#ffffff" text-anchor="middle" font-size="18px" font-family="Source Sans Pro">1</text>
+        </g>
+    </g>
+</svg>

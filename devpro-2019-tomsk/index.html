@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Personal code review assistants and Machine Learning on Source Code</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="55" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="27.04.2019, Tomsk, Russia" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/devpro-2019-tomsk" />
+    <meta property="og:title" content="Personal code review assistants and Machine Learning on Source Code" />
+    <meta property="og:description" content="Introduction to Lookout - an open source framework for creating personal code review assistants on GitHub. Real world applications of Machine Learning on Source Code - automatic code style repair and typos correction." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/devpro-2019-tomsk/pictures/cover.png" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/devpro-2019-tomsk/pictures/cover.png" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Personal code review assistants and Machine Learning on Source Code</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: green;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #8719cb 0, #400d9a 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Personal code review assistants and Machine Learning on Source Code</h2>
+		<p class="black">Vadim Markovtsev<br><a href="https://twitter.com/vadimlearning">@vadimlearning</a></p>
+        <p class="black"><a href="https://sourced.tech">source{d}</a><br>#MLonCode</p>
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 40px;
+                color: #202020;
+                padding-right: 120px;
+                transform: rotate(6.9deg) translateY(-50px);
+            }
+            #cover p {
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+                position: absolute;
+            }
+            @media not print {
+                #cover {
+                    background: url("pictures/cover.png") black;
+                }
+            }
+            @media print {
+                #cover {
+                    background: url("pictures/cover.png") white;
+                }
+            }
+            #cover > p:nth-of-type(1) {
+                transform: rotate(-3.5deg);
+                left: 530px;
+                top: 406px;
+            }
+            #cover > p:nth-of-type(2) {
+                transform: rotate(8deg);
+                left: 420px;
+                top: 498px;
+            }
+            #cover a {
+                color: #202020;
+                font-weight: bold;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="plan">
+        <h2>Plan</h2>
+        Origins&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Lookout&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;SDK&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Demo&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;#MLonCode
+        <style>
+            #plan {
+                background-image: url("pictures/plan.png");
+            }
+            #plan span {
+                position: relative;
+                top: 2px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Origins</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Why does reviewing code suck?</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Need to understand somebody else's code.<br><span class="emoji">💩</span></h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Need to have experience.<br><span class="emoji">🤓</span></h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Need to have empathy.<br><span class="emoji">🤬</span></h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Boring.<br><span class="emoji">😴</span></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Why boring?</h2>
+        <ul>
+            <li>Same faults again and again.</li>
+            <li>Minor, pedantic faults.</li>
+            <li>No immediate feedback.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <object data="pictures/review_comments.svg" type="image/svg+xml" class="fullslide-padding"></object>
+        <style>
+            .fullslide-padding {
+                width: 100%;
+                height: calc(100% - 50px);
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Σ≈4 million</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout">Solution: automate what we can.</h2>
+    </section>
+
+    <section class="slide">
+        <h2>We do <span class="title-middle">*</span>not<span class="title-middle">*</span> want this</h2>
+        <figure class="fullwidth">
+            <img src="pictures/fail.png">
+            <figcaption>
+                <a class="source" href="https://github.com/lf-kailashraj/batch7crud/pull/41">Source.</a>
+            </figcaption>
+        </figure>
+        <style>
+            .title-middle {
+                vertical-align: sub;
+            }
+            .fullwidth > img, img.fullwidth {
+                width: 100%;
+                object-fit: contain;
+                max-height: 380px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .fullwidth > figcaption {
+                position: absolute;
+                font-size: smaller;
+                bottom: 50px;
+                right: 50px;
+                transform: rotate(-90deg);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="weird">
+        <style>
+            #weird {
+                background-image: url("pictures/weird.jpg");
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Better to suggest less, but make no mistakes.</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Lookout</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Architecture</h2>
+        <img src="pictures/lookout_arch.svg" class="lookout-diagram">
+        <style>
+            .lookout-diagram {
+                width: 800px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_1.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_2.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_3.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_4.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_5.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_6.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/magic.gif" class="fullslide">
+        <style>
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Push event</h2>
+        <img src="pictures/lookout_comm_7.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>PR event</h2>
+        <img src="pictures/lookout_comm_8.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>PR event</h2>
+        <img src="pictures/lookout_comm_9.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">docs.sourced.tech/lookout</h2>
+        <style>
+            .shout-small {
+                font-size: 70px !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide part vista" id="lookout-img">
+        <style>
+            #lookout-img {
+                background: url("pictures/lookout.png") black;
+                background-origin: content-box;
+                padding: 50px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">SDK</h2>
+    </section>
+
+    <section class="slide" id="sdk-diagram">
+        <img src="pictures/sdk.svg">
+        <style>
+            #sdk-diagram > img {
+                width: 800px;
+            }
+            #sdk-diagram {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-bottom: 81px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>src-d/lookout-sdk</h2>
+        <ul>
+            <li>Single source of gRPC definitions</li>
+            <li>Low-level API: Go, Python</li>
+            <li>Low-level examples</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>src-d/lookout-sdk-ml</h2>
+        <ul>
+            <li>High-level Python API</li>
+            <li>Stateful analyzers</li>
+            <li>Integrated with source{d} ml ecosystem</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Rule of <span class="emoji">👍</span></h2>
+        <img src="pictures/rule_thumb.svg" class="lookout-diagram">
+    </section>
+
+    <section class="slide">
+        <h2>High-level API</h2>
+        <pre><code><span style="color: #cc8242">class</span> MyAnalyzer(Analyzer):</code>
+<code>    <span style="color: #bbb429">@classmethod</span></code>
+<code>    <span style="color: #cc8242">def</span> <span style="color: #ffc66d">train</span>(<span style="color: #94558D;">cls</span>, <span style="color: #f92672">...</span>) <span style="color: #f92672">-&gt;</span> AnalyzerModel:</code>
+<code>        <span style="color: #808080"># ...</span></code>
+<code></code>
+<code>    <span style="color: #cc8242">def</span> <span style="color: #ffc66d">analyze</span>(<span style="color: #94558D;">self</span>, <span style="color: #f92672">...</span>) <span style="color: #f92672">-&gt;</span> [Comment]:</code>
+<code>        <span style="color: #808080"># do something with self.model</span></code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Behind the scenes</h2>
+        <ul id="behind-scenes">
+            <li>gRPC servers and clients</li>
+            <li>Pooling and threading</li>
+            <li>Database of trained models</li>
+            <li>Caches</li>
+            <li>Deferred training at first time</li>
+            <li>Retraining</li>
+            <li>Logging, metrics</li>
+        </ul>
+        <img src="pictures/jackie_chan.svg" class="jackie">
+        <style>
+            #behind-scenes > li:before {
+                content: "🤯";
+                font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+            }
+            .jackie {
+                position: absolute;
+                right: 100px;
+                bottom: 81px;
+                width: 400px;
+                opacity: 0.7;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">MLonCode</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Naturalness hypothesis</h2>
+        <figure>
+            <blockquote>
+                <p>Because coding is an act of communication, one might expect large code corpora to have rich patterns, similar to natural
+                language, thus allowing software engineering tools to exploit probabilistic ML models.</p>
+            </blockquote>
+            <figcaption>Allamanis et.al.</figcaption>
+        </figure>
+    </section>
+
+    <section class="slide">
+        <h2>id2vec <a class="right" href="http://bit.ly/2UHo1B0">bit.ly/2UHo1B0</a></h2>
+        <img src="pictures/swivel_after.png" id="swivel">
+        <figure>
+            <blockquote>
+                <p>Send is to receive as push is to pop.</p>
+            </blockquote>
+            <figcaption>Markovtsev et.al.</figcaption>
+        </figure>
+        <style>
+            #swivel {
+                float: right;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>AST GGNN <a class="right" href="http://bit.ly/2V1B8wo">bit.ly/2V1B8wo</a></h2>
+        <img src="pictures/ggnn_white.svg" class="fullwidth white">
+        <img src="pictures/ggnn_black.svg" class="fullwidth black">
+    </section>
+
+    <section class="slide">
+        <h2>code2vec <a class="right" href="https://code2vec.org">code2vec.org</a></h2>
+        <img src="pictures/code2vec_white.png" class="white fullwidth">
+        <img src="pictures/code2vec_black.png" class="black fullwidth">
+        <style>
+            h2 > a.right {
+                float: right;
+                font-family: "Source Sans Pro", sans-serif;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Code LSH <a class="right" href="http://bit.ly/2v7tKAS">bit.ly/2v7tKAS</a></h2>
+        <img src="pictures/jquery.png" class="fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Automatic format repair</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Augmented token stream</h2>
+        <img src="pictures/vnodes.svg" id="vnodes" class="diagram diagram-right">
+        <pre><code>a = b * 2</code></pre>
+        <style>
+            .diagram {
+                height: 350px;
+            }
+            .diagram-right {
+                float: right;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Machine Learning</h2>
+        <img src="pictures/features.svg" class="diagram center">
+    </section>
+
+    <section class="slide">
+        <h2>Rules</h2>
+        <img src="pictures/rules.svg" class="diagram diagram-right">
+        <ul>
+            <li><code>a≤5 Λ b≤1 Λ <span class="oline">c</span> ⇒ α</code></li>
+            <li><code>a≤5 Λ 1&lt;b&lt;4 ⇒ β</code></li>
+            <li><code>5&lt;a&lt;10 Λ <span class="oline">c</span> ⇒ γ</code></li>
+            <li><code>a&gt;5 Λ c Λ b&gt;2 ⇒ α</code></li>
+        </ul>
+        <style>
+            .oline {
+                text-decoration: overline;
+            }
+        </style>
+    </section>
+
+    <section class="slide rules-opt">
+        <h2>Rules optimization</h2>
+        <pre><code><span class="bad">a&gt;5</span> Λ c Λ b&gt;2 Λ <span class="oline">d</span> Λ <span class="bad">a&gt;10</span> ⇒ α</code><span class="opt-desc">(merge)</span><br>
+<code><span class="good">a&gt;10</span> Λ c Λ <span class="bad">b&gt;2</span> Λ <span class="oline">d</span> ⇒ α</code><span class="opt-desc">(redundant)</span><br>
+<code>a&gt;10 Λ c Λ <span class="oline bad">d</span> ⇒ α</code><span class="opt-desc">(feature exclusion)</span><br>
+<code><span class="bad">a&gt;10 Λ c ⇒ α</span></code><span class="opt-desc">(confidence threshold)</span></pre>
+        <h4 class="rules-opt-result">Result</h4>
+        <ul>
+            <li>-40% ~ -50% less rules @93%</li>
+        </ul>
+        <style>
+            .rules-opt code {
+                display: inline-block !important;
+                width: auto !important;
+            }
+            .bad {
+                color: coral;
+            }
+            .good {
+                color: lightgreen;
+            }
+            .opt-desc {
+                float: right;
+                font-family: "Source Sans Pro", sans-serif;
+            }
+            .rules-opt-result {
+                margin-bottom: 0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Typos correction</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Idea #1</h2>
+        <h2 class="shout shout-small">We trust existing code.</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Idea #2</h2>
+        <h2 class="shout shout-small">Let's use the whole world's open source code.</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Idea #3</h2>
+        <h2 class="shout shout-small">Piece-wise invariance: FooBar&nbsp;=&nbsp;bar_foo</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Typo correction plan</h2>
+        <ol>
+            <li>Extract all identifiers in the open source world</li>
+            <li>Split token into parts with a <a href="https://arxiv.org/abs/1805.11651">char-biLSTM</a></li>
+            <li>Build the vocabulary</li>
+            <li>Train xgboost</li>
+        </ol>
+        <img src="pictures/iceberg.jpg" id="iceberg">
+        <style>
+            #iceberg {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 100%;
+                object-fit: cover;
+                -webkit-mask-image: linear-gradient(to right, transparent 0%, white 30%, white 100%);
+                mask-image: linear-gradient(to right, transparent 0%, white 30%, white 100%);
+            }
+            @media not print {
+                -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+                mask-image: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+            }
+        </style>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li>Assisted code review is fun</li>
+            <li>Assisted code review + Lookout = ♥</li>
+            <li>#MLonCode is dope</li>
+            <li>ML can make code reviews less boring</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2 class="thank-you">Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/src-d/lookout">github.com/src-d/lookout</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+            <li><i class="fa fa-hashtag monofa" aria-hidden="true"></i><a href="https://github.com/src-d/awesome-machine-learning-on-source-code">MLonCode</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="http://bit.ly/2Iv8nBC" id="bitly">bit.ly/2Iv8nBC</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+</body>
+</html>
