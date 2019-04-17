@@ -374,6 +374,16 @@
         <h2 class="shout">Lookout</h2>
     </section>
 
+    <section class="slide part vista" id="lookout-img">
+        <style>
+            #lookout-img {
+                background: url("pictures/lookout.png") black;
+                background-origin: content-box;
+                padding: 50px;
+            }
+        </style>
+    </section>
+
     <section class="slide">
         <h2>Architecture</h2>
         <img src="pictures/lookout_arch.svg" class="lookout-diagram">
@@ -445,7 +455,7 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout shout-small">docs.sourced.tech/lookout</h2>
+        <h2 class="shout shout-small"><a href="https://docs.sourced.tech/lookout">docs.sourced.tech/lookout</a></h2>
         <style>
             .shout-small {
                 font-size: 70px !important;
@@ -453,34 +463,8 @@
         </style>
     </section>
 
-    <section class="slide part vista" id="lookout-img">
-        <style>
-            #lookout-img {
-                background: url("pictures/lookout.png") black;
-                background-origin: content-box;
-                padding: 50px;
-            }
-        </style>
-    </section>
-
     <section class="slide part">
         <h2 class="shout">SDK</h2>
-    </section>
-
-    <section class="slide" id="sdk-diagram">
-        <img src="pictures/sdk.svg">
-        <style>
-            #sdk-diagram > img {
-                width: 800px;
-            }
-            #sdk-diagram {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding-bottom: 81px;
-            }
-        </style>
     </section>
 
     <section class="slide">
@@ -499,6 +483,22 @@
             <li>Stateful analyzers</li>
             <li>Integrated with source{d} ml ecosystem</li>
         </ul>
+    </section>
+
+    <section class="slide" id="sdk-diagram">
+        <img src="pictures/sdk.svg">
+        <style>
+            #sdk-diagram > img {
+                width: 800px;
+            }
+            #sdk-diagram {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-bottom: 81px;
+            }
+        </style>
     </section>
 
     <section class="slide">
@@ -690,7 +690,7 @@
     <section class="slide">
         <h2>Typo correction plan</h2>
         <ol>
-            <li>Extract all identifiers in the open source world</li>
+            <li><a href="https://github.com/src-d/datasets/tree/master/Identifiers">Extract all identifiers in the open source world</a></li>
             <li>Split token into parts with a <a href="https://arxiv.org/abs/1805.11651">char-biLSTM</a></li>
             <li>Build the vocabulary</li>
             <li>Train xgboost</li>
