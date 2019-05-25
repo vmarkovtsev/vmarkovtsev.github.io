@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>style-analyzer: fixing code style inconsistencies with interpretable unsupervised algorithms</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="34" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="Montreal, Canada, 27.05.2019" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://vmarkovtsev.github.io/msr-2019-montreal" />
+    <meta property="og:title" content="style-analyzer: fixing code style inconsistencies with interpretable unsupervised algorithms" />
+    <meta property="og:description" content="Presentation of the scientific paper written by source{d} ML team for Mining Software Repositories 2019 conference." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/msr-2019-montreal/pictures/cover.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/msr-2019-montreal/pictures/cover.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>style-analyzer: fixing code style inconsistencies with interpretable unsupervised algorithms</h1>
+		<p>Vadim Markovtsev, Hugo Mougard, Waren Long, Egor Bulychev, Konstantin Slavnov - <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #8719cb 0, #400d9a 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+           background: none !important;
+        }
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        .fullslide-padding {
+            width: 100%;
+            height: calc(100% - 50px);
+            object-fit: contain;
+        }
+        .fullwidth > img, img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+        .source-web {
+            position: absolute;
+            bottom: 40px !important;
+            right: 100px !important;
+            transform: rotate(-90deg);
+        }
+        .source{
+            position: absolute;
+            bottom: 20px !important;
+            right: 100px !important;
+            line-height: 45px !important;
+            font-size: 20px;
+        }
+        .column {
+            float: left;
+            width: 50%;
+        }
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>style-analyzer: <span>fixing code ⇥ style␣␣inconsistencies␣with "interpretable"↵'unsupervised' algorithms</span></h2>
+		<p>Vadim Markovtsev, Hugo Mougard, Waren Long, Egor Bulychev, Konstantin Slavnov<br><a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 70px;
+                color: white;
+            }
+            #cover h2 > span {
+                font-size: 50px;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+            }
+			#cover {
+				background: linear-gradient(#8719cb 0, #400d9a 100%);;
+			}
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Problem</h2>
+    </section>
+
+    <section class="slide">
+        <h2>When to help?</h2>
+        <div class="row">
+            <div class="column">
+                <ul>
+                    <li>While you type = IDE</li>
+                    <li>While you check = CI</li>
+                    <li class="li-selected">While you review = PR</li>
+                    <li>Periodically, asynchronously</li>
+                </ul>
+            </div>
+            <div class="column pros-cons" id="pros-cons">
+                <ul>
+                    <li class="pros">Part of the workflow</li>
+                    <li class="pros">More time to run the models</li>
+                    <li class="pros">Nice UI</li>
+                    <li class="cons">High precision score required</li>
+                    <li class="cons">Longer feedback loop</li>
+                </ul>
+            </div>
+        </div>
+        <style>
+            .pros {
+                color: lime;
+            }
+            .pros::before {
+                content: "✔" !important;
+                color: lime !important;
+                width: 1em !important;
+            }
+            .cons {
+                color: coral;
+            }
+            .cons::before {
+                content: "✖" !important;
+                color: coral !important; 
+                width: 1em !important;
+                text-align: center !important;
+            }
+            .li-selected {
+                list-style: none;
+            }
+            .li-selected::before {
+                content: "→" !important;
+                color: white !important;
+                opacity: 1 !important;
+            }
+            .li-selected::after {
+                content: "←";
+                color: white;
+                margin-left: 0.5em;
+            }
+            #pros-cons ul {
+                margin-left: 50px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Lookout</h2>
+        <img src="pictures/lookout_arch.svg" class="lookout-diagram">
+        <style>
+            .lookout-diagram {
+                width: 800px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>PR review comments on GitHub</h2>
+        <object data="pictures/review_comments.svg" type="image/svg+xml" class="fullslide-padding"></object>
+        <p class="source-web"><a href="https://github.com/src-d/datasets/tree/master/ReviewComments">dataset</a></p>
+        <style>
+            .fullslide-padding {
+                width: 100%;
+                height: calc(100% - 120px);
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>"White box" is the key</h2>
+        <ul>
+            <li>Builds trust with the users</li>
+            <li>Provides interpretability</li>
+            <li>Allows editing</li>
+            <li>Allows blacklisting</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="classes">
+        <h2>Classes predicted</h2>
+        <table cellpadding="30">
+            <tr>
+                <td class="label">␣</td>
+                <td class="description">space</td>
+            </tr>
+            <tr>
+                <td class="label">→</td>
+                <td class="description">tabulation</td>
+            </tr>
+            <tr>
+                <td class="label">&#8626</td>
+                <td class="description">newline</td>
+            </tr>
+            <tr>
+                <td class="label">␣+/-</td>
+                <td class="description">spaced indentation increase/decrease</td>
+            </tr>
+            <tr>
+                <td class="label">→+/-</td>
+                <td class="description">tabulated indentation increase/decrease</td>
+            </tr>
+            <tr>
+                <td class="label">'/"</td>
+                <td class="description">single/double quotes</td>
+            </tr>
+            <tr>
+                <td class="label">&#8709</td>
+                <td class="description">empty gaps between non-label nodes, NOOP</td>
+            </tr>
+        </table>
+        <style>
+            .label {
+                text-align: center;
+                width: 10%;
+                padding-left: 0 !important;
+            }
+            .description {
+                text-align: left;
+                width: 90%;
+            }
+            #classes table, #classes td {
+                margin-left: 0px;
+                border-collapse: collapse;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Methodology</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Labels predicted</h2>
+        <p>We concatenate common classes together.</p>
+        <ul class="no-bullets">
+            <li>␣"</li>
+            <li>␣+␣+␣+␣+</li>
+            <li>'&#8626</li>
+            <li>&#8626→-&#8626</li>
+            <li>&#8709</li>
+        </ul>
+        <p>No BPE or similar reduction is required.</p>
+    </section>
+
+    <section class="slide" class="annotated-snippet">
+        <h2>Annotated code snippet</h2>
+        <pre><code><span style="color: green">&#8709</span>function<span style="color: green">&#9251</span>classesToArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8677</span>   if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>isArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: darkred">&#8709</span>return<span style="color: green">&#9251</span>value<span style="color: green">&#8709</span>;<span style="color: darkred">&#8709</span>}</code>
+             <code>    if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>typeof<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>===<span style="color: green">&#9251"</span>string<span style="color: green">"&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8677</span>       return<span style="color: green">&#9251</span>value<span style="color: green">&#8709</span>.<span style="color: green">&#8709</span>match(<span style="color: green">&#9251</span>rnothtml<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>||<span style="color: green">&#9251</span>[]<span style="color: green">&#8709</span>;<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8676</span>   }<span style="color: green">&#8626</span></code>
+             <code>    return<span style="color: green">&#9251</span>[]<span style="color: green">&#8709</span>;<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8676</span>}<span style="color: green">&#8709</span></code>
+        </pre>
+        <style>        
+            .annotated-snippet pre {
+                color: #bababa;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Augmented token stream</h2>
+        <img src="pictures/vnodes.svg" id="vnodes" class="diagram diagram-right">
+        <pre><code>a = b * 2</code></pre>
+        <style>
+            .diagram {
+                height: 350px;
+            }
+            .diagram-right {
+                float: right;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Machine Learning</h2>
+        <img src="pictures/features.svg" class="diagram center">
+    </section>
+
+    <section class="slide">
+        <h2>Machine Learning</h2>
+        <ul>
+            <li>Feature selection (univariate, ANOVA F-criterion)</li>
+            <li>Hyperparameter optimization (Bayesian)</li>
+            <li>80% + 20% split</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Rules</h2>
+        <img src="pictures/rules.svg" class="diagram diagram-right">
+        <ul>
+            <li><code>a&le;5 Λ b&le;1 Λ <span class="oline">c</span> ⇒ &alpha;</code></li>
+            <li><code>a&le;5 Λ 1&lt;b&lt;4 ⇒ &beta;</code></li>
+            <li><code>5&lt;a&lt;10 Λ <span class="oline">c</span> ⇒ &gamma;</code></li>
+            <li><code>a&gt;5 Λ c Λ b&gt;2 ⇒ &alpha;</code></li>
+        </ul>
+        <style>
+            .oline {
+                text-decoration: overline;
+            }
+        </style>
+    </section>
+
+    <style>
+        .rules-opt code {
+            display: inline-block !important;
+            width: auto !important;
+        }
+        .bad {
+            color: coral;
+        }
+        .good {
+            color: lightgreen;
+        }
+        .opt-desc {
+            float: right;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+        .rules-opt-result {
+            margin-bottom: 0;
+        }
+    </style>
+
+    <section class="slide rules-opt">
+        <h2>Rules optimization</h2>
+        <pre><code><span class="bad">a&gt;5</span> Λ c Λ b&gt;2 Λ <span class="oline">d</span> Λ <span class="bad">a&gt;10</span> ⇒ &alpha;</code><span class="opt-desc">(merge)</span><br>
+<code><span class="good">a&gt;10</span> Λ c Λ <span class="bad">b&gt;2</span> Λ <span class="oline">d</span> ⇒ &alpha;</code><span class="opt-desc">(redundant)</span><br>
+<code>a&gt;10 Λ c Λ <span class="oline bad">d</span> ⇒ &alpha;</code><span class="opt-desc">(feature exclusion)</span><br>
+<code><span class="bad">a&gt;10 Λ c ⇒ &alpha;</span></code><span class="opt-desc">(confidence threshold)</span></pre>
+        <h4 class="rules-opt-result">Result</h4>
+        <ul>
+            <li>-90% rules with no quality loss</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Redundant attributes elimination</h2>
+        <ul>
+            <li>Trigger imbalance: &lt;5% activation rate</li>
+            <li>For each attribute comparison build the set of <span class="bold">false positives</span></li>
+            <li>Build graph by thresholding Jaccard similarity between each pair (0.98)</li>
+            <li>Run multilevel community detection</li>
+            <li>Leave only one representative (greedily)</li>
+        </ul>
+        <style>
+            .bold {
+                font-weight: bold;
+            }
+        </style>
+    </section>
+
+    <section class="slide" class="annotated-snippet">
+        <h2>Annotated code snippet</h2>
+        <pre><code><span style="color: green">&#8709</span>function<span style="color: green">&#9251</span>classesToArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8677</span>   if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>isArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: lightgreen">&#9251</span>)<span style="color: lightgreen">&#9251</span>{<span style="color: red">&#8709</span>return<span style="color: lightgreen">&#9251</span>value<span style="color: lightgreen">&#8709</span>;<span style="color: darkred">&#8709</span>}</code>
+             <code>    if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>typeof<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>===<span style="color: green">&#9251"</span>string<span style="color: green">"&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8677</span>       return<span style="color: green">&#9251</span>value<span style="color: green">&#8709</span>.<span style="color: green">&#8709</span>match(<span style="color: green">&#9251</span>rnothtml<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>||<span style="color: green">&#9251</span>[]<span style="color: green">&#8709</span>;<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8676</span>   }<span style="color: green">&#8626</span></code>
+             <code>    return<span style="color: green">&#9251</span>[]<span style="color: green">&#8709</span>;<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8676</span>}<span style="color: green">&#8709</span></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Rule example</h2>
+        <div id="rule-y">
+            <div>
+                y = &#8709<br>
+                ŷ = &#8626→+
+            </div>
+            <div>
+                Confidence: 0.975<br>
+                Support: 3230
+            </div>
+        </div>
+        <hr>
+        <ul class="no-bullets">
+            <li>-1.value = {</li>
+            <li>-3.value not in {else}</li>
+            <li>+1.internal_type not in {StringLiteral}</li>
+            <li>+2.roles not in {LITERAL, COMMENT}</li>
+            <li>ˆ1.roles in {IF, STATEMENT}</li>
+        </ul>
+        <style>
+            #rule-y {
+                display: flex; 
+            }
+            #rule-y > div {
+                flex: 1;
+            }
+            #rule-y ~ ul {
+                font-family: monospace;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-smaller">Precision > Recall</h2>
+        <style>
+            .shout-smaller {
+                font-size: 110px !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Inference</h2>
+        <ol>
+            <li>Apply rules
+                <ul>
+                    <li>Fixes to old code?</li>
+                    <li>AST breakage?</li>
+                    <li>Identification?</li>
+                </ul>
+            </li>
+            <li>Generate code
+                <ul>
+                    <li>Indentation?</li>
+                    <li>Multiple lines?</li>
+                </ul>
+            </li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Debugging</h2>
+        <img src="pictures/debugger.png" class="fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Lookout comments on GitHub</h2>
+        <img src="pictures/lookout_stg_comment.png" class="lookout-comment">
+        <style>
+            .lookout-comment {
+                position: absolute;
+                top: 200px;
+                left: 150px;
+                width: 650px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Evaluation</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Precision</h2>
+        <img src="pictures/precision_noisy.svg" class="pr-curves">
+        <style>
+            .pr-curves {
+                position: absolute;
+                top: 170px;
+                left: 150px;
+                width: 550px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Prediction Rate</h2>
+        <img src="pictures/PredR_noisy.svg" class="pr-curves">
+    </section>
+
+    <section class="slide" id="results">
+        <h2>Results</h2>
+        <table cellpadding="10">
+            <tbody>
+                <tr>
+                    <th scope="col"></th>
+                    <th class="stats">train samples</th>
+                    <th class="stats">rules</th>
+                    <th class="stats">precision</th>
+                    <th class="stats">prediction rate</th>
+                </tr>
+                <tr>
+                    <th scope="row">node</th>
+                    <td class="stats">374,298</td>
+                    <td class="stats">641</td>
+                    <td class="stats">0.965</td>
+                    <td class="stats">0.951</td>
+                </tr>
+                <tr>
+                    <th scope="row">jquery</th>
+                    <td class="stats">197,072</td>
+                    <td class="stats">391</td>
+                    <td class="stats">0.972</td>
+                    <td class="stats">0.959</td>
+                </tr>
+                <tr>
+                    <th scope="row">axios</th>
+                    <td class="stats">21,130</td>
+                    <td class="stats">143</td>
+                    <td class="stats">0.940</td>
+                    <td class="stats">0.951</td>
+                </tr>
+                <tr>
+                    <th scope="row">carlo</th>
+                    <td class="stats">5,529</td>
+                    <td class="stats">78</td>
+                    <td class="stats">0.878</td>
+                    <td class="stats">0.931</td>
+                </tr>
+                <tr>
+                    <td colspan="100%">&nbsp</td>
+                </tr>
+                <tr>
+                    <th scope="row">average</th>
+                    <td class="stats">--</td>
+                    <td class="stats">--</td>
+                    <td class="stats">0.943</td>
+                    <td class="stats">0.947</td>
+                </tr>
+            </tbody>
+        </table>
+        <style>
+            .stats {
+                text-align: right !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Enough quality for a product?</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Other evaluation is required</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Comparison to linters</h2>
+        <table class="center">
+            <tbody>
+                <tr>
+                    <th scope="col"></th>
+                    <th>style-analyzer</th>
+                    <th>linters</th>
+                </tr>
+                <tr>
+                    <th scope="row">Precision</th>
+                    <td class="emoji">✖</td>
+                    <td class="emoji">✔</td>
+                </tr>
+                <tr>
+                    <th scope="row">Interpretability</th>
+                    <td class="emoji">✔</td>
+                    <td class="emoji">✔</td>
+                </tr>
+                <tr>
+                    <th scope="row">Context</th>
+                    <td class="emoji">✔</td>
+                    <td class="emoji">✖</td>
+                </tr>
+                <tr>
+                    <th scope="row">Setup</th>
+                    <td class="emoji">✔</td>
+                    <td class="emoji">✖</td>
+                </tr>
+                <tr>
+                    <th scope="row">Fixes</th>
+                    <td class="emoji">✔</td>
+                    <td class="emoji">✖</td>
+                </tr>
+            </tbody>
+        </table>
+        <style>
+            table.center th:not(:first-of-type), table.center td {
+                text-align: center;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">But what if the project already uses a linter?</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Mining Software Repositories</h2>
+        <h3>Clustering</h3>
+        <p>Given codebases X and Y</p>
+        <p>style_distance(X, Y) - how similar are the formatting styles?</p>
+        <h3>Common formatting rules analysis</h3>
+        <p>Which formatting styles dominate on GitHub?</p>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li>style-analyzer infers code human-friendly formatting rules</li>
+            <li>Reaches 94% precision at 95% prediction rate</li>
+            <li>Is based on Lookout - assisted code review framework</li>
+            <li>May be useful for general mining</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-newspaper-o monofa" aria-hidden="true"></i><a href="https://arxiv.org/abs/1905.06782">arxiv.org/abs/1905.06782</a></li>
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://machine-learning@sourced.tech">machine-learning@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/sourcedtech">@sourcedtech</a> <a href="https://twitter.com/vadimlearning">@vadimlearning</a> <a href="https://twitter.com/warenlg">@warenlg</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/src-d">src-d</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+            <li><i class="fa fa-trophy monofa" aria-hidden="true"></i><a href="https://github.com/src-d/awesome-machine-learning-on-source-code">Awesome #MLonCode</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="http://bit.ly/2LRkWdW" id="bitly">bit.ly/2LRkWdW</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63575100-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-63575100-2');
+    </script>
+</body>
+</html>
