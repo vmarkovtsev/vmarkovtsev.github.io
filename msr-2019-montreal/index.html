@@ -571,14 +571,20 @@
 
     <section class="slide" class="annotated-snippet">
         <h2>Annotated code snippet</h2>
-        <pre><code><span style="color: green">&#8709</span>function<span style="color: green">&#9251</span>classesToArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
-             <code><span style="color: green">&#8677</span>   if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>isArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: lightgreen">&#9251</span>)<span style="color: lightgreen">&#9251</span>{<span style="color: red">&#8709</span>return<span style="color: lightgreen">&#9251</span>value<span style="color: lightgreen">&#8709</span>;<span style="color: darkred">&#8709</span>}</code>
+        <pre><code><span style="color: green">&#8709</span><span class="focus">function</span><span style="color: green">&#9251</span>classesToArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
+             <code><span style="color: green">&#8677</span>   if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>isArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span><span class="focus">)</span><span style="color: green">&#9251</span><span class="focus">{</span><span style="color: red">&#8709</span><span class="focus">return</span><span style="color: green">&#9251</span><span class="focus">value</span><span style="color: green">&#8709</span>;<span style="color: green">&#8709</span>}</code>
              <code>    if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>typeof<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>===<span style="color: green">&#9251"</span>string<span style="color: green">"&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
              <code><span style="color: green">&#8677</span>       return<span style="color: green">&#9251</span>value<span style="color: green">&#8709</span>.<span style="color: green">&#8709</span>match(<span style="color: green">&#9251</span>rnothtml<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>||<span style="color: green">&#9251</span>[]<span style="color: green">&#8709</span>;<span style="color: green">&#8626</span></code>
              <code><span style="color: green">&#8676</span>   }<span style="color: green">&#8626</span></code>
              <code>    return<span style="color: green">&#9251</span>[]<span style="color: green">&#8709</span>;<span style="color: green">&#8626</span></code>
              <code><span style="color: green">&#8676</span>}<span style="color: green">&#8709</span></code>
         </pre>
+        <style>
+            .focus {
+                border: 1px solid white;
+                background-color: #333333;
+            }
+        </style>
     </section>
 
     <section class="slide">
