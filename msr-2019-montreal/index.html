@@ -384,16 +384,6 @@
         </style>
     </section>
 
-    <section class="slide">
-        <h2>"White box" is the key</h2>
-        <ul>
-            <li>Builds trust with the users</li>
-            <li>Provides interpretability</li>
-            <li>Allows editing</li>
-            <li>Allows blacklisting</li>
-        </ul>
-    </section>
-
     <section class="slide" id="classes">
         <h2>Classes predicted</h2>
         <table cellpadding="30">
@@ -443,6 +433,16 @@
         </style>
     </section>
 
+    <section class="slide">
+        <h2>"White box" is the key</h2>
+        <ul>
+            <li>Builds trust with the users</li>
+            <li>Provides interpretability</li>
+            <li>Allows editing</li>
+            <li>Allows blacklisting</li>
+        </ul>
+    </section>
+
     <section class="slide part">
         <h2 class="shout">Methodology</h2>
     </section>
@@ -463,7 +463,7 @@
     <section class="slide" class="annotated-snippet">
         <h2>Annotated code snippet</h2>
         <pre><code><span style="color: green">&#8709</span>function<span style="color: green">&#9251</span>classesToArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
-             <code><span style="color: green">&#8677</span>   if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>isArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: darkred">&#8709</span>return<span style="color: green">&#9251</span>value<span style="color: green">&#8709</span>;<span style="color: darkred">&#8709</span>}</code>
+             <code><span style="color: green">&#8677</span>   if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>isArray<span style="color: green">&#8709</span>(<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8709</span>return<span style="color: green">&#9251</span>value<span style="color: green">&#8709</span>;<span style="color: green">&#8709</span>}</code>
              <code>    if<span style="color: green">&#9251</span>(<span style="color: green">&#9251</span>typeof<span style="color: green">&#9251</span>value<span style="color: green">&#9251</span>===<span style="color: green">&#9251"</span>string<span style="color: green">"&#9251</span>)<span style="color: green">&#9251</span>{<span style="color: green">&#8626</span></code>
              <code><span style="color: green">&#8677</span>       return<span style="color: green">&#9251</span>value<span style="color: green">&#8709</span>.<span style="color: green">&#8709</span>match(<span style="color: green">&#9251</span>rnothtml<span style="color: green">&#9251</span>)<span style="color: green">&#9251</span>||<span style="color: green">&#9251</span>[]<span style="color: green">&#8709</span>;<span style="color: green">&#8626</span></code>
              <code><span style="color: green">&#8676</span>   }<span style="color: green">&#8626</span></code>
@@ -615,15 +615,6 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout shout-smaller">Precision > Recall</h2>
-        <style>
-            .shout-smaller {
-                font-size: 110px !important;
-            }
-        </style>
-    </section>
-
-    <section class="slide">
         <h2>Inference</h2>
         <ol>
             <li>Apply rules
@@ -662,6 +653,15 @@
 
     <section class="slide part">
         <h2 class="shout">Evaluation</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-smaller">Precision > Recall</h2>
+        <style>
+            .shout-smaller {
+                font-size: 110px !important;
+            }
+        </style>
     </section>
 
     <section class="slide">
@@ -725,7 +725,7 @@
                     <td colspan="100%">&nbsp</td>
                 </tr>
                 <tr>
-                    <th scope="row">average</th>
+                    <th scope="row">w. average</th>
                     <td class="stats">--</td>
                     <td class="stats">--</td>
                     <td class="stats">0.943</td>
