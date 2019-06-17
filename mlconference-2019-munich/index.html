@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="64" />
+    <meta name="twitter:data1" content="66" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="Munich, Germany - 19.06.2019" />
     <meta property="og:type" content="article" />
@@ -833,6 +833,20 @@
     </section>
 
     <section class="slide">
+        <h2>HDBSCAN</h2>
+        <p>aka I could not be bothered more by clustering</p>
+        <img src="pictures/hdbscan2.png" class="hdbscan">
+        <img src="pictures/hdbscan3.png" class="hdbscan">
+        <style>
+            .hdbscan {
+                width: 350px;
+                object-fit: contain;
+                display: inline-block;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
         <img src="pictures/devs_tensorflow-black.png" class="black fullslide">
         <img src="pictures/devs_tensorflow-white.png" class="white fullslide">
     </section>
@@ -1042,10 +1056,33 @@
 
     <section class="slide">
         <h2>Summary</h2>
+        <ul id="summary">
+            <li>Embed similarity matrices with Swivel</li>
+            <li>Embed distance matrices with t-SNE (2-3D) and UMAP</li>
+            <li>Compare time series with Fast Dynamic Time Warping</li>
+            <li>Order sequences and heatmaps with Seriation</li>
+            <li>Mining software development history is fun</li>
+        </ul>
+        <style>
+            #summary > li:before {
+                content: "✓";
+            }
+        </style>
     </section>
 
     <section class="slide">
         <img class="fullslide" src="pictures/xrays.jpg">
+    </section>
+
+    <section class="slide">
+        <h2>Mining Software Repositories</h2>
+        <a href="https://msrconf.org" id="msrconf">msrconf.org</a>
+        <img class="fullslide-padding" src="pictures/msr.svg">
+        <style>
+            #msrconf {
+                position: absolute;
+            }
+        </style>
     </section>
 
 	<section class="slide">
