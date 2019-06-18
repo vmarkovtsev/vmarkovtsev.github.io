@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="66" />
+    <meta name="twitter:data1" content="67" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="Munich, Germany - 19.06.2019" />
     <meta property="og:type" content="article" />
@@ -585,6 +585,19 @@
     </section>
 
     <section class="slide">
+        <img class="black fullslide" src="pictures/survival-black.png">
+        <img class="white fullslide" src="pictures/survival-white.png">
+        <a id="erikbern" href="https://erikbern.com/2016/12/05/the-half-life-of-code.html">Kaplan-Meier, Erik Bernhardsson</a>
+        <style>
+            #erikbern {
+                position: absolute;
+                right: 150px;
+                top: 55px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
         <h2 class="shout shout-small">Ownership</h2>
     </section>
 
@@ -714,7 +727,6 @@
             <li>How many active contributors are today?</li>
             <li>How did contributors come and leave?</li>
             <li>(enterprise) Who worked with who?</li>
-            <li>Is everything good or bad?</li>
         </ul>
     </section>
 
@@ -764,7 +776,7 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout shout-small">Distance matrix: O(n<sup>2</sup>)</h2>
+        <h2 class="shout shout-small">"Distance" matrix: O(n<sup>2</sup>)</h2>
     </section>
 
     <section class="slide">
@@ -1059,13 +1071,20 @@
         <ul id="summary">
             <li>Embed similarity matrices with Swivel</li>
             <li>Embed distance matrices with t-SNE (2-3D) and UMAP</li>
-            <li>Compare time series with Fast Dynamic Time Warping</li>
+            <li>Compare time series with Fast Dynamic Time Warping
+                <ul>
+                    <li>But remember about the △ inequality</li>
+                </ul>
+            </li>
             <li>Order sequences and heatmaps with Seriation</li>
             <li>Mining software development history is fun</li>
         </ul>
         <style>
             #summary > li:before {
                 content: "✓";
+            }
+            #summary li li:before {
+                content: "🙁";
             }
         </style>
     </section>
