@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Code as Data and Machine Learning on Source Code</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="69" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="San Francisco, CA, USA - 28.10.2019" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/sf-data-science-2019-san-francisco" />
+    <meta property="og:title" content="Code as Data and Machine Learning on Source Code" />
+    <meta property="og:description" content="In this talk, we first define 'Code as Data' and 'Machine Learning on Code' and introduce the leaders in the field. We also present the open-source tools and models for Machine Learning on Code. Finally, we'll present some of our past and upcoming research on the roadmap for 2020." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/sf-data-science-2019-san-francisco/pictures/cover.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/sf-data-science-2019-san-francisco/pictures/cover.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Code as Data and Machine Learning on Source Code</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2, .slide li::before {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: #dd0000;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #8719cb 0, #400d9a 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+           background: none !important;
+        }
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        .fullslide-padding {
+            width: 100%;
+            height: calc(100% - 100px);
+            margin-top: -34px;
+            object-fit: contain;
+        }
+        .fullwidth > img, img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+    </style>
+
+    <section class="slide vista vista-cover" id="cover">
+        <h2 class="black title">#CodeAsData<br>#MLonCode</h2>
+        <p class="black">Vadim Markovtsev</p>
+        <p class="black"><a href="https://twitter.com/vadimlearning">@vadimlearning</a></p>
+
+        <style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            .black a {
+                color: #202020;
+            }
+            #cover > h2 {
+                margin: 0 0 186px 0;
+                text-align: center;
+                font-size: 70px;
+                color: #202020;
+            }
+            #cover > p {
+                margin: 0 0 0 54px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 20px;
+                font-family: 'Cerebri Sans', sans-serif;
+            }
+			#cover {
+                background: url("pictures/cover.png") black;
+                background-position-x: 68% !important;
+            }
+			#cover > p:nth-of-type(1) {
+                transform: rotate(-4deg) translateX(30px);
+            }
+            #cover > p:nth-of-type(2) {
+                transform: rotate(-4deg) translateX(30px);
+            }
+            #sourced-cover > img {
+                width: 100px;
+                margin-top: 5px;
+            }
+            #sourced-cover:hover {
+                background: none;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="plan">
+        <h2>Plan</h2>
+        Intro&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Couples&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Lines&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Time series&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Tools
+        <style>
+            #plan {
+                background-image: url("pictures/plan.png");
+            }
+            #plan span {
+                position: relative;
+                top: 2px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Introduction</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Git</h2>
+        <img class="fullslide-padding black" src="pictures/git-black.svg">
+        <img class="fullslide-padding white" src="pictures/git-white.svg">
+    </section>
+
+    <section class="slide">
+        <h2>Source code</h2>
+        <img src="pictures/ast-black.svg" class="black diagram diagram-right">
+        <img src="pictures/ast-white.svg" class="white diagram diagram-right">
+        <pre><code>a = b * 2</code></pre>
+        <style>
+            .diagram {
+                height: 350px;
+            }
+            .diagram-right {
+                float: right;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="graphs-everywhere">
+        <h2 class="meme">Graphs</h2>
+        <h2 class="meme">graphs everywhere</h2>
+        <style>
+            #graphs-everywhere {
+                background-image: url("pictures/xeverywhere.jpg");
+            }
+            #graphs-everywhere > h2:nth-of-type(2) {
+                top: 250px;
+            }
+            .meme {
+                -webkit-transform: translateZ(0);
+                z-index: 100;
+                text-align: center;
+                position: relative;
+                font-family: impact !important;
+                font-size: 3em !important;
+                font-weight: 600 !important;
+                text-transform: uppercase;
+                color: white !important;
+                letter-spacing: 0px;
+                text-shadow:2px 2px 0 #000,
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                0px 2px 0 #000,
+                2px 0px 0 #000,
+                0px -2px 0 #000,
+                -2px 0px 0 #000,
+                2px 2px 5px #000;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>So you have got graphs...</h2>
+        <ul>
+            <li>Measures, e.g. PageRank
+                <ul>
+                    <li><a href="https://github.com/sourcecred/sourcecred">SourceCred</a></li>
+                </ul>
+            </li>
+            <li>Node embeddings
+                <ul>
+                    <li><a href="https://cs.stanford.edu/~jure/pubs/node2vec-kdd16.pdf">node2vec</a></li>
+                </ul>
+            </li>
+            <li>Clustering, community detection</li>
+            <li><a href="https://arxiv.org/abs/1901.00596">Gated Graph Neural Networks</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Diffs</h2>
+        <ul>
+            <li>By line: O(N×D)</li>
+            <li>By tree node: O(N×D)</li>
+            <li>By tree node which you really want*: <a href="http://useless-factor.blogspot.com/2008/01/matching-diffing-and-merging-xml.html" class="important">NP-hard, active research</a></li>
+        </ul>
+        *with "move" operation
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">AST-annotated line diffs</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Couples</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Idea</h2>
+        <ul>
+            <li>If developers often change the same files, there must be something in common.</li>
+            <li>If files often appear in the same commits, there must be something in common.</li>
+        </ul>
+        <img src="pictures/couples-black.svg" class="couples-idea black">
+        <img src="pictures/couples-white.svg" class="couples-idea white">
+        <style>
+            .couples-idea {
+                height: 250px;
+                object-fit: contain;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>word2vec</h2>
+        <ul>
+            <li>Context: sentences</li>
+            <li>Embedding: optimize Pointwise Mutual Information</li>
+            <li>There are algorithms for explicit co-occurrence matrix
+                <ul>
+                    <li><a href="https://nlp.stanford.edu/projects/glove/">GloVe</a></li>
+                    <li><a href="https://arxiv.org/abs/1602.02215">Swivel</a></li>
+                </ul>
+            </li>
+        </ul>
+        <img src="pictures/word2vec-black.png" class="black word2vec">
+        <img src="pictures/word2vec-white.png" class="white word2vec">
+        <style>
+            .word2vec {
+                position: absolute;
+                width: 400px;
+                bottom: 50px;
+                right: 100px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Let's optimize<br><br>Pointwise Mutual Information</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Problems</h2>
+        <ul>
+            <li>Optimal vector size?</li>
+            <li>Convergence on &lt;10k is bad</li>
+            <li>Convergence on &lt;50D is bad</li>
+            <li>GPU is useless on &lt;100 items</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">t-SNE over the embeddings</h2>
+    </section>
+
+    <section class="slide">
+        <img src="pictures/tfprojcouples.png" class="fullslide">
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Lines</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Line burndown</h2>
+        <p><code>git blame foo.go</code></p>
+        <div id="obj" class="blame">
+            <div><span><span class="f2014">●</span>2014</span>
+                <pre><code class="b2014">func foo() {</code>
+<code class="b2014">  println("bar")</code>
+<code class="b2014">}</code></pre>
+            </div>
+            <div><span><span class="f2015">●</span>2015</span><pre><code class="b2014">func foo() {</code>
+<code class="b2014">  println("bar")</code>
+<code class="b2014">}</code>
+<code class="b2015">func qux() {</code>
+<code class="b2015">  println("baz")</code>
+<code class="b2015">}</code></pre></div>
+            <div><span><span class="f2016">●</span>2016</span><pre><code class="b2014">func foo() {</code>
+<code class="b2016">  println("waldo")</code>
+<code class="b2014">}</code>
+<code class="b2016">const X = 10</code>
+<code class="b2016">func spam() {</code>
+<code class="b2015">  println("baz")</code>
+<code class="b2015">}</code></pre></div>
+        </div>
+        <style>
+            .blame code:not(:only-child)::before {
+                opacity: 1 !important;
+            }
+            .blame pre {
+                margin: 0;
+            }
+            #obj {
+                display: flex;
+                height: 400px;
+            }
+            #obj > div {
+                flex-grow: 1;
+                flex-basis: 0;
+                height: 100%;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            #obj > div:first-child {
+                padding-left: 0;
+            }
+            #obj > div:last-child {
+                padding-right: 8px;
+            }
+            #obj > div > span {
+                text-align: center;
+                width: 100%;
+                display: block;
+            }
+            .blame code {
+                font-size: 0.8em !important;
+                margin-left: 2.5em !important;
+                margin-top: -1px !important;
+                width: auto !important;
+                color: black !important;
+                padding-left: 1px !important;
+            }
+            .blame code:before {
+                color: #585a5e !important;
+                width: calc(2em + 1px) !important;
+                margin-left: -2.5em !important;
+                padding-left: 0.5em !important;
+            }
+            .b2014, .b2014:before {
+                background: #CB8C1D !important;
+            }
+            .b2015, .b2015:before {
+                background: #F1684E !important;
+            }
+            .b2016, .b2016:before {
+                background: #4EB1BA !important;
+            }
+            .f2014 {
+                color: #CB8C1D;
+            }
+            .f2015 {
+                color: #F1684E;
+            }
+            .f2016 {
+                color: #4EB1BA;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Line burndown</h2>
+        <img class="vista fullslide-padding black" src="pictures/objective_black.svg">
+        <img class="vista fullslide-padding white" src="pictures/objective_white.svg">
+    </section>
+
+    <section class="slide" id="linux">
+        <h2>Linux</h2>
+        <img src="pictures/linux.png">
+        <style>
+            #linux > h2 {
+                position: relative;
+                left: 200px;
+            }
+            #linux > img {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <img class="black fullslide" src="pictures/survival-black.png">
+        <img class="white fullslide" src="pictures/survival-white.png">
+        <a id="erikbern" href="https://erikbern.com/2016/12/05/the-half-life-of-code.html">Kaplan-Meier, Erik Bernhardsson</a>
+        <style>
+            #erikbern {
+                position: absolute;
+                right: 150px;
+                top: 55px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Ownership</h2>
+    </section>
+
+    <section class="slide">
+        <img class="fullslide black" src="pictures/emberjs_people-black.png">
+        <img class="fullslide white" src="pictures/emberjs_people-white.png">
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Measuring ownership is hard</h2>
+    </section>
+
+    <section class="slide formula">
+        <h2>Overwrites</h2>
+        <img class="fullslide black" src="pictures/overwrites-black.png">
+        <img class="fullslide white" src="pictures/overwrites-white.png">
+    </section>
+
+    <section class="slide" id="overwrites">
+        <h2>To a man with a hammer...</h2>
+        <ol>
+            <li>Swivel on the similarity matrix</li>
+            <li>t-SNE to visualize the embeddings</li>
+        </ol>
+        <img class="black" src="pictures/tfp_wireshark-black.png">
+        <img class="white" src="pictures/tfp_wireshark-white.png">
+        <style>
+            #overwrites > ol {
+                position: relative;
+                top: 200px;
+                width: 250px;
+                line-height: 1.4em;
+            }
+            #overwrites > ol > li {
+                margin-bottom: calc(50px - 1em);
+            }
+            #overwrites > img {
+                position: absolute;
+                right: 100px;
+                bottom: 20px;
+                width: 700px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Lines importance</h2>
+    </section>
+
+    <section class="slide">
+        <pre><code>import sys</code>
+<code class="semi-important">import smart_foo</code>
+<code> </code>
+<code>def foo(x: Any) -> int:</code>
+<code>    log("called foo %s", x)</code>
+<code>    # now the hardcore part</code>
+<code class="important">    if smart_foo.complex_cond(x) < 50:</code>
+<code class="semi-important">        return 50</code>
+<code>    return 0</code>
+</pre>
+        <style>
+            .semi-important {
+                color: lightcoral;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Diff 🡒 commit classification</h2>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">Time series</h2>
+    </section>
+
+    <section class="slide">
+        <h2>CPython contributors</h2>
+        <div class="cpython">
+            <img src="pictures/ts8.png"><img src="pictures/ts3.png"><img src="pictures/ts6.png"><img src="pictures/ts4.png">
+        </div>
+        <div class="cpython">
+            <img src="pictures/ts7.png"><img src="pictures/ts1.png"><img src="pictures/ts5.png"><img src="pictures/ts2.png">
+        </div>
+        *some are hidden, e.g. Guido
+        <style>
+            .cpython {
+                height: 103px;
+                margin-bottom: 10px;
+            }
+            .cpython > img {
+                display: inline-block;
+                height: 103px;
+                width: 197px;
+                object-fit: contain;
+                margin-right: 10px;
+            }
+            .cpython > img:last-of-type {
+                margin-right: 0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>CPython contributors</h2>
+        <div class="cpython">
+            <img src="pictures/ts7.png"><img src="pictures/ts2.png"><img src="pictures/ts3.png"><img src="pictures/ts6.png">
+        </div>
+        <div class="cpython">
+            <img src="pictures/ts8.png"><img src="pictures/ts1.png"><img src="pictures/ts4.png"><img src="pictures/ts5.png">
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>CPython contributors</h2>
+        <div class="cpython">
+            <img src="pictures/ts7_.png"><img src="pictures/ts2_.png"><img src="pictures/ts3_.png"><img src="pictures/ts6_.png">
+        </div>
+        <div class="cpython">
+            <img src="pictures/ts8_.png"><img src="pictures/ts1_.png"><img src="pictures/ts4_.png"><img src="pictures/ts5_.png">
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Use cases</h2>
+        <ul>
+            <li>How many active contributors are today?</li>
+            <li>How did contributors come and leave?</li>
+            <li>(enterprise) Who worked with who?</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Plan</h2>
+        <ol>
+            <li>Define the distance</li>
+            <li>Order by distance (1D)</li>
+            <li>Cluster by distance (2D)</li>
+            <li>Query nearest neighbors</li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Euclidean distance</h2>
+        <img src="pictures/commits1-black.svg" class="commits black">
+        <img src="pictures/commits1-white.svg" class="commits white">
+        <img src="pictures/commits2-black.svg" class="commits black">
+        <img src="pictures/commits2-white.svg" class="commits white">
+        <style>
+            .commits {
+                display: inline-block;
+                width: 50%;
+                object-fit: contain;
+            }
+            .commits:nth-of-type(3), .commits:nth-of-type(4) {
+                margin-top: 50px;
+                margin-left: 50%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">d<sub>1</sub> = d<sub>2</sub></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Dynamic Time Warping</h2>
+        <img src="pictures/dtw.png" class="fullslide-padding">
+    </section>
+
+    <section class="slide">
+        <h2>Fast Dynamic Time Warping</h2>
+        <p>Original complexity: <span class="important">O(n<sup>2</sup>)</span></p>
+        <p>Approximation's complexity: <span class="success">O(n)</span></p>
+        <p>Python package:&nbsp;&nbsp;<code class="inline">fastdtw</code></p>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">"Distance" matrix: O(n<sup>2</sup>)</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Agglomerative clustering?<br><br><code class="inline">seaborn.clustermap?</code></h2>
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ser1.png" class="fullslide">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ser2-black.png" class="fullslide black">
+        <img src="pictures/ser2-white.png" class="fullslide white">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/ser3.png" class="fullslide">
+        <a id="serlabel" href="http://nicolas.kruchten.com/content/2018/02/seriation/">Make Patterns Pop Out of Heatmaps with Seriation<br>by Nicolas Kruchten</a>
+        <style>
+            #serlabel {
+                position: absolute;
+                right: -20px;
+                bottom: calc(50% - 30px);
+                transform: rotate(-90deg);
+                font-size: 23px;
+                font-style: italic;
+                line-height: 25px;
+            }
+        </style>
+    </section>
+
+    <section class="slide formula">
+        <h2>Let's get scientific</h2>
+        <h3 class="formula">
+            $$
+            \min \sum{d_{i,i+1}}
+            $$
+        </h3>
+        <style>
+            .formula > h2 {
+                position: absolute;
+            }
+            .formula > h3 {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                font-size: 80px;
+                margin: 0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <img src="pictures/tsp-black.png" class="fullslide black">
+        <img src="pictures/tsp-white.png" class="fullslide white">
+    </section>
+
+    <section class="slide">
+        <h2>Seriation</h2>
+        <ul>
+            <li>Ideal for heatmaps and 1D ordering of series</li>
+            <li>Python package:&nbsp;&nbsp;<code class="inline">seriate</code></li>
+            <li>Is not always better than agglomerative clustering</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <img src="pictures/devs_tensorflow-bw-black.png" class="black fullslide">
+        <img src="pictures/devs_tensorflow-bw-white.png" class="white fullslide">
+    </section>
+
+    <section class="slide">
+        <h2>HDBSCAN</h2>
+        <p>aka I could not be bothered more by clustering</p>
+        <img src="pictures/hdbscan2.png" class="hdbscan">
+        <img src="pictures/hdbscan3.png" class="hdbscan">
+        <style>
+            .hdbscan {
+                width: 350px;
+                object-fit: contain;
+                display: inline-block;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <img src="pictures/devs_tensorflow-black.png" class="black fullslide">
+        <img src="pictures/devs_tensorflow-white.png" class="white fullslide">
+    </section>
+
+    <section class="slide">
+        <h2>Beyond 1D</h2>
+        <ul>
+            <li>Both t-SNE and UMAP work with an explicit distance matrix</li>
+            <li>t-SNE works better for 2D (kNN+rank loss)</li>
+            <li>UMAP works better for 3+D</li>
+            <li>Best embedding dimensionality: 14 (85% 20NN)</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Tools</h2>
+    </section>
+
+    <section class="slide vista vista-cover" id="lake">
+        <h2 class="shout shout-small">Code Lake</h2>
+        <style>
+            #lake {
+                background-image: url("pictures/lake.jpg");
+            }
+            #lake > h2 {
+                color: white;
+            }
+            #lake:before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>github.com/src-d/gitbase</h2>
+        <pre><code><span class="kw">SELECT</span> refs.repository_id
+<span class="kw">FROM</span> refs
+<span class="kw">NATURAL JOIN</span> commits
+<span class="kw">WHERE</span> commits.commit_author_name = <span class="str">'Johnny Bravo'</span>
+    <span class="kw">AND</span> refs.ref_name = <span class="str">'HEAD'</span>;</code></pre>
+        <style>
+            .kw {
+                color: #CC7832;
+                font-weight: bold;
+            }
+
+            .str {
+                color: #6a8759;
+            }
+
+            .func {
+                color: #9e7bb0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Parsing code</h2>
+        <img src="pictures/bblfsh-logo.png" class="center">
+        <img src="pictures/bblfsh-arch-black.png" class="black fullwidth">
+        <img src="pictures/bblfsh-arch-white.png" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Imports for each commit</h2>
+        <pre><code><span class="kw">SELECT</span> repository_id, commit_hash, file_path,
+    <span class="func">uast_extract</span>(<span class="func">uast</span>(blob_content,
+                      <span class="func">language</span>(file_path),
+                      <span class="str">'//uast:Import/Path'</span>),
+                 <span class="str">"Value"</span>) <span class="kw">AS</span> imports
+<span class="kw">FROM</span> commit_files <span class="kw">NATURAL JOIN</span> blobs
+<span class="kw">WHERE</span> <span class="func">language</span>(file_path) = <span class="str">'Go'</span>
+    <span class="kw">AND</span> <span class="func">array_length</span>(imports) > 0;</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>github.com/src-d/hercules</h2>
+        <img src="pictures/dag-black.png" class="fullwidth black">
+        <img src="pictures/dag-white.png" class="fullwidth white">
+        <ul>
+            <li>Command-line playground for trying new ideas</li>
+            <li>Data processing: Go (<a href="https://github.com/src-d/go-git">go-git</a>)</li>
+            <li>Data analysis: Python</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Examples</h2>
+        <pre><code># Lines evolution<br>hercules --burndown | labours -m burndown-project</code></pre>
+        <pre><code># Couples<br>hercules --couples | labours -m couples</code></pre>
+        <pre><code># Commit time series<br>hercules --devs | labours -m devs</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Datasets</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Why?</h2>
+        <ul>
+            <li>What to clone?</li>
+            <li>Cloning many repositories is hard</li>
+            <li>We don't always need source code</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">GDPR
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+            <span class="eu-star">★</span>
+        </h2>
+        <style>
+            .eu-star {
+                position: absolute;
+                left: calc(50% - 0.2em);
+                top: calc(50% - 0.5em);
+                font-size: 40px;
+                color: yellow;
+            }
+            .eu-star:nth-of-type(1) {
+                transform: rotate(30deg) translate(200px) rotate(-30deg);
+            }
+            .eu-star:nth-of-type(2) {
+                transform: rotate(60deg) translate(200px) rotate(-60deg);
+            }
+            .eu-star:nth-of-type(3) {
+                transform: rotate(90deg) translate(200px) rotate(-90deg);
+            }
+            .eu-star:nth-of-type(4) {
+                transform: rotate(120deg) translate(200px) rotate(-120deg);
+            }
+            .eu-star:nth-of-type(5) {
+                transform: rotate(150deg) translate(200px) rotate(-150deg);
+            }
+            .eu-star:nth-of-type(6) {
+                transform: rotate(180deg) translate(200px) rotate(-180deg);
+            }
+            .eu-star:nth-of-type(7) {
+                transform: rotate(210deg) translate(200px) rotate(-210deg);
+            }
+            .eu-star:nth-of-type(8) {
+                transform: rotate(240deg) translate(200px) rotate(-240deg);
+            }
+            .eu-star:nth-of-type(9) {
+                transform: rotate(270deg) translate(200px) rotate(-270deg);
+            }
+            .eu-star:nth-of-type(10) {
+                transform: rotate(300deg) translate(200px) rotate(-300deg);
+            }
+            .eu-star:nth-of-type(11) {
+                transform: rotate(330deg) translate(200px) rotate(-330deg);
+            }
+            .eu-star:nth-of-type(12) {
+                transform: rotate(360deg) translate(200px) rotate(-360deg);
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Software Heritage Graph Dataset</h2>
+        <img src="pictures/SoftwareHeritage.png" class="fullwidth">
+        <ul>
+            <li>85mm repositories, 1.1m unique commits</li>
+            <li>PostgreSQL, Parquet</li>
+            <li><a href="https://zenodo.org/record/2583978">zenodo.org/record/2583978</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Public Git Archive</h2>
+        <img src="pictures/PGA.png" id="pga-logo">
+        <ul>
+            <li>260k repositories</li>
+            <li>Git packfile-s</li>
+            <li>≥50🟊 on GitHub (early 2019)</li>
+            <li><a href="https://pga.sourced.tech">pga.sourced.tech</a></li>
+        </ul>
+        <style>
+            #pga-logo {
+                height: 150px;
+                float: left;
+                margin: 20px 50px 200px 0;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul id="summary">
+            <li>Embed similarity matrices with Swivel</li>
+            <li>Embed distance matrices with t-SNE (2-3D) and UMAP</li>
+            <li>Compare time series with Fast Dynamic Time Warping
+                <ul>
+                    <li>But remember about the △ inequality</li>
+                </ul>
+            </li>
+            <li>Order sequences and heatmaps with Seriation</li>
+            <li>Mining software development history is fun</li>
+        </ul>
+        <style>
+            #summary > li:before {
+                content: "✓";
+            }
+            #summary li li:before {
+                content: "🙁";
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <img class="fullslide" src="pictures/xrays.jpg">
+    </section>
+
+    <section class="slide">
+        <h2>Mining Software Repositories</h2>
+        <a href="https://msrconf.org" id="msrconf">msrconf.org</a>
+        <img class="fullslide-padding" src="pictures/msr.svg">
+        <style>
+            #msrconf {
+                position: absolute;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>source{d} Community Edition</h2>
+        <h2 class="shout shout-small"><a href="https://sourced.tech/products/community-edition">sourced.tech/products/ community-edition/</a></h2>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">@vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">@vmarkovtsev</a></li>
+            <li><i class="fa fa-rss monofa" aria-hidden="true"></i><a href="https://blog.sourced.tech">blog.sourced.tech</a></li>
+            <li><i class="fa fa-trophy monofa" aria-hidden="true"></i><a href="https://github.com/src-d/awesome-machine-learning-on-source-code">Awesome #MLonCode</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="http://bit.ly/3402LH5" id="bitly">bit.ly/3402LH5</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63575100-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-63575100-2');
+    </script>
+</body>
+</html>
