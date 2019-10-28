@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="69" />
+    <meta name="twitter:data1" content="102" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="San Francisco, CA, USA - 28.10.2019" />
     <meta property="og:type" content="article" />
@@ -296,7 +296,7 @@
 
     <section class="slide vista" id="plan">
         <h2>Plan</h2>
-        Intro&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Couples&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Lines&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Time series&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Tools
+        </span>&nbsp;&nbsp;Code as Data&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;MLonCode&nbsp;&nbsp;<span>➙</span>&nbsp;&nbsp;Tools &amp; datasets
         <style>
             #plan {
                 background-image: url("pictures/plan.png");
@@ -309,7 +309,7 @@
     </section>
 
     <section class="slide part">
-        <h2 class="shout">Introduction</h2>
+        <h2 class="shout">Code as Data</h2>
     </section>
 
     <section class="slide">
@@ -327,12 +327,13 @@
             .diagram {
                 height: 350px;
             }
+    
             .diagram-right {
                 float: right;
             }
         </style>
     </section>
-
+    
     <section class="slide vista vista-cover" id="graphs-everywhere">
         <h2 class="meme">Graphs</h2>
         <h2 class="meme">graphs everywhere</h2>
@@ -340,9 +341,11 @@
             #graphs-everywhere {
                 background-image: url("pictures/xeverywhere.jpg");
             }
-            #graphs-everywhere > h2:nth-of-type(2) {
+    
+            #graphs-everywhere>h2:nth-of-type(2) {
                 top: 250px;
             }
+    
             .meme {
                 -webkit-transform: translateZ(0);
                 z-index: 100;
@@ -354,19 +357,19 @@
                 text-transform: uppercase;
                 color: white !important;
                 letter-spacing: 0px;
-                text-shadow:2px 2px 0 #000,
-                -2px -2px 0 #000,
-                2px -2px 0 #000,
-                -2px 2px 0 #000,
-                0px 2px 0 #000,
-                2px 0px 0 #000,
-                0px -2px 0 #000,
-                -2px 0px 0 #000,
-                2px 2px 5px #000;
+                text-shadow: 2px 2px 0 #000,
+                    -2px -2px 0 #000,
+                    2px -2px 0 #000,
+                    -2px 2px 0 #000,
+                    0px 2px 0 #000,
+                    2px 0px 0 #000,
+                    0px -2px 0 #000,
+                    -2px 0px 0 #000,
+                    2px 2px 5px #000;
             }
         </style>
     </section>
-
+    
     <section class="slide">
         <h2>So you have got graphs...</h2>
         <ul>
@@ -386,6 +389,133 @@
     </section>
 
     <section class="slide">
+        <h2>Huge codebases</h2>
+        <table id="codebases">
+            <tbody>
+                <tr>
+                    <th scope="col"></th>
+                    <th>LoC, 10⁶</th>
+                </tr>
+                <tr>
+                    <td><span style="color: #ffffff">Chrome</span></td>
+                    <td><div class="lines-indicator" style="width: 1px;"></div>20</td>
+                </tr>
+                <tr>
+                    <td><span style="color: #ffd0d0">Windows 10</span></td>
+                    <td><div class="lines-indicator" style="width: 1px;"></div>50</td>
+                </tr>
+                <tr>
+                    <td><span style="color: #ffb0b0">Facebook</span></td>
+                    <td><div class="lines-indicator" style="width: 1px;"></div>70</td>
+                </tr>
+                <tr>
+                    <td><span style="color: #ff9090">Eclipse Foundation</span></td>
+                    <td><div class="lines-indicator" style="width: 2px;"></div>160</td>
+                </tr>
+                <tr>
+                    <td><span style="color: #ff8080">Apache Foundation</span></td>
+                    <td><div class="lines-indicator" style="width: 3px;"></div>190</td>
+                </tr>
+                <tr>
+                    <td><span style="color: #ff5050">Google</span></td>
+                    <td><div class="lines-indicator" style="width: 25px;"></div>2,000</td>
+                </tr>
+                <tr>
+                    <td><span style="color: #ff3030">GitHub</span></td>
+                    <td><div class="lines-indicator-abs" style="width: 692px;"></div><span class="indicator-text-over">&gt;56,000</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <style>
+        #codebases {
+            margin-top: -20px;
+        }
+        .lines-indicator {
+            height: 50px;
+            float: left;
+            margin-right: 10px;
+            background: lightgreen;
+        }
+        .lines-indicator-abs {
+            height: 50px;
+            position: absolute;
+            background: lightgreen;
+            z-index: -1;
+        }
+        .indicator-text-over {
+            color: #202020;
+            margin-left: 10px;
+        }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="lake">
+        <h2 class="shout shout-small">Code Lake</h2>
+        <style>
+            #lake {
+                background-image: url("pictures/lake.jpg");
+            }
+    
+            #lake>h2 {
+                color: white;
+            }
+    
+            #lake:before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>github.com/src-d/gitbase</h2>
+        <pre><code><span class="kw">SELECT</span> refs.repository_id
+<span class="kw">FROM</span> refs
+<span class="kw">NATURAL JOIN</span> commits
+<span class="kw">WHERE</span> commits.commit_author_name = <span class="str">'Johnny Bravo'</span>
+    <span class="kw">AND</span> refs.ref_name = <span class="str">'HEAD'</span>;</code></pre>
+        <style>
+            .kw {
+                color: #CC7832;
+                font-weight: bold;
+            }
+
+            .str {
+                color: #6a8759;
+            }
+
+            .func {
+                color: #9e7bb0;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Parsing code</h2>
+        <img src="pictures/bblfsh-logo.png" class="center">
+        <img src="pictures/bblfsh-arch-black.png" class="black fullwidth">
+        <img src="pictures/bblfsh-arch-white.png" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Imports for each commit</h2>
+        <pre><code><span class="kw">SELECT</span> repository_id, commit_hash, file_path,
+    <span class="func">uast_extract</span>(<span class="func">uast</span>(blob_content,
+                      <span class="func">language</span>(file_path),
+                      <span class="str">'//uast:Import/Path'</span>),
+                 <span class="str">"Value"</span>) <span class="kw">AS</span> imports
+<span class="kw">FROM</span> commit_files <span class="kw">NATURAL JOIN</span> blobs
+<span class="kw">WHERE</span> <span class="func">language</span>(file_path) = <span class="str">'Go'</span>
+    <span class="kw">AND</span> <span class="func">array_length</span>(imports) > 0;</code></pre>
+    </section>
+
+    <section class="slide">
         <h2>Diffs</h2>
         <ul>
             <li>By line: O(N×D)</li>
@@ -399,7 +529,57 @@
         <h2 class="shout shout-small">AST-annotated line diffs</h2>
     </section>
 
+    <section class="slide">
+        <h2>Flexible, interoperable, fast: choose any two</h2>
+        <table>
+            <tbody>
+                <th>
+                    <td align="center">Flexible</td>
+                    <td align="center">Interoperable</td>
+                    <td align="center">Fast</td>
+                </th>
+                <tr>
+                    <td>Gitbase</td>
+                    <td align="center"><span class="emoji">✔</span></td>
+                    <td align="center"><span class="emoji">✔</span></td>
+                    <td align="center"><span class="emoji">❌</span></td>
+                </tr>
+                <tr>
+                    <td>PostgreSQL</td>
+                    <td align="center"><span class="emoji">❌</span></td>
+                    <td align="center"><span class="emoji">✔</span></td>
+                    <td align="center"><span class="emoji">✔</span></td>
+                </tr>
+                <tr>
+                    <td>ClickHouse</td>
+                    <td align="center"><span class="emoji">✔</span></td>
+                    <td align="center"><span class="emoji">❌</span></td>
+                    <td align="center"><span class="emoji">✔</span></td>
+                </tr>
+                <tr>
+                    <td>* graph DB</td>
+                    <td align="center"><span class="emoji">✔</span></td>
+                    <td align="center"><span class="emoji">❌</span></td>
+                    <td align="center"><span class="emoji">?</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="slide">
+        <h2>Flattened AST</h2>
+        <pre><code><span class="kw">SELECT</span> r.repo, meta.stars <span class="kw">FROM</span> (</code>
+<code>    <span class="kw">DISTINCT</span> repo <span class="kw">FROM</span> uasts <span class="kw">WHERE</span> lang=<span class="str">'go'</spanspan></code>
+<code>    <span class="kw">AND</span> value <span class="kw">LIKE</span> <span class="str">'gopkg.in/src-d/%'</span></code>
+<code>    <span class="kw">AND</span> type=<span class="str">'Import'</spanspan> <span class="kw">AND</span> repo <span class="kw">NOT LIKE</span> <span class="str">'src-d/%'</span></code>
+<code>) r <span class="kw">JOIN</span> meta <span class="kw">ON</span> r.repo=meta.repo;</code></pre>
+    </section>
+
     <section class="slide part">
+        <h2 class="shout">MLonCode</h2>
+    </section>
+
+    <section class="slide">
         <h2 class="shout">Couples</h2>
     </section>
 
@@ -468,7 +648,7 @@
         <img src="pictures/tfprojcouples.png" class="fullslide">
     </section>
 
-    <section class="slide part">
+    <section class="slide">
         <h2 class="shout">Lines</h2>
     </section>
 
@@ -598,7 +778,7 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout shout-small">Ownership</h2>
+        <h2 class="shout">Ownership</h2>
     </section>
 
     <section class="slide">
@@ -645,7 +825,7 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout shout-small">Lines importance</h2>
+        <h2 class="shout">Lines importance</h2>
     </section>
 
     <section class="slide">
@@ -670,7 +850,7 @@
         <h2 class="shout shout-small">Diff 🡒 commit classification</h2>
     </section>
     
-    <section class="slide part">
+    <section class="slide">
         <h2 class="shout">Time series</h2>
     </section>
 
@@ -878,72 +1058,473 @@
         </ul>
     </section>
 
-    <section class="slide part">
-        <h2 class="shout">Tools</h2>
-    </section>
-
-    <section class="slide vista vista-cover" id="lake">
-        <h2 class="shout shout-small">Code Lake</h2>
-        <style>
-            #lake {
-                background-image: url("pictures/lake.jpg");
-            }
-            #lake > h2 {
-                color: white;
-            }
-            #lake:before {
-                content: "";
-                position: absolute;
-                z-index: -1;
-                left: 0;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-            }
-        </style>
+    <section class="slide">
+        <h2 class="shout">Identifier embeddings</h2>
     </section>
 
     <section class="slide">
-        <h2>github.com/src-d/gitbase</h2>
-        <pre><code><span class="kw">SELECT</span> refs.repository_id
-<span class="kw">FROM</span> refs
-<span class="kw">NATURAL JOIN</span> commits
-<span class="kw">WHERE</span> commits.commit_author_name = <span class="str">'Johnny Bravo'</span>
-    <span class="kw">AND</span> refs.ref_name = <span class="str">'HEAD'</span>;</code></pre>
+        <h2 class="shout shout-small">Code naturalness</h2>
+    </section>
+    
+    <section class="slide">
+<pre><code><span class="hl-keyword">class</span> <span class="box">???</span>:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, dbname, user, password, host, port):</code>
+<code>        <span class="hl-comment"># ...</span></code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">query</span>(<span class="hl-reserved">self</span>, sql):</code>
+<code>        <span class="hl-comment"># ...</span></code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">close</span>(<span class="hl-reserved">self</span>):</code>
+<code>        <span class="hl-comment"># ...</span></code>
+</pre>
         <style>
-            .kw {
-                color: #CC7832;
+            .hl-keyword {
+                color: #cc8242;
                 font-weight: bold;
             }
-
-            .str {
+            .hl-def {
+                color: #ffc66d;
+            }
+            .hl-reserved {
+                color: #94558D;
+            }
+            .hl-string {
                 color: #6a8759;
             }
-
-            .func {
-                color: #9e7bb0;
+            .hl-comment {
+                color: #707070;
+            }
+            .box {
+                border: 1px solid white;
+                padding: 0.05em 0.1em;
             }
         </style>
     </section>
 
     <section class="slide">
-        <h2>Parsing code</h2>
-        <img src="pictures/bblfsh-logo.png" class="center">
-        <img src="pictures/bblfsh-arch-black.png" class="black fullwidth">
-        <img src="pictures/bblfsh-arch-white.png" class="white fullwidth">
+        <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
     </section>
 
     <section class="slide">
-        <h2>Imports for each commit</h2>
-        <pre><code><span class="kw">SELECT</span> repository_id, commit_hash, file_path,
-    <span class="func">uast_extract</span>(<span class="func">uast</span>(blob_content,
-                      <span class="func">language</span>(file_path),
-                      <span class="str">'//uast:Import/Path'</span>),
-                 <span class="str">"Value"</span>) <span class="kw">AS</span> imports
-<span class="kw">FROM</span> commit_files <span class="kw">NATURAL JOIN</span> blobs
-<span class="kw">WHERE</span> <span class="func">language</span>(file_path) = <span class="str">'Go'</span>
-    <span class="kw">AND</span> <span class="func">array_length</span>(imports) > 0;</code></pre>
+        <h2>Splitting and normalization</h2>
+        <pre>
+            <code>_tcp_socket_connect -> [tcp, socket, connect]</code>
+            <code>AuthenticationError -> [authentication, error]</code>
+            <code>authentication, authenticate -> authenticate</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">database, connect<sup>2</sup>, user<sup>2</sup>, password<sup>2</sup>, host<sup>2</sup>, port<sup>2</sup>, tcp, socket<sup>2</sup>, authenticate<sup>2</sup>, error, close </p>
+        <div class="context ctx1"></div>
+        <style>
+            .keywords {
+                font-family: monospace;
+                margin-top: -10px !important;
+            }
+            .keywords::before {
+                content: ">>>";
+                position: absolute;
+                margin-left: -2.2em;
+            }
+            .context {
+                position: absolute;
+                border: 5px dashed #979a9e;
+                border-radius: 10px;
+            }
+            .ctx1 {
+                width: 760px;
+                height: 392px;
+                top: 82px;
+                left: 93px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all1">
+        <style>
+            #all2all1 {
+                background-image: url("pictures/all2all_1_black.svg");
+            }
+            @media not print {
+                #all2all1 {
+                    background-image: url("pictures/all2all_1_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">connect<sup>2</sup>, user<sup>2</sup>, password<sup>2</sup>, host<sup>2</sup>, port<sup>2</sup>, tcp, socket<sup>2</sup>, authenticate<sup>2</sup>, error, close </p>
+        <div class="context ctx2"></div>
+        <style>
+            .ctx2 {
+                width: 700px;
+                height: 352px;
+                top: 128px;
+                left: 153px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all2">
+        <style>
+            #all2all2 {
+                background-image: url("pictures/all2all_2_black.svg");
+            }
+            @media not print {
+                #all2all2 {
+                    background-image: url("pictures/all2all_2_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">connect, user, password, host, port</p>
+        <div class="context ctx3"></div>
+        <style>
+            .ctx3 {
+                width: 700px;
+                height: 50px;
+                top: 128px;
+                left: 153px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all3">
+        <style>
+            #all2all3 {
+                background-image: url("pictures/all2all_3_black.svg");
+            }
+            @media not print {
+                #all2all3 {
+                    background-image: url("pictures/all2all_3_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">tcp, socket, connect, host, port</p>
+        <div class="context ctx4"></div>
+        <style>
+            .ctx4 {
+                width: 555px;
+                height: 50px;
+                top: 178px;
+                left: 213px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all4">
+        <style>
+            #all2all4 {
+                background-image: url("pictures/all2all_4_black.svg");
+            }
+            @media not print {
+                #all2all4 {
+                    background-image: url("pictures/all2all_4_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">authenticate<sup>2</sup>, user, password, error, socket, close</p>
+        <div class="context ctx5"></div>
+        <style>
+            .ctx5 {
+                width: 585px;
+                height: 245px;
+                top: 229px;
+                left: 213px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all5">
+        <style>
+            #all2all5 {
+                background-image: url("pictures/all2all_5_black.svg");
+            }
+            @media not print {
+                #all2all5 {
+                    background-image: url("pictures/all2all_5_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">authenticate, user, password</p>
+        <div class="context ctx6"></div>
+        <style>
+            .ctx6 {
+                width: 528px;
+                height: 50px;
+                top: 278px;
+                left: 270px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all6">
+        <style>
+            #all2all6 {
+                background-image: url("pictures/all2all_6_black.svg");
+            }
+            @media not print {
+                #all2all6 {
+                    background-image: url("pictures/all2all_6_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">authenticate, error, socket, close</p>
+        <div class="context ctx7"></div>
+        <style>
+            .ctx7 {
+                width: 492px;
+                height: 147px;
+                top: 328px;
+                left: 213px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all7">
+        <style>
+            #all2all7 {
+                background-image: url("pictures/all2all_7_black.svg");
+            }
+            @media not print {
+                #all2all7 {
+                    background-image: url("pictures/all2all_7_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">authenticate, error</p>
+        <div class="context ctx8"></div>
+        <style>
+            .ctx8 {
+                width: 492px;
+                height: 50px;
+                top: 328px;
+                left: 213px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all8">
+        <style>
+            #all2all8 {
+                background-image: url("pictures/all2all_8_black.svg");
+            }
+            @media not print {
+                #all2all8 {
+                    background-image: url("pictures/all2all_8_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+            <pre><code><span class="hl-keyword">class</span> Database:</code>
+<code>    <span class="hl-keyword">def</span> <span class="hl-def">connect</span>(<span class="hl-reserved">self</span>, user, password, host, port):</code>
+<code>        <span class="hl-reserved">self</span>._tcp_socket_connect(host, port)</code>
+<code>        <span class="hl-keyword">try</span>:</code>
+<code>            <span class="hl-reserved">self</span>._authenticate(user, password)</code>
+<code>        <span class="hl-keyword">except</span> AuthenticationError <span class="hl-keyword">as</span> e:</code>
+<code>            <span class="hl-reserved">self</span>.socket.close()</code>
+<code>            <span class="hl-keyword">raise</span> e <span class="hl-keyword">from None</span></code>
+        </pre>
+        <p class="keywords">socket, close</p>
+        <div class="context ctx9"></div>
+        <style>
+            .ctx9 {
+                width: 300px;
+                height: 50px;
+                top: 378px;
+                left: 270px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all9">
+        <style>
+            #all2all9 {
+                background-image: url("pictures/all2all_9_black.svg");
+            }
+            @media not print {
+                #all2all9 {
+                    background-image: url("pictures/all2all_9_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="all2all">
+        <style>
+            #all2all {
+                background-image: url("pictures/all2all_black.svg");
+            }
+            @media not print {
+                #all2all {
+                    background-image: url("pictures/all2all_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Swivel one more time</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Nearest to “foo”</h2>
+        <ul class="two-cols">
+            <li>afoo</li>
+            <li>qux</li>
+            <li>myfoo</li>
+            <li>baz</li>
+            <li>mfoo</li>
+            <li>wibble</li>
+            <li>dofoo</li>
+            <li>quux</li>
+            <li>dfoo</li>
+            <li>testing</li>
+            <li>ifoo</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Analogies</h2>
+        <p>“bug” <span class="compare">-</span> “test” <span class="compare">+</span> “expect” <span
+                class="compare">=</span> “suppress”</p>
+        <p>“database” <span class="compare">-</span> “query” <span class="compare">+</span> “tune” <span
+                class="compare">=</span> “settings”</p>
+        <p>“send” <span class="compare">-</span> “receive” <span class="compare">+</span> “pop” <span
+                class="compare">=</span> “push”</p>
+        <div id="analogies" class="vista"></div>
+        <style>
+            .compare {
+                color: #fff01f;
+            }
+    
+            #analogies {
+                position: absolute;
+                bottom: 50px;
+                right: 50px;
+                width: 500px;
+                height: 300px;
+                background-image: url("pictures/analogy_black.png");
+            }
+    
+            @media not print {
+                #analogies {
+                    background-image: url("pictures/analogy_white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Typos</h2>
+        <ul>
+            <li>recieve <span class="compare">=</span> receive</li>
+            <li>grey <span class="compare">=</span> gray</li>
+            <li>calback <span class="compare">=</span> callbak <span class="compare">=</span> callback</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Tools</h2>
     </section>
 
     <section class="slide">
@@ -955,6 +1536,25 @@
             <li>Data processing: Go (<a href="https://github.com/src-d/go-git">go-git</a>)</li>
             <li>Data analysis: Python</li>
         </ul>
+    </section>
+
+    <section class="slide">
+        <h2>github.com/src-d/ml-core</h2>
+        <h2>github.com/src-d/ml-mining</h2>
+        <pre id="ml-core"><code>>>> from sourced.ml.core.algorithms.token_parser import TokenParser
+>>> parser = TokenParser(use_nn=True)
+>>> list(parser.split("progressbar"))
+['progress', 'bar']
+>>> list(parser.split("bigLITTLE"))
+['big', 'LITTLE']
+>>> list(parser.split("PreSet"))
+['preset']
+</code></pre>
+        <style>
+            #ml-core {
+                font-size: 19px;
+            }
+        </style>
     </section>
 
     <section class="slide">
@@ -1110,8 +1710,34 @@
     </section>
 
     <section class="slide">
-        <h2>source{d} Community Edition</h2>
-        <h2 class="shout shout-small"><a href="https://sourced.tech/products/community-edition">sourced.tech/products/ community-edition/</a></h2>
+        <h2><a href="https://sourced.tech/products/community-edition">sourced.tech/products/<br>community-edition/</a></h2>
+        <img src="pictures/sourced-ce1.png" id="sourced-ce1" class="sourced-ce-scrshot">
+        <img src="pictures/sourced-ce2.png" id="sourced-ce2" class="sourced-ce-scrshot">
+        <img src="pictures/sourced-ce3.png" id="sourced-ce3" class="sourced-ce-scrshot">
+        <style>
+            .sourced-ce-scrshot {
+                position: absolute;
+                object-fit: contain;
+            }
+        #sourced-ce1 {
+            left: 300px;
+            top: 180px;
+            width: 400px;;
+            height: 200px;
+        }
+        #sourced-ce2 {
+            left: 100px;
+            top: 350px;
+            width: 400px;
+            height: 200px;
+        }
+        #sourced-ce3 {
+            right: 100px;
+            top: 357px;
+            width: 400px;
+            height: 186px;
+        }
+        </style>
     </section>
 
 	<section class="slide">
