@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="105" />
+    <meta name="twitter:data1" content="101" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="San Francisco, CA, USA - 28.10.2019" />
     <meta property="og:type" content="article" />
@@ -742,16 +742,6 @@
     </section>
 
     <section class="slide">
-        <h2>Problems</h2>
-        <ul>
-            <li>Optimal vector size?</li>
-            <li>Convergence on &lt;10k is bad</li>
-            <li>Convergence on &lt;50D is bad</li>
-            <li>GPU is useless on &lt;100 items</li>
-        </ul>
-    </section>
-
-    <section class="slide">
         <h2 class="shout shout-small">t-SNE over the embeddings</h2>
     </section>
 
@@ -889,16 +879,12 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout">Ownership</h2>
+        <h2 class="shout shout-small">Ownership</h2>
     </section>
 
     <section class="slide">
         <img class="fullslide black" src="pictures/emberjs_people-black.png">
         <img class="fullslide white" src="pictures/emberjs_people-white.png">
-    </section>
-
-    <section class="slide">
-        <h2 class="shout shout-small">Measuring ownership is hard</h2>
     </section>
 
     <section class="slide formula">
@@ -933,32 +919,6 @@
                 object-fit: contain;
             }
         </style>
-    </section>
-
-    <section class="slide">
-        <h2 class="shout">Lines importance</h2>
-    </section>
-
-    <section class="slide">
-        <pre><code>import sys</code>
-<code class="semi-important">import smart_foo</code>
-<code> </code>
-<code>def foo(x: Any) -> int:</code>
-<code>    log("called foo %s", x)</code>
-<code>    # now the hardcore part</code>
-<code class="important">    if smart_foo.complex_cond(x) < 50:</code>
-<code class="semi-important">        return 50</code>
-<code>    return 0</code>
-</pre>
-        <style>
-            .semi-important {
-                color: lightcoral;
-            }
-        </style>
-    </section>
-
-    <section class="slide">
-        <h2 class="shout shout-small">Diff 🡒 commit classification</h2>
     </section>
     
     <section class="slide">
@@ -1634,6 +1594,10 @@
         </ul>
     </section>
 
+    <section class="slide">
+        <h2 class="shout shout-small">source{d} Enterprise Edition</h2>
+    </section>
+
     <section class="slide part">
         <h2 class="shout">Tools</h2>
     </section>
@@ -1785,22 +1749,21 @@
     <section class="slide">
         <h2>Summary</h2>
         <ul id="summary">
-            <li>Embed similarity matrices with Swivel</li>
-            <li>Embed distance matrices with t-SNE (2-3D) and UMAP</li>
-            <li>Compare time series with Fast Dynamic Time Warping
+            <li>Code-as-Data requires serious infra</li>
+            <li>src-d/sourced-ce: DIY observability + batteries</li>
+            <li>MLonCode is much fun
                 <ul>
-                    <li>But remember about the △ inequality</li>
+                    <li>Couples</li>
+                    <li>Overwrites</li>
+                    <li>Time series</li>
+                    <li>Identifier embeddings</li>
                 </ul>
             </li>
-            <li>Order sequences and heatmaps with Seriation</li>
-            <li>Mining software development history is fun</li>
+            <li>source{d} EE: with MLonCode</li>
         </ul>
         <style>
             #summary > li:before {
                 content: "✓";
-            }
-            #summary li li:before {
-                content: "🙁";
             }
         </style>
     </section>
