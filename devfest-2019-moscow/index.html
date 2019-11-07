@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Distributed training of Tensorflow models</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="68" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="09.11.2019 - Moscow" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/devfest-2019-moscow" />
+    <meta property="og:title" content="Distributed training of Tensorflow models" />
+    <meta property="og:description" content="In this talk, Vadim explains the following topics: what are TensorFlow 2.0 distribution strategies and Uber's Horovod project, how to apply them for distributed training of DL models, how they compare to each other, how they work inside, and the current limitations." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/devfest-2019-moscow/pictures/cover.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/devfest-2019-moscow/pictures/cover.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Distributed training of Tensorflow models</h1>
+		<p>Vadim Markovtsev, <a href="https://sourced.tech">source{d}</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #8719cb 0, #400d9a 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black, object.black {
+            display: block;
+        }
+        img.white, object.white {
+            display: none;
+        }
+        @media not print {
+            img.black, object.black {
+                display: none;
+            }
+            img.white, object.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+           background: none !important;
+        }
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        .fullslide-padding {
+            width: 100%;
+            height: calc(100% - 50px);
+            object-fit: contain;
+        }
+        .fullwidth > img, img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+        .strikethrough {
+            text-decoration: line-through;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Distributed training of Tensorflow models</h2>
+		<p>Vadim Markovtsev<br><a href="https://sourced.tech">source{d}</a></p>
+
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 70px;
+                color: white;
+            }
+            #cover p {
+                margin: 199px 0 0;
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Plan</h2>
+        <ol>
+            <li>Introduction to distributed deep learning</li>
+            <li>TensorFlow Distribution Strategies</li>
+            <li>Horovod</li>
+            <li>Problems and limitations</li>
+        </ol>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Introduction</h2>
+    </section>
+
+    <section class="slide">
+        <object class="black model-data-parallel center" type="image/svg+xml"
+            data="pictures/model_data_parallel_black.svg"></object>
+        <object class="white model-data-parallel center" type="image/svg+xml"
+            data="pictures/model_data_parallel_white.svg"></object>
+        <style>
+            .model-data-parallel {
+                width: 100%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Distributed deep learning</h2>
+        <ul>
+            <li>Workflow partitioning</li>
+            <li>Parallel model
+                <ul>
+                    <li>tensorflow/mesh</li>
+                </ul>
+            </li>
+            <li>Parallel data
+                <ul>
+                    <li>Distribution Strategies</li>
+                    <li>Horovod</li>
+                    <li>tensorflow/federated</li>
+                </ul>
+            </li>
+        </ul>
+        <a id="parallelism" href="https://medium.com/@esaliya/model-parallelism-in-deep-learning-is-not-what-you-think-94d2f81e82ed">
+        <img class="black" src="pictures/parallelism_black.png">
+        <img class="white" src="pictures/parallelism_white.png">
+        </a>
+        <style>
+            #parallelism {
+                position: absolute;
+                left: 400px;
+                top: 100px;
+            }
+            #parallelism > img {
+                width: 530px;
+                height: 530px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Workflow partitioning + and −</h2>
+        <ul>
+            <li class="pro">Choosing the best device for each task</li>
+            <li class="pro">Some ops are not implemented on all devices</li>
+            <li class="con">Memory copies
+                <ul><li class="ok">XLA improves on that</li></ul>
+            </li>
+            <li class="con">Device memory size bottleneck</li>
+            <li class="con">Device initialization lag</li>
+        </ul>
+        <style>
+            .pro::before {
+                content: "+" !important;
+            }
+            .con::before {
+                content: "−" !important;
+            }
+            li.ok::before {
+                content: "✓" !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Parallel model + and −</h2>
+        <ul>
+            <li class="pro">Better performance</li>
+            <li class="pro">Training huge models</li>
+            <li class="con">Not trivial to program</li>
+            <li class="con">IO overhead</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Parallel data + and −</h2>
+        <ul>
+            <li class="pro">Linear speedup</li>
+            <li class="pro">Bigger batch size</li>
+            <li class="pro">Trivial to program</li>
+            <li class="con">IO overhead</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Parallel data</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Parallel data training approaches</h2>
+        <ul>
+            <li>Parameter averaging
+                <ul>
+                    <li class="pro">Saves network bandwidth</li>
+                    <li class="con">Stateless = vanilla SGD only</li>
+                </ul>
+            </li>
+            <li>Individual updates
+                <ul>
+                    <li class="con">Universal</li>
+                    <li class="pro">Hungry to network bandwidth</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Parallel data training approaches</h2>
+        <ul>
+            <li>Synchronous updates
+                <ul>
+                    <li class="pro">Equivalent result</li>
+                    <li class="con">Sub-optimal load balancing (N nodes)</li>
+                </ul>
+            </li>
+            <li>Asynchronous updates
+                <ul>
+                    <li class="con">Worse convergence (stale gradients)</li>
+                    <li class="pro">Great load balancing</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Synchronous training</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Parallel data approaches</h2>
+        <ul>
+            <li>Parameter server, "star arch", master-slave, etc.</li>
+            <li>Collective ops; single node, multiple device</li>
+            <li>Collective ops; multiple node, multiple device</li>
+            <li>Parallel inference - TensorFlow Extended (TFX)</li>
+            <li>Federated Learning</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Parameter server + and −</h2>
+        <ul>
+            <li class="pro">Easiest to implement</li>
+            <li class="pro">Simplicity</li>
+            <li class="con">Single master bottleneck</li>
+            <li class="con">Network bottleneck</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Collective ops; 1x + and −</h2>
+        <ul>
+            <li class="pro">Great vertical scalability</li>
+            <li class="pro">Peer-to-peer communication</li>
+            <li class="con">Single node (apparently)</li>
+            <li class="con">Hardware-specific (complex) optimizations</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Collective ops; Nx + and −</h2>
+        <ul>
+            <li class="pro">Great horizontal&vertical scalability</li>
+            <li class="pro">Peer-to-peer communication</li>
+            <li class="con">Overall complexity</li>
+            <li class="con">No load balancing</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Collective ops</h2>
+    </section>
+
+    <section class="slide">
+        <h2>nvidia/nccl</h2>
+        <div id="nccl-images">
+            <div>
+                <img src="pictures/nccl_allgather_black.png" class="black">
+                <img src="pictures/nccl_allgather_white.png" class="white">
+                <img src="pictures/nccl_reduce_black.png" class="black">
+                <img src="pictures/nccl_reduce_white.png" class="white">
+            </div>
+            <div>
+                <img src="pictures/nccl_allreduce_black.png" class="black">
+                <img src="pictures/nccl_allreduce_white.png" class="white">
+                <img src="pictures/nccl_reducescatter_black.png" class="black">
+                <img src="pictures/nccl_reducescatter_white.png" class="white">
+            </div>
+        </div>
+        <style>
+            #nccl-images {
+                display: flex;
+                align-items: center;
+                align-content: center;
+            }
+            #nccl-images > div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                align-content: center;
+            }
+            #nccl-images > div:first-child {
+                margin-right: 50px;;
+            }
+            #nccl-images > div > img:nth-of-type(1), #nccl-images > div > img:nth-of-type(2) {
+                margin-bottom: 50px;;
+            }
+            #nccl-images img {
+                width: 100%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <img class="black choosing center" src="pictures/choosing_black.svg">
+        <img class="white choosing center" src="pictures/choosing_white.svg">
+        <style>
+            .choosing {
+                height: calc(100% - 50px);
+                max-width: 800px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Distribution Strategies</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">TensorFlow 2.0<br><br><span class="emoji">🎉</span>September 30th<span class="emoji">🎉</span></h2>
+    </section>
+
+    <section class="slide">
+        <h2>TensorFlow 2.0</h2>
+        <ul>
+            <li>Keras is a first-class citizen</li>
+            <li>Keras is the only high-level API</li>
+            <li>PyTorch-like Eager execution</li>
+            <li>Distribution Strategies</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small"><code>tf.distribute.Strategy</code></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Example</h2>
+        <pre><code>mirrored_strategy = tf.distribute.MirroredStrategy()</code>
+<code>with mirrored_strategy.scope():</code>
+<code>    model = tf.keras.Sequential([</code>
+<code>        tf.keras.layers.Dense(1, input_shape=(1,))])</code>
+<code>    model.compile(loss="mse", optimizer="sgd")</code>
+<code>model.fit(dataset)</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">+1 extra line</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Not the same as<br>keras.utils.multi_gpu_model</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small"><code><span class="strikethrough">import keras</span> tf.keras</code></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Supported strategies</h2>
+        <ul>
+            <li><code>MirroredStrategy (local)</code></li>
+            <li><code>CentralStorageStrategy (local)</code></li>
+            <li><code>TPUStrategy (local)</code></li>
+            <li><code>MultiWorkerMirroredStrategy (network)</code></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>MirroredStrategy</h2>
+        <ul>
+            <li>Batch is split evenly</li>
+            <li>Dark shape magic inside
+                <ul>
+                    <li>Careful with hard-coding the batch size!</li>
+                    <li>Automatic <code>tf.data.Dataset</code> sharding</li>
+                </ul>
+            </li>
+            <li>Collective ops (NCCL)</li>
+            <li>Model instance per device</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>MultiWorkerMirroredStrategy</h2>
+        <ul>
+            <li>Batch is split evenly</li>
+            <li>Dark shape magic inside
+                <ul>
+                    <li>Careful with hard-coding the batch size!</li>
+                    <li>Automatic <code>tf.data.Dataset</code> sharding</li>
+                </ul>
+            </li>
+            <li>Collective ops (NCCL + gRPC)</li>
+            <li>Model instance per device per process</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h3><code>training.py</code></h3>
+        <pre><code>import tensorflow as tf</code>
+<code>strategy = \</code>
+<code>    tf.distribute.experimental.MultiWorkerMirroredStrategy()</code></pre>
+    </section>
+
+        <section class="slide">
+        <h2>TF_CONFIG</h2>
+        <pre><code>{</code>
+<code>    "cluster": {</code>
+<code>        "worker": ["host1:port", "host2:port"],</code>
+<code>    },</code>
+<code>    "task": {</code>
+<code>        "type": "worker", "index": 0</code>
+<code>    }</code>
+<code>}</code></pre>
+    </section>
+
+    <section class="slide">
+        <h3>host1</h3>
+        <pre><code>export TF_CONFIG=...</code>
+<code>python3 training.py</code></pre>
+        <h3>host2</h3>
+<pre><code>export TF_CONFIG=...</code>
+<code>python3 training.py</code></pre>
+    </section>
+
+    <section class="slide">
+        <pre id="logs">2019-10-18 19:22:33.199624: I tensorflow/core/distributed_runtime/rpc/grpc_channel.cc:258] Initialize GrpcChannelCache
+        for job worker -> {0 -> localhost:5555, 1 -> 10.2.2.66:5555}<br>
+        2019-10-18 19:22:33.206039: I tensorflow/core/distributed_runtime/rpc/grpc_server_lib.cc:365] Started server with
+        target: grpc://localhost:5555</pre>
+        <style>
+        #logs {
+            font-size: 20px;
+        }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Horovod</h2>
+    </section>
+
+    <section class="slide">
+        <h2>In a nutshell</h2>
+        <ul>
+            <li>Up to 1k GPUs</li>
+            <li>MPI or Gloo</li>
+            <li>TensorFlow, vanilla Keras, PyTorch, MXNet</li>
+            <li>Backed by Uber?</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <img src="pictures/horovod_contrib1.png" class="choosing center">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/horovod_contrib2.png" class="choosing center">
+    </section>
+
+    <section class="slide">
+        <img src="pictures/horovod_contrib3.png" class="choosing center">
+    </section>
+
+    <section class="slide">
+        <h2>Concepts</h2>
+        <ul>
+            <li>Size = number of processes</li>
+            <li>Rank = process index</li>
+            <li>Local rank = process index on the same machine</li>
+            <li>Batch size is multiplied, not divided</li>
+        </ul>
+        <a href="http://bit.ly/2PWJhzs">bit.ly/2PWJhzs</a>
+    </section>
+
+    <section class="slide">
+        <h2>Tensor Fusion</h2>
+        Batching of small allreduce ops.
+        <img src="pictures/nccl_allreduce_black.png" class="center black allreduce-horovod">
+        <img src="pictures/nccl_allreduce_white.png" class="center white allreduce-horovod">
+        <style>
+            .allreduce-horovod {
+                margin-top: 50px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Usage with <code>tf.keras</code> 2.0</h2>
+        <pre><code><span class="kw">import</span> horovod.tensorflow.keras <span class="kw">as</span> hvd</code>
+<code>hvd.init()</code>
+<code>gpus = tf.config.experimental.list_physical_devices(<span class="str">"GPU"</span>)</code>
+<code><span class="kw">for</span> gpu <span class="kw">in</span> gpus:</code>
+<code>    tf.config.experimental.set_memory_growth(gpu, <span class="kw">True</span>)</code>
+<code>tf.config.experimental.set_visible_devices(</code>
+<code>    [gpus[hvd.local_rank()]], <span class="str">"GPU"</span>)</code>
+</pre>
+        <style>
+            .kw {
+                color: #CC7832;
+                font-weight: bold;
+            }
+            .str {
+                color: #6a8759;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Usage with <code>tf.keras</code> 2.0</h2>
+        <pre><code>learning_rate *= hvd.size()</code>
+<code>opt = hvd.DistributedOptimizer(opt)</code>
+<code>model.compile(..., experimental_run_tf_function=<span class="kw">False</span>)</code>
+<code>callbacks.append(</code>
+<code>    hvd.callbacks.BroadcastGlobalVariablesCallback(<span class="lit">0</span>))</code>
+<code><span class="kw">if</span> hvd.rank() == <span class="lit">0</span>:</code>
+<code>    callbacks.append(<span class="str">"""checkpoint"""</span>)</code>
+</pre>
+        <style>
+            .lit {
+                color: #7a9ec2;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Usage with <code>tf.keras</code> 2.0</h2>
+        <pre><code>horovodrun -np 4 -H localhost:4 python3 entry.py</code></pre>
+        <img src="pictures/dog.jpg" id="dog">
+        <style>
+            #dog {
+                height: 300px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Are you sure? <span class="emoji">🤔</span></h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Problems<br>and<br>limitations</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">GPU hangs</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Intel IOMMU + NCCL = <span class="emoji">💔</span></h2>
+    </section>
+
+    <section class="slide">
+        <h2>Solution</h2>
+        Boot Linux with <code>intel_iommu=off</code> or <code>intel_iommu=soft</code><br>
+        <a href="http://bit.ly/2CkRkxH">bit.ly/2CkRkxH</a>
+    </section>
+
+
+    <section class="slide">
+        <h2 class="shout shout-small">P2P</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Checking P2P</h2>
+        <pre class="pre">I tensorflow/.../gpu_device.cc:1159] Device interconnect StreamExecutor with strength 1 edge matrix:
+I tensorflow/.../gpu_device.cc:1165]      0 1 2 3
+I tensorflow/.../gpu_device.cc:1178] 0:   N Y N N
+I tensorflow/.../gpu_device.cc:1178] 1:   Y N N N
+I tensorflow/.../gpu_device.cc:1178] 2:   N N N Y
+I tensorflow/.../gpu_device.cc:1178] 3:   N N Y N</pre>
+            <div id="highlight-1" class="log-highlight"></div>
+            <div id="highlight-2" class="log-highlight"></div>
+        <style>
+            .pre {
+                white-space: pre-wrap !important;
+            }
+            .log-highlight {
+                position: absolute;
+                width: 100px;
+                height: 28px;
+                border-radius: 15px;
+                border: 2px solid red;
+                transform: rotate(-60deg);
+            }
+            #highlight-1 {
+                left: 703px;
+                top: 398px;
+            }
+            #highlight-2 {
+                left: 763px;
+                top: 497px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Checking P2P</h2>
+        <code class="inline">p2pBandwidthLatencyTest</code>
+        <a href="https://github.com/NVIDIA/cuda-samples/tree/master/Samples/p2pBandwidthLatencyTest">github.com/NVIDIA/cuda-samples</a>
+        <pre class="pre" id="latency-p2p">P2P=Enabled Latency (P2P Writes) Matrix (us)
+   GPU     0      1      2      3
+     0   1.25   0.99  12.84  13.39
+     1   1.01   1.37  11.21  10.36
+     2  12.39  12.33   1.28   1.07
+     3  10.39  10.86   1.04   1.27</pre>
+    <div id="latency-highlight1" class="rect-highlight"></div>
+    <div id="latency-highlight2" class="rect-highlight"></div>
+     <style>
+        #latency-p2p {
+            margin-top: 20px;
+        }
+        #latency-highlight1 {
+           width: 186px;
+           height: 96px;
+           left: 224px;
+           top: 334px;
+        }
+        #latency-highlight2 {
+           width: 186px;
+           height: 96px;
+           left: 435px;
+            top: 434px;
+        }
+     </style>
+    </section>
+
+    <section class="slide">
+        <h2>Checking P2P</h2>
+        <pre class="pre" id="latency-p2p">Unidirectional P2P=Enabled Bandwidth (P2P Writes) Matrix (GB/s)
+   D\D     0      1      2      3
+     0 354.15  10.28  11.18  11.16
+     1  10.27 152.29  11.16  11.11
+     2  11.15  10.85 355.44  10.28
+     3  11.15  10.94  10.28 354.15</pre>
+        <img src="pictures/wasted.png" id="wasted">
+        <div id="bandwidth-highlight1" class="rect-highlight"></div>
+        <div id="bandwidth-highlight2" class="rect-highlight"></div>
+        <style>
+            #wasted {
+                position: absolute;
+                right: 100px;
+                bottom: 100px;
+            }
+            #bandwidth-highlight1 {
+                width: 212px;
+                height: 92px;
+                left: 196px;
+                top: 316px;
+            }
+            #bandwidth-highlight2 {
+                width: 212px;
+                height: 92px;
+                left: 408px;
+                top: 416px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Network bandwidth</h2>
+    </section>
+
+    <section class="slide">
+        <object class="black model-data-parallel center" type="image/svg+xml"
+            data="pictures/speedup_black.svg"></object>
+        <object class="white model-data-parallel center" type="image/svg+xml"
+            data="pictures/speedup_white.svg"></object>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">1gbps is <span class="important">not</span> enough</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Data pipeline performance</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Training Imagenet in 20 min</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Quick diagnostics: nvidia-smi</h2>
+        <pre class="pre" id="nvidia-smi">+-----------------------------------------------------------------------------+
+| NVIDIA-SMI 410.78       Driver Version: 410.78       CUDA Version: 10.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 108...  Off  | 00000000:02:00.0 Off |                  N/A |
+| 43%   63C    P2   101W / 250W |  10909MiB / 11178MiB |     77%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  GeForce GTX 108...  Off  | 00000000:03:00.0 Off |                  N/A |
+| 42%   60C    P2   101W / 250W |  10913MiB / 11178MiB |     22%      Default |
++-------------------------------+----------------------+----------------------+
+|   2  GeForce GTX 108...  Off  | 00000000:82:00.0 Off |                  N/A |
+| 41%   60C    P2    93W / 250W |  10909MiB / 11178MiB |     92%      Default |
++-------------------------------+----------------------+----------------------+
+|   3  GeForce GTX 108...  Off  | 00000000:83:00.0 Off |                  N/A |
+| 43%   62C    P2    92W / 250W |  10913MiB / 11178MiB |     69%      Default |
++-------------------------------+----------------------+----------------------+</pre>
+        <div id="smi-highlight" class="rect-highlight"></div>
+        <style>
+            #nvidia-smi {
+                font-size: 17px;
+                line-height: 19px;
+            }
+            .rect-highlight {
+                position: absolute;
+                border-radius: 15px;
+                border: 2px solid red;
+            }
+            #smi-highlight {
+                top: 281px;
+                left: 715px;
+                width: 45px;
+                height: 204px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Quick diagnostics: top</h2>
+        <pre><code>tf.data.Dataset() \</code>
+<code>    .from_whatever() \</code>
+<code>    .map(augment, num_parallel_calls=N) \</code>
+<code>    .batch(batch_size, drop_remainder=True)</code></pre>
+        <pre id="top"><code>PID USER PR NI   VIRT    RES    SHR S  %CPU %MEM    TIME+ COMMAND
+ 21 root 20  0 0.122t 0.023t 945388 R  1333  9.3 63880:08 python3</code></pre>
+        <div id="top-highlight1" class="rect-highlight"></div>
+        <div id="top-highlight2" class="rect-highlight"></div>
+        <style>
+            #top {
+                font-size: 80%;
+            }
+            #top-highlight1 {
+                width: 330px;
+                height: 40px;
+                left: 360px;
+                top: 270px;
+            }
+            #top-highlight2 {
+                width: 61px;
+                height: 40px;
+                left: 560px;
+                top: 427px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Advanced diagnostics: profile</h2>
+        <a href="https://www.tensorflow.org/tensorboard/tensorboard_profiling_keras">tensorflow.org/tensorboard/tensorboard_profiling_keras</a>
+        <img src="pictures/profile_tensorboard.png" id="profile-tensorboard">
+        <style>
+            #profile-tensorboard {
+                width: 100%;
+                height: 340px;
+                object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Bugs</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Bugs found by myself</h2>
+        <ul>
+            <li><a href="https://github.com/tensorflow/tensorflow/issues/29481">tensorflow/tensorflow#29481</a></li>
+            <li><a href="https://github.com/tensorflow/tensorflow/issues/32654">tensorflow/tensorflow#32654</a></li>
+            <li><a href="https://github.com/tensorflow/tensorflow/issues/33531">tensorflow/tensorflow#33531</a></li>
+            <li><a href="https://github.com/tensorflow/tensorflow/issues/34039">tensorflow/tensorflow#34039</a></li>
+            <li><a href="https://github.com/tensorflow/tensorflow/issues/34046">tensorflow/tensorflow#34046</a></li>
+            <li><a href="https://github.com/tensorflow/addons/issues/605">tensorflow/addons#605</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Kubernetes is for the bravest</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Kubeflow</h2>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">Summary</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Summary</h2>
+        <ul>
+            <li>TF Distribution Strategies are <span class="emoji">🔥💯😍</span> but also <span class="emoji">👶</span></li>
+            <li>Horovod is <span class="emoji">🧟‍♂️</span></li>
+            <li>No (dev|ml)ops? Forget about on-prem DT <span class="emoji">🤦‍♂️</span></li>
+            <li>You need to tweak performance even in the clouds <span class="emoji">😭</span></li>
+            <li>Researching <span class="emoji">🔬</span>? Hyperopt instead.</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@sourced.tech">vadim@sourced.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="http://bit.ly/2NHMhNo" id="bitly">bit.ly/2NHMhNo</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63575100-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-63575100-2');
+    </script>
+</body>
+</html>
