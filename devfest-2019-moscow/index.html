@@ -8,7 +8,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@vadimlearning" />
     <meta name="twitter:label1" content="Number of slides" />
-    <meta name="twitter:data1" content="68" />
+    <meta name="twitter:data1" content="73" />
     <meta name="twitter:label2" content="Where and when" />
     <meta name="twitter:data2" content="09.11.2019 - Moscow" />
     <meta property="og:type" content="article" />
@@ -301,6 +301,26 @@
         <h2 class="shout">Introduction</h2>
     </section>
 
+    <section class="slide vista" id="openai">
+        <a href="https://openai.com/blog/ai-and-compute/">via OpenAI</a>
+        <style>
+            #openai {
+                background-image: url("pictures/ai-and-compute-modern-log_black.png");
+            }
+            @media not print {
+                #openai {
+                    background-image: url("pictures/ai-and-compute-modern-log_white.png");
+                }
+            }
+            #openai > a {
+                position: absolute;
+                right: 50px;
+                bottom: 50px;
+                transform: rotate(-90deg);
+            }
+        </style>
+    </section>
+
     <section class="slide">
         <object class="black model-data-parallel center" type="image/svg+xml"
             data="pictures/model_data_parallel_black.svg"></object>
@@ -319,14 +339,14 @@
             <li>Workflow partitioning</li>
             <li>Parallel model
                 <ul>
-                    <li>tensorflow/mesh</li>
+                    <li><a href="https://github.com/tensorflow/mesh">tensorflow/mesh</a></li>
                 </ul>
             </li>
             <li>Parallel data
                 <ul>
-                    <li>Distribution Strategies</li>
-                    <li>Horovod</li>
-                    <li>tensorflow/federated</li>
+                    <li><a href="https://www.tensorflow.org/guide/distributed_training">Distribution Strategies</a></li>
+                    <li><a href="https://github.com/horovod/horovod">Horovod</a></li>
+                    <li><a href="https://github.com/tensorflow/federated">tensorflow/federated</a></li>
                 </ul>
             </li>
         </ul>
@@ -407,11 +427,15 @@
             </li>
             <li>Individual updates
                 <ul>
-                    <li class="con">Universal</li>
-                    <li class="pro">Hungry to network bandwidth</li>
+                    <li class="pro">Universal</li>
+                    <li class="con">Hungry to network bandwidth</li>
                 </ul>
             </li>
         </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">Individual updates</h2>
     </section>
 
     <section class="slide">
@@ -433,17 +457,17 @@
     </section>
 
     <section class="slide">
-        <h2 class="shout shout-small">Synchronous training</h2>
+        <h2 class="shout shout-small">Synchronous updates</h2>
     </section>
 
     <section class="slide">
-        <h2>Parallel data approaches</h2>
+        <h2>Distribution approaches</h2>
         <ul>
             <li>Parameter server, "star arch", master-slave, etc.</li>
             <li>Collective ops; single node, multiple device</li>
             <li>Collective ops; multiple node, multiple device</li>
-            <li>Parallel inference - TensorFlow Extended (TFX)</li>
-            <li>Federated Learning</li>
+            <li>Parallel inference - <a href="https://www.tensorflow.org/tfx">TensorFlow Extended (TFX)</a> and <a href="https://developer.nvidia.com/tensorrt">TensorRT</a></li>
+            <li><a href="https://github.com/tensorflow/federated">Federated Learning</a></li>
         </ul>
     </section>
 
@@ -455,6 +479,16 @@
             <li class="con">Single master bottleneck</li>
             <li class="con">Network bottleneck</li>
         </ul>
+        <img class="black parameter-server" src="pictures/parameter_server_black.png">
+        <img class="white parameter-server" src="pictures/parameter_server_white.png">
+        <style>
+            .parameter-server {
+                position: absolute;
+                bottom: 50px;
+                right: 100px;
+                width: 500px;
+            }
+        </style>
     </section>
 
     <section class="slide">
@@ -475,6 +509,8 @@
             <li class="con">Overall complexity</li>
             <li class="con">No load balancing</li>
         </ul>
+        <img class="black parameter-server" src="pictures/collective_black.png">
+        <img class="white parameter-server" src="pictures/collective_white.png">
     </section>
 
     <section class="slide">
@@ -529,6 +565,21 @@
                 height: calc(100% - 50px);
                 max-width: 800px;
                 object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Introduction summary</h2>
+        The most promising approach to distributed training:
+        <ul id="isummary">
+            <li>Data parallelism</li>
+            <li>Synchronous updates</li>
+            <li>Collective ops</li>
+        </ul>
+        <style>
+            #isummary > li::before {
+                content: "✓" !important;
             }
         </style>
     </section>
@@ -752,6 +803,41 @@
             #dog {
                 height: 300px;
                 object-fit: contain;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista horbench" id="horbench1">
+        <a href="https://www.logicalclocks.com/blog/goodbye-horovod-hello-collectiveallreduce">via LogicalClocks</a>
+        <style>
+            #horbench1 {
+                background-image: url("pictures/horbench1_black.png");
+            }
+            @media not print {
+               #horbench1 {
+                    background-image: url("pictures/horbench1_white.png");
+                } 
+            }
+            .horbench > a {
+                position: absolute;
+                right: -50px;
+                bottom: 200px;
+                transform: rotate(-90deg);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista horbench" id="horbench2">
+        <a href="https://www.logicalclocks.com/blog/goodbye-horovod-hello-collectiveallreduce">via LogicalClocks</a>
+        <style>
+            #horbench2 {
+                background-image: url("pictures/horbench2_black.png");
+            }
+    
+            @media not print {
+                #horbench2 {
+                    background-image: url("pictures/horbench2_white.png");
+                }
             }
         </style>
     </section>
