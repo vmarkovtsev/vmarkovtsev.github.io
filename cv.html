@@ -5,8 +5,8 @@
   <style>
   /** Font Awesome */
   @font-face {
-    font-family: 'FontAwesome';
-    src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.woff2') format('woff2');
+    font-family: "FontAwesome";
+    src: url("fontawesome-webfont.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
   }
@@ -197,7 +197,7 @@
     list-style-type: square;
   }
 
-  #samsung aside {
+  #samsung ul aside {
     color: gray;
   }
 
@@ -263,10 +263,10 @@
           document.getElementById("years").textContent = (new Date().getFullYear()) - 1989;
           /* I love my wife, so "married" is permanent :) */
         </script>
-        <li>Moscow, Russia / ready to relocate</li>
+        <li>Madrid, Spain / not ready to relocate</li>
         <li><a href="mailto://gmarkhor@gmail.com">gmarkhor@gmail.com</a></li>
         <li><a href="http://github.com/vmarkovtsev">vmarkovtsev</a></li>
-        <li><a href="https://www.linkedin.com/in/vadim-markovtsev-76a17392">goo.gl/JCFJcc</a></li>
+        <li><a href="https://www.linkedin.com/in/vmarkovtsev/">linkedin.com/in/vmarkovtsev</a></li>
       </ul>
       <div id="qr">
         <img src="qrcode.png">
@@ -340,14 +340,21 @@
     <section label="EXPERIENCE">
       <ul>
         <li>
-          <aside><time datetime="2016-02">02 / 2016</time> - present</aside>
+          <aside>3yrs 7 mos · <time datetime="2016-05">05 / 2016</time> - <time datetime="2019-11">11 / 2019</time></aside>
+          <h2>Distinguished Machine Learning Engineer - source{d}</h2>
+          <summary>
+          Research and development for machine learning on source code. Published 5 scientific papers. Led a team of 9 ML engineers.
+          </summary>
+        </li>
+        <li>
+          <aside>4 mos · <time datetime="2016-02">02 / 2016</time> - <time datetime="2016-05">05 / 2016</time></aside>
           <h2>Leading Machine Learning Engineer - Mail.Ru Group</h2>
           <summary>
           Antispam group.
           </summary>
         </li>
         <li>
-          <aside><time datetime="2015-09">09 / 2015</time> - <time datetime="2015-12">12 / 2015</time></aside>
+          <aside>4 mos · <time datetime="2015-09">09 / 2015</time> - <time datetime="2015-12">12 / 2015</time></aside>
           <h2>Backend Team Lead - Resystem</h2>
           <summary>
           DevOps, infra setup and maintenance, development with Django, asyncio.
@@ -356,7 +363,7 @@
           </summary>
         </li>
         <li>
-          <aside><time datetime="2015-09">09 / 2015</time> - present</aside>
+          <aside>9 mos · <time datetime="2015-09">09 / 2015</time> - <time datetime="2016-05">05 / 2016</time></aside>
           <h2>Teacher -
 Moscow Institute of Physics and Technology (State University)</h2>
           <summary>
@@ -367,7 +374,7 @@ Moscow Institute of Physics and Technology (State University)</h2>
           </summary>
         </li>
         <li id="samsung">
-          <aside><time datetime="2012-07">07 / 2012</time> - <time datetime="2015-08">08 / 2015</time></aside>
+          <aside>3 yrs 2 mos · <time datetime="2012-07">07 / 2012</time> - <time datetime="2015-08">08 / 2015</time></aside>
           <h2>Expert Engineer - Samsung R&amp;D Institute Russia</h2>
           <summary>
           <ul>
@@ -406,7 +413,7 @@ Moscow Institute of Physics and Technology (State University)</h2>
           </summary>
         </li>
         <li>
-          <aside><time datetime="2011-03">03 / 2011</time> - <time datetime="2012-06">06 / 2012</time></aside>
+          <aside>1 yr 4 mos · <time datetime="2011-03">03 / 2011</time> - <time datetime="2012-06">06 / 2012</time></aside>
           <h2>Analysist - <a href="http://www.petrosoftinc.com/">Petrosoft LLC</a></h2>
           <summary>
           Development of the driver scheduling algorithm; convenience store assortment
@@ -414,7 +421,7 @@ Moscow Institute of Physics and Technology (State University)</h2>
           </summary>
         </li>
         <li>
-          <aside><time datetime="2010-01">01 / 2010</time> - <time datetime="2012-05">05 / 2012</time></aside>
+          <aside>2 yrs 5 mos · <time datetime="2010-01">01 / 2010</time> - <time datetime="2012-05">05 / 2012</time></aside>
           <h2>Laborant - ISPRAS (Russian Academy of Sciences)</h2>
           <summary>
           Development of JIT with dynamic profile collection and recompilation on
@@ -422,14 +429,14 @@ Moscow Institute of Physics and Technology (State University)</h2>
           </summary>
         </li>
         <li>
-          <aside><time datetime="2007-01">01 / 2007</time> - <time datetime="2010-06">06 / 2010</time></aside>
+          <aside>3 yrs 6 mos · <time datetime="2007-01">01 / 2007</time> - <time datetime="2010-06">06 / 2010</time></aside>
           <h2>Technician - Moscow Institute of Physics and Technology (State University)</h2>
           <summary>
           Educational software development on MS Visual Studio .NET C# / Delphi XE+, LaTeX.
           </summary>
         </li>
         <li>
-          <aside><time datetime="2009-01">01 / 2009</time> - <time datetime="2009-12">12 / 2009</time></aside>
+          <aside>12 mos · <time datetime="2009-01">01 / 2009</time> - <time datetime="2009-12">12 / 2009</time></aside>
           <h2>Junior Programmer - GrinMark</h2>
           <summary>
           Development of <a href="https://sugarexchange.sugarcrm.com/apps/19908#!overview">
@@ -446,6 +453,13 @@ Moscow Institute of Physics and Technology (State University)</h2>
           <summary>
           Diploma in the field of system programming and compiler technologies:
           JIT compilation with on-stack replacement using LLVM.
+          </summary>
+        </li>
+        <li>
+          <aside><time datetime="2017-11">11 / 2017</time></aside>
+          <h2>Google Developer Expert in Machine Learning</h2>
+          <summary>
+          <a href="https://developers.google.com/community/experts/directory/profile/profile-vadim_markovtsev">GDE profile on developers.google.com</a>
           </summary>
         </li>
         <li>
@@ -471,7 +485,6 @@ Moscow Institute of Physics and Technology (State University)</h2>
           </summary>
         </li>
       </ul>
-      Numerous other trainings were omitted.
     </section>
     <section label="PROJECTS">
       <ul>
@@ -550,7 +563,6 @@ Moscow Institute of Physics and Technology (State University)</h2>
           </summary>
         </li>
       </ul>
-      Numerous other projects were omitted.
     </section>
     <section label="PSYCHOLOGY">
       <ul id="psycho">
@@ -565,7 +577,7 @@ Moscow Institute of Physics and Technology (State University)</h2>
       </ul>
     </section>
     <footer>
-      This document is released under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA 3.0 Unported</a>.
+      This document is released under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a>.
     </footer>
   </article>
 </body>
