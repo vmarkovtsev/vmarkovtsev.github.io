@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Full software development cycle analytics in near real-time</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="???" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="???" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/ods-2021-remote" />
+    <meta property="og:title" content="Full software development cycle analytics in near real-time" />
+    <meta property="og:description" content="I work in an international startup Athenian as a Head of Analytics. I am responsible for the product's backend. We sell the SaaS web application that guides engineering managers with various software development metrics: point at bottlenecks in coding, CI, JIRA, deploys, etc. We try to stick to the filosophy of blameless, non-personal insights.
+
+One of Athenian's core features is that we continuously analyze the GitHub and JIRA events and update all the metrics and charts on the fly. It proved to be hard, and I'll talk about why, what mistakes were made, how we fixed them, what we achieved, and how much it cost us." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/ods-2021-remote/pictures/the_ninth_wave.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/ods-2021-remote/pictures/the_ninth_wave.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Full software development cycle analytics in near real-time</h1>
+		<p>Vadim Markovtsev, <a href="https://athenian.co">Athenian</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #FF9E68 0, #FF7427 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+            background: none !important;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        .fullslide-padding {
+            width: 100%;
+            height: calc(100% - 50px);
+            object-fit: contain;
+        }
+        .fullwidth > img, img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+        .shower.list .slide.active {
+            box-shadow:
+                0 0 0 1px #FF7427,
+                0 0 0 20px #FF9E68,
+                0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Full software development cycle analytics in near real‑time</h2>
+		<p>Vadim Markovtsev<br><a href="https://athenian.co">Athenian</a></p>
+
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 70px;
+                color: white;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+            }
+			#cover {
+				background: url("pictures/the_ninth_wave.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.5);
+			}
+        </style>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">The product</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Software development lifecycle</h2>
+        <ol>
+            <li>Plan coding.</li>
+            <li>Start coding.</li>
+            <li>Open the pull request.</li>
+            <li>Pass the review.</li>
+            <li>Pass the CI.</li>
+            <li>Merge the pull request.</li>
+            <li>Release the pull request.</li>
+            <li>Deploy the pull request.</li>
+        </ol>
+        <img class="repeat white" src="pictures/repeat_white.svg">
+        <img class="repeat black" src="pictures/repeat_black.svg">
+        <style>
+            img.repeat {
+                position: absolute;
+                right: 100px;
+                top: 150px;
+                width: 400px;
+                height: 400px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="product">
+        <style>
+            #product {
+                background-image: url("pictures/product.png");
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="code-analysis">
+        <h2>Source code analysis?</h2>
+        <ul>
+            <li>Security.</li>
+            <li>Trust.</li>
+            <li>Scale.</li>
+        </ul>
+        <style>
+            #code-analysis {
+                background-image: url("pictures/banksy_white.jpg");
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="boss">
+        <h2>Money estimations?</h2>
+        <ul>
+            <li>Bull shit in 99% of the cases.</li>
+            <li>Require a great cost model specific to the client.</li>
+            <li>Require knowing the salaries.</li>
+        </ul>
+        <style>
+            #boss {
+                background-image: url("pictures/boss.png");
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Confidence intervals</h2>
+        <ul>
+            <li>The distributions are neither normal, log-normal, nor any other well-known.</li>
+            <li>Some are "semi-discrete" ≥ 0.</li>
+            <li>We use the <a href="https://ocw.mit.edu/courses/mathematics/18-05-introduction-to-probability-and-statistics-spring-2014/readings/MIT18_05S14_Reading24.pdf">bootstrap method</a>.</li>
+            <li>Very fast after optimizations.
+                <ul>
+                    <li>Cached randomness.</li>
+                    <li>Control the number of iterations.</li>
+                </ul>
+            </li>
+            <li class="important">95%: ±50%</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Focus</h2>
+        <ul>
+            <li>Support percentiles everywhere.</li>
+            <li>Average vs. median.
+                <ul>
+                    <li>Average on 95th percentile.</li>
+                </ul>
+            </li>
+            <li>Stale garbage.</li>
+            <img class="black target" src="pictures/target_black.svg">
+            <img class="white target" src="pictures/target_white.svg">
+        </ul>
+        <style>
+            .target {
+                position: absolute;
+                right: 150px;
+                bottom: 150px;
+                width: 300px;
+                height: 300px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">GitHub</h2>
+    </section>
+
+    <section class="slide">
+        <h2>GitHub API</h2>
+        <ul>
+            <li>REST
+                <ul>
+                    <li>Best suited for casual or specific analysis.</li>
+                </ul>
+            </li>
+            <li>GraphQL
+                <ul>
+                    <li>Best suited for mirroring GitHub DB.</li>
+                </ul>
+            </li>
+            <li class="important">Rate limits.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Node ID</h2>
+        <pre>
+            <code>from base64 import b64decode</code>
+            <code>print(b64decode(</code>
+            <code>    "MDY6Q29tbWl0MjI1OTI0NDI3OjA1MTkyMDUwOWJmMTk1N2Y"</code>
+            <code>    "4NDIzMDdmMzdkZGI0NDFiZmQyNTMwMGY="))</code>
+            <code>06:Commit225924427:051920509bf1957f842307f37ddb441bfd25300f</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Two kinds of data retrieval</h2>
+        <ul>
+            <li>Cold start.</li>
+            <li>Event stream.
+                <ul>
+                    <li>Must register a GitHub application.</li>
+                    <li class="important">Must re-scan periodically.</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Gotcha!</h2>
+        <ul>
+            <li>Node ID format changes.</li>
+            <li>Merges happen after closures.</li>
+            <li>PRs close before opening.</li>
+            <li>HTTP 500.</li>
+            <li>Incomplete.</li>
+            <li>Eventual consistency.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Eventual consistency</h2>
+        Incoming events:
+        <ol>
+            <li>Somebody committed <code>aabbccd</code> as a child of <code>dccbbaa</code> in repo <span class="bold">XXX</span>.</li>
+            <li>Commit <code>aabbccd</code> has message "Fix".</li>
+            <li>Commit <code>aabbccd</code> belongs to pull request <span class="bold">PPP</span>.</li>
+            <li>New pull request <span class="bold">PPP</span> in repo <span class="bold">XXX</span> titled "merge me".</li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Releases</h2>
+        <ul>
+            <li>What is a release?
+                <ul class="no-bullets fa-bullets">
+                    <li><i class="fa fa-tag monofa" aria-hidden="true"></i>A tag.</li>
+                    <li><i class="fa fa-random monofa" aria-hidden="true"></i>A branch merge.</li>
+                    <li><i class="fa fa-hand-pointer-o monofa" aria-hidden="true"></i>A hash sent by the client.</li>
+                </ul>
+            </li>
+            <li>Which PRs were released?
+                <ul>
+                    <li>GitHub does not show this for a reason.</li>
+                </ul>
+            </li>
+        </ul>
+        <img class="releases-commits black" src="pictures/commits_black.svg">
+        <img class="releases-commits white" src="pictures/commits_white.svg">
+        <style>
+            .releases-commits {
+                position: absolute;
+                right: 50px;
+                top: 250px;
+                width: 400px;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="releases-hard">
+        <h2>Releases</h2>
+        <style>
+            #releases-hard {
+                background-image: url("pictures/commits_hard_black.svg");
+                background-origin: content-box;
+                padding-bottom: 60px;
+            }
+            @media not print {
+                #releases-hard {
+                    background-image: url("pictures/commits_hard_white.svg");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>git push --force</h2>
+        Including <code>git rebase</code>
+        <ul>
+            <li>Changes the hashes.</li>
+            <li>May change the diff-s.</li>
+            <li>May change the messages.</li>
+        </ul>
+        <img class="black doom" src="pictures/doom_black.jpg">
+        <img class="white doom" src="pictures/doom_white.jpg">
+        <style>
+            .doom {
+                position: absolute;
+                right: 150px;
+                bottom: 100px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>git push --force</h2>
+        Including <code>git rebase</code>
+        <ul>
+            <li>Changes the hashes.</li>
+            <li>Usually does not change the diff-s.</li>
+            <li><span class="success">Usually does not change the messages.</span>
+                <ul>
+                    <li>Accuracy: 99.9%.</li>
+                </ul>
+            </li>
+        </ul>
+        <img class="doom" src="pictures/doom_smile.png">
+    </section>
+
+    <section class="slide fullwidth" id="ci">
+        <h2>Continuous Integration</h2>
+        <img src="pictures/ci.png" >
+        <style>
+            #ci {
+                background-color: #0d1117;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Continuous Integration</h2>
+        <ul class="no-bullets">
+            <li>👎 Check suites point at commits.</li>
+            <li>👎 Same commit may belong to several pull requests.</li>
+            <li>👎 Check suites may launch after PR is closed.</li>
+            <li>👎 Check suites may launch before PR is opened.</li>
+            <li>👎 Check suites may glitch.
+                <ul>
+                    <li>E.g., stay enqueued forever.</li>
+                </ul>
+            </li>
+            <li>👎 No finish timestamp for legacy API check runs.</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">JIRA</h2>
+    </section>
+
+    <section class="slide vista" id="jira-api">
+        <style>
+            #jira-api {
+                background-image: url("pictures/jira_api_black.png");
+            }
+            @media not print {
+                #jira-api {
+                    background-image: url("pictures/jira_api_white.png");
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>JIRA API</h2>
+        <ul>
+            <li>No event stream. Pull vs. push.</li>
+            <li>Next gen vs. classic. Migrations.</li>
+            <li>So many fields may be custom.</li>
+            <li>Frequent re-opens.</li>
+            <li>Super strict privacy.
+                <li>Only user name by default.</li>
+                <li>No emails.</li>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>JIRA identity matching</h2>
+        <ul>
+            <li>Fuzzy names matching problem: <a href="https://towardsdatascience.com/fuzzy-matching-people-names-6e738d6b8fe">blog post</a>.</li>
+            <li>0.94 F1. Good enough.</li>
+            <li>Open-source tool: <a href="https://github.com/athenianco/names-matcher">names-matcher</a>.</li>
+        </ul>
+        <img class="black names-matcher" src="pictures/names_matcher_black.png">
+        <img class="white names-matcher" src="pictures/names_matcher_white.png">
+        <style>
+            .names-matcher {
+                position: absolute;
+                right: 50px;
+                bottom: 50px;
+                width: 400px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Case studies</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout-small">We did our job too well</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Client X</h2>
+        <ul>
+            <li>200 developers.</li>
+            <li>Growing x2 in one year.</li>
+            <li>Strong advocate of Athenian.</li>
+            <li>>$1,000 MRR.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>What we did</h2>
+        Dedicated custom analysis of their data showed:
+        <ul>
+            <li>They are growing very fast.</li>
+            <li>The PRs frequency stays the same.</li>
+            <li>Changed lines stay the same.</li>
+        </ul> 
+    </section>
+
+    <section class="slide figure-centered">
+        <figure>
+            <blockquote>
+                <p>Thank you!<br>This is a great insight.</p>
+            </blockquote>
+            <figcaption>Client X.</figcaption>
+        </figure>
+        <style>
+            .figure-centered {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </section>
+
+    <section class="slide figure-centered">
+        <figure>
+            <blockquote>
+                <p>Do you know why?</p>
+            </blockquote>
+            <figcaption>Client X.</figcaption>
+        </figure>
+    </section>
+
+    <section class="slide figure-centered">
+        <figure>
+            <blockquote>
+                <p>We must be hiring the wrong people.</p>
+            </blockquote>
+            <figcaption>Client X.</figcaption>
+        </figure>
+    </section>
+
+    <section class="slide vista" id="wall-street">
+        <style>
+            #wall-street {
+                background-image: url("pictures/sell_me_this_pen.gif");
+            }
+        </style>
+    </section>
+
+    <section class="slide figure-centered">
+        <figure>
+            <blockquote>
+                <p>We switch to <img class="black code-climate" src="pictures/code_climate_black.png"><img class="white code-climate" src="pictures/code_climate_white.png"></p>
+            </blockquote>
+            <figcaption>Client X.</figcaption>
+        </figure>
+        <style>
+            .code-climate {
+                width: 300px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout-small">Pandas in prod</h2>
+    </section>
+
+    <section class="slide">
+        <h2">When to use Pandas</h2>
+        <ul>
+            <li>Have requirements on response time?</li>
+            <li>Work with many small dataframes?</li>
+            <li>Have memory constraints?</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2">How to use Pandas</h2>
+        Learn how to iterate rows fast.
+        <pre>
+            <code>for a, b in zip(df["a"].values, df["b"].values):</code>
+            <code>    print(a, b)</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2">How to use Pandas</h2>
+        Learn how to select rows fast.
+        <pre>
+            <code>df[df["a"] > 10]</code>
+            <code># versus</code>
+            <code>df.take(np.flatnonzero(df["a"].values > 10))</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2">How to use Pandas</h2>
+        Learn how to groupby fast.
+        <pre>
+            <code>for key, sub_df in df.groupby("a", sort=False):</code>
+            <code>    # ...</code>
+            <code># versus</code>
+            <code>df.groupby("a", sort=False).grouper.groups</code>
+            <code># dict key -> row indexes</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>How to use Pandas</h2>
+        Ensure your dtype is not <code>object</code>.
+    </section>
+
+    <section class="slide">
+        <h2>How to live without Pandas</h2>
+        <ul></ul>
+        95% ops can be rewritten in pure numpy.
+        <ul>
+            <li>datetime64</li>
+            <li>indexing</li>
+            <li>sort_values</li>
+            <li>groupby</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>How to live without Pandas</h2>
+        <code class="task">&gt;&gt;&gt; sort_values("a")</code>
+        <pre>
+            <code>order = np.argsort(array_a)</code>
+            <code>index = order</code>
+            <code>array_a = array_a[order]</code>
+            <code>array_b = array_b[order]</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>How to live without Pandas</h2>
+        <code class="task">&gt;&gt;&gt; groupby("a")</code>
+        <pre>
+            <code>keys, indexes, counts = np.unique(</code>
+            <code>    array_a, return_inverse=True, return_counts=True)</code>
+            <code>order = np.argsort(indexes)</code>
+            <code>borders = np.cumsum(counts[:-1])</code>
+            <code>groups_a = np.split(array_a[order], borders)</code>
+            <code>groups_b = np.split(array_b[order], borders)</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>How to live without Pandas</h2>
+        <code class="task">&gt;&gt;&gt; groupby("a").mean()</code>
+        <pre>
+            <code>keys, indexes, counts = np.unique(</code>
+            <code>    array_a, return_inverse=True, return_counts=True)</code>
+            <code>masks = np.zeros((len(keys), len(df)), bool)</code>
+            <code>arr_y = np.repeat(np.arange(len(keys)), counts)</code>
+            <code>arr_x = np.argsort(indexes)</code>
+            <code>masks[arr_y, arr_x] = True</code>
+            <code>mean_a = np.mean(array_a, where=masks, axis=1)</code>
+        </pre>
+    </section>
+
+    <style>
+        .task {
+            padding-left: 0 !important;
+        }
+    </style>
+
+    <section class="slide">
+        <h2>Tips for Python</h2>
+        <ul>
+            <li>Use a profiler, e.g. <a href="https://github.com/benfred/py-spy">py-spy</a>.</li>
+            <li>Vectorize everything.</li>
+            <li>Cython.</li>
+            <li>Precompute everything.</li>
+            <li>Cache everything.</li>
+            <li>Using a DB? Prepare to optimize queries and suffer.</li>
+            <li>Choose incremental algorithms.</li>
+            <li>KISS.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout-small">Educating the client</h2>
+    </section>
+
+    <section class="slide vista" id="too-busy">
+        <span>Credit: <a href="https://workcompass.com">workcompass.com</a></span>
+        <style>
+            #too-busy {
+                background-image: url("pictures/too_busy_black.png");
+            }
+            @media not print {
+                #too-busy {
+                    background-image: url("pictures/too_busy_white.png");
+                }
+            }
+            #too-busy > span {
+                position: absolute;
+                bottom: 20px;
+                right: 0px;
+                font-size: 50%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>I can do the same with my script</h2>
+        <ul class="no-bullets">
+            <li>✔ It will cover 80% of what you need.</li>
+            <li>✘ It will not be correct.</li>
+            <li>✘ Write-only.</li>
+            <li>✘ Charts.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>The book</h2>
+        <p class="bold">Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations.</p>
+        <p>Gene Kim, Jez Humble, and Nicole Forsgren.</p>
+    </section>
+
+    <section class="slide vista" id="gym">
+        <style>
+            #gym {
+                background-image: url("pictures/gym.jpg");
+            }
+        </style>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@athenian.co">vadim@athenian.co</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">@vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">vmarkovtsev</a></li>
+            <li><i class="fa fa-medium monofa" aria-hidden="true"></i><a href="https://medium.com/@vadimlearning">@vadimlearning</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="https://bit.ly/2RHdp55" id="bitly">bit.ly/2RHdp55</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<script async src="https://use.fontawesome.com/72adc0539b.js"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63575100-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-63575100-2');
+    </script>
+</body>
+</html>
