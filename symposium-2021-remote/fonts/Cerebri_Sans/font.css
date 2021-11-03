@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "Cerebri Sans";
+    src: url(CerebriSans-Medium.woff2) format("woff2");
+}
+
+@font-face {
+    font-family: "Cerebri Sans Extra Bold";
+    src: url(CerebriSans-ExtraBold.woff2) format("woff2");
+}

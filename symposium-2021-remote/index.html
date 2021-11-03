@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Releases Matching - Athenian Symposium</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="40" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="November 4th, remote" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/symposium-2021-remote" />
+    <meta property="og:title" content="Releases Matching" />
+    <meta property="og:description" content="Athenian Symposium is an internal monthly event of the engineering team at Athenian to share knowledge of how our product works. This issue is about how we decide which commits and pull requests are released, when and how." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/symposium-2021-remote/pictures/the_ninth_wave.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/symposium-2021-remote/pictures/the_ninth_wave.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Releases Matching</h1>
+		<p>Vadim Markovtsev, Head of Analytics.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #FF9E68 0, #FF7427 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+            background: none !important;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        .fullslide-padding {
+            width: 100%;
+            height: calc(100% - 50px);
+            object-fit: contain;
+        }
+        .fullwidth > img, img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+        .shower.list .slide.active {
+            box-shadow:
+                0 0 0 1px #FF7427,
+                0 0 0 20px #FF9E68,
+                0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .video-background {
+            padding: 0;
+        }
+        .video-background > video {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Releases Matching</h2>
+		<p>Vadim Markovtsev<br>Head of Analytics</p>
+
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 70px;
+                color: white;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+            }
+			#cover {
+				background: url("pictures/turk.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.5);
+			}
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout" id="problem">Problématique</h2>
+        <style>
+            #problem {
+                font-size: 96pt;
+            }
+        </style>
+    </section>
+
+    <section class="slide figure-centered">
+        <figure>
+            <blockquote>
+                <p>What have we released today?<br>
+                What to improve in how we release?</p>
+            </blockquote>
+            <figcaption>Clients</figcaption>
+        </figure>
+        <style>
+            .figure-centered {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Do you mean...</h2>
+        <ul class="no-bullets fa-bullets">
+            <li>🤔 Which pull requests were released?</li>
+            <li>🤔 Which JIRA issues were released?</li>
+            <li>🤔 What's your PR release time?</li>
+            <li>🤔 What's your release frequency, etc.?</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>How can we release?</h2>
+        <p>Release == commit pointer.</p>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-tag monofa" aria-hidden="true"></i>Create a Git tag.</li>
+            <li><i class="fa fa-code-branch monofa" aria-hidden="true"></i>Merge <code>master</code> to <code>production.</code></li>
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i>Send Athenian a commit pointer.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Release by tag</h2>
+        <p>🏷1.1.0 released PR X.</p>
+        <img src="pictures/releases_simple_black.svg" class="black fullwidth">
+        <img src="pictures/releases_simple_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Release by branch</h2>
+        <img src="pictures/releases_branches_black.svg" class="black fullwidth">
+        <img src="pictures/releases_branches_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Release settings</h2>
+        <img src="pictures/release_settings.png" class="fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Requirements</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Automatic inference of the release process.</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Support changing release settings.</li>
+            
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Incredible, astounding, marvellous performance.</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Correctness.</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Map to JIRA issues.</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Quirks</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Squash</h2>
+        <img src="pictures/releases_squash_black.svg" class="black fullwidth">
+        <img src="pictures/releases_squash_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Tag deleted</h2>
+        <img src="pictures/releases_before_delete_tag_black.svg" class="black fullwidth">
+        <img src="pictures/releases_before_delete_tag_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Tag deleted</h2>
+        <img src="pictures/releases_deleted_tag_black.svg" class="black fullwidth">
+        <img src="pictures/releases_deleted_tag_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Tag inserted</h2>
+        <img src="pictures/releases_simple_black.svg" class="black fullwidth">
+        <img src="pictures/releases_simple_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Tag inserted</h2>
+        <img src="pictures/releases_inserted_tag_black.svg" class="black fullwidth">
+        <img src="pictures/releases_inserted_tag_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Rebase</h2>
+        <img src="pictures/releases_after_rebase_black.svg" class="black fullwidth">
+        <img src="pictures/releases_after_rebase_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide video-background">
+        <video src="pictures/surprise.webm" loop autoplay playsinline muted></video>
+    </section>
+    
+    <section class="slide">
+        <h2>Rebase</h2>
+        <img src="pictures/releases_after_rebase_squash_black.svg" class="black fullwidth">
+        <img src="pictures/releases_after_rebase_squash_white.svg" class="white fullwidth">
+    </section>
+    
+    <section class="slide">
+        <h2>Ambiguity</h2>
+        <img src="pictures/releases_complex_black.svg" class="black fullwidth">
+        <img src="pictures/releases_complex_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide" id="ambig-branches">
+        <h2>Ambiguity</h2>
+        Match release branch: <code>master|production</code>
+        <img src="pictures/releases_ambiguous_branches_black.svg" class="black fullwidth">
+        <img src="pictures/releases_ambiguous_branches_white.svg" class="white fullwidth">
+        <style>
+            #ambig-branches > img {
+                margin-top: -40px;
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Overview</h2>
+    </section>
+
+    <section class="slide vista" id="profit">
+        <h2>Plan</h2>
+        <ol>
+            <li>Discover release commits.</li>
+            <li>Analyze release ownership.</li>
+            <li>Match to PRs.</li>
+        </ol>
+        <style>
+            @media not print {
+                #profit {
+                    background: linear-gradient(135deg, rgba(0, 0, 0, 1.0) 0%, rgba(0, 0, 0, 0.9) 33%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.2) 100%), url("pictures/profit.jpg") no-repeat;
+                }
+            }
+            @media print {
+                #profit {
+                    background: linear-gradient(135deg, rgba(255, 255, 255, 1.0) 0%, rgba(255, 255, 255, 0.9) 33%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0.2) 100%), url("pictures/profit.jpg") no-repeat;
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">time_from, time_to</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">independent of the Heater</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Discover release commits</h2>
+        <ul>
+            <li>Tags, events: obvious.
+                <ul>
+                    <li><code>SELECT FROM github.api_releases</code></li>
+                </ul>
+            </li>
+            <li>Branches: follow the first parent from the matching branch heads.</li>
+            <li>Automatic: look for tags in <code>(time_from - Δ, time_to + Δ),</code>where <code>Δ&nbsp;=</code>3&nbsp;weeks.
+                <ul>
+                    <li>Hence, it depends on <code>time_from, time_to</code></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Analyze release ownership</h2>
+        <img src="pictures/releases_parents_black.svg" class="black fullwidth">
+        <img src="pictures/releases_parents_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Match to PRs</h2>
+        <img src="pictures/pr_match_black.svg" class="black fullwidth">
+        <img src="pictures/pr_match_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Match to PRs - rebases</h2>
+        <p>"Merge pull request #<span class="red-frame">1841</span> from athenianco/fix-pr-dep-dupes"</p>
+        <p>False positives: &lt;0.1%.</p>
+        <p>Empty merge commits are sometimes discarded 😭</p>
+        <p>Doesn't work for squashes 😭</p>
+        <style>
+            .red-frame {
+                border: 2px solid red;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Building the commit DAG</h2>
+        <ul>
+            <li>Recursive SQL:
+                <ul class="no-bullets">
+                    <code>github.node_commit_edge_parents.(parent|child)_id</code>
+                </ul>
+            </li>
+            <li>Stop hashes. Pick maximum 25 equidistant first parents and cut.</li>
+            <li>Stop heads. Take maximum 25 known DAG entries.
+                <ul class="no-bullets">
+                    <li>One of the reasons why we suck at monorepos.</li>
+                </ul>
+            </li>
+            <li>Account for the eventual consistency:
+                <ul class="no-bullets">
+                    <li>If <code>(parent|child)_id</code> does not exist in <code>github.node_commit</code>, abort mission.</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Building the commit DAG</h2>
+        <img src="pictures/new_commit_black.svg" class="black fullwidth">
+        <img src="pictures/new_commit_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide vista" id="recursive-sql">
+        <style>
+            #recursive-sql {
+                background-color: #3c3f41;
+                background-image: url("pictures/sql.png");
+            }
+        </style>
+    </section>
+
+    <section class="slide video-background">
+        <video id="aaaah" src="pictures/Aaaah.mp4" loop autoplay playsinline muted></video>
+        <style>
+            #aaaah {
+                margin-top: -100px;
+                margin-left: -178px;
+                width: calc(100% + 356px);
+                height: calc(100% + 200px);
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Code</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Python for Athenian API</h2>
+        <ul class="no-bullets fa-bullets">
+            <li>😄High quality libraries: <span class="bold">numpy</span>.</li>
+            <li>😅Rapid development libraries: <span class="bold">pandas</span>.</li>
+            <li>🤩Excellent coroutines support.</li>
+            <li>🤬Interpreter sucks: slow, Global Interpreter Lock.</li>
+            <li>🧐Powerful introspection => powerful profiling.</li>
+            <li>👽The fastest code is native code.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Python + C/C++ = Cython</h2>
+        <pre id="cython"><code><span class="s0">@cython.boundscheck</span>(<span class="s1">False</span>)</code>
+<code><span class="s0">@cython.wraparound</span>(<span class="s1">False</span>)</code>
+<code><span class="s1">cdef</span> <span class="s2">void</span> <span class="s3">_copy_parents_to_array</span>(<span class="s2">const</span> vector[vector[uint32_t]] *parents<span class="s1">,</span></code>
+<code>                                 uint32_t[:] output<span class="s1">,</span></code>
+<code>                                 int64_t[:] splits) <span class="s2">nogil</span>:</span></code>
+<code>        <span class="s1">cdef </span>int64_t i<span class="s1">, </span></span>offset = <span class="s4">0</span></code>
+<code>        <span class="s1">for </span>i <span class="s1">in </span><span class="s2">range</span>(&lt;int64_t&gt;parents.size()):</code>
+<code>            vec = dereference(parents)[i]  <span class="s5"># (*parents)[i]</span></code>
+<code>            memcpy(&amp;output[offset]<span class="s1">, </span>vec.data()<span class="s1">, </span><span class="s4">4 </span>* vec.size())</code>
+<code>            offset += vec.size()</code>
+<code>            splits[i] = offset</code></pre>
+        <style>
+            #cython {
+                font-size: 16px;
+            }
+            .s0 {
+                color: #bbb529;
+            }
+            .s1 {
+                color: #cc7832;
+            }
+            .s2 {
+                color: #8888c6;
+            }
+            .s3 {
+                color: #ffc66d;
+            }
+            .s4 {
+                color: #6897bb;
+            }
+            .s5 {
+                color: #808080
+            }
+        </style>
+    </section>
+
+
+    <section class="slide">
+        <h2>Athenian DAG format</h2>
+        <img src="pictures/DAG_black.svg" class="black fullwidth">
+        <img src="pictures/DAG_white.svg" class="white fullwidth">
+    </section>
+
+    <section class="slide">
+        <h2>Athenian DAG format</h2>
+        <p><code>DAG = (hashes, vertexes, edges)</code></p>
+        <p>For N commits with E parent-child relations:</p>
+        <ul>
+            <li><code>hashes</code> is a byte array of size Nx40, sorted by first axis</li>
+            <li><code>vertexes</code> is an uint32 array of size (N + 1)</li>
+            <li><code>edges</code> is an uint32 array of size E</li>
+            <li>Parent-children direction is inverted compared to Git-speak.</li>
+        </ul>
+    </section>
+    
+    <section class="slide">
+        <h2>Athenian DAG format advantages</h2>
+        <ul class="no-bullets fa-bullets">
+            <li>💪Memory footprint is minimal.</li>
+            <li>💪Data locality => DAG fits in L2/L3 cache.</li>
+            <li>💪Zero-copy, uniform usage in Python and Cython.</li>
+            <li>💪Fast enough O(log(N)) lookups.
+                <ul>
+                    <li><span class="bold">numpy</span> has <code>searchsorted</code> - vectorized binary search.</li>
+                </ul>
+            </li>
+            <li>💪DAG traversals rely on integer arrays <code>vertexes</code> and <code>edges.</code></li>
+            <li>💪Inserting new commits is efficient O(N).</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Precomputed tables</h2>
+        <ul>
+            <li><code>github.commit_history</code></li>
+            <li><code>github.release_match_spans</code></li>
+            <li><code>github.releases</code></li>
+            <li><code>github.release_facts</code></li>
+        </ul>
+        Everything related to releases has <code>release_match</code> in PK.
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Thank you, and see you tomorrow</h2>
+    </section>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+    <script async src="https://kit.fontawesome.com/1271d8fdb8.js" crossorigin="anonymous"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        for (let entry of entries) {
+            if (entry.isIntersecting) {
+                if (entry.target.paused) {
+                    entry.target.play();
+                }
+            } else {
+                if (!entry.target.paused) {
+                    entry.target.pause();
+                }
+            }
+        }
+    });
+    for (let video of document.getElementsByTagName("video")) {
+        observer.observe(video);
+    }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63575100-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-63575100-2');
+    </script>
+</body>
+</html>
