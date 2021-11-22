@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Kubeflow on a Bare-Metal GPU Cluster from Scratch</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="???" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="???" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/mlcon-singapore-2021-remote" />
+    <meta property="og:title" content="Kubeflow on a Bare-Metal GPU Cluster from Scratch" />
+    <meta property="og:description" content="We were able to speed up our analytics backend by a factor of 10,000 thanks to switching from pure Python to pandas to low-level numpy. Each transition compared to learning to walk again but was totally worth the effort. If you are interested in how pandas works internally, why it is sometimes 10-100x slower than plain numpy, and how to mitigate the implicit bottlenecks – this workshop should provide great value. We’ll study how typical data-fu operations such as groupby can be rewritten in plain numpy and whether you should or shouldn’t bother. Finally, we’ll learn how to use the next-gen Python profiler py-spy." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/mlcon-singapore-2021-remote/pictures/MLCon.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/mlcon-singapore-2021-remote/pictures/MLCon.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Montserrat/font.css">
+    <link rel="stylesheet" href="fonts/Univers49_LUC/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Kubeflow on a Bare-Metal GPU Cluster from Scratch</h1>
+		<p>Vadim Markovtsev, <a href="https://athenian.co">Athenian</a> &amp; <a href="https://fragile.tech">Fragile Tech</a>.</p>
+    </header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+        ul.no-bullets > li > ul {
+            text-indent: 2em;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Montserrat', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li, .img-bullets > li {
+            margin-left: -1.6em;
+        }
+        .img-bullets img {
+            display: inline;
+            height: 1em;
+            padding-bottom: 4px;
+            vertical-align: middle;
+            
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: #6b6b6b;
+            font-family: 'Univers LT 49 Light Ultra Condensed', sans-serif;
+            font-weight: 100 !important;
+            letter-spacing: 10px;
+        }
+        .part {
+            background: radial-gradient(circle at center, #dea4ac 0, #dce6ef 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: unset;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: unset;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+           background: none !important;
+        }
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        .fullslide-padding {
+            left: -80px;
+            width: calc(100% + 160px);
+        }
+        img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        img.fullheight {
+            height: 380px;
+            object-fit: contain;
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption, .fullheight > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .shower.list .slide.active {
+            box-shadow:
+                0 0 0 1px rgb(220, 230, 239),
+                0 0 0 20px rgb(220, 230, 239),
+                0 20px 50px rgba(222, 164, 172, 0.3);
+        }
+        .video-background {
+            padding: 0;
+        }
+        .video-background > video {
+            width: 100%;
+            height: 100%;
+        }
+        .progress::before {
+            background: #6b6b6b;
+        }
+        .white-shadow {
+            background-color: white;
+            box-shadow: 0 0 10px 20px #fff;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Kubeflow on a Bare-Metal GPU Cluster from Scratch</h2>
+		<p>Vadim Markovtsev<br>Head of Analytics and ML at <a href="https://athenian.co">Athenian</a><br>Founder at <a href="https://fragile.tech">Fragile Tech</a>.</p>
+
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 240px 0 0;
+                text-align: center;
+                font-size: 50px;
+                color: #6b6b6b;
+            }
+            #cover p {
+                margin: 20px 0 0;
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+                color: #6b6b6b;
+            }
+            #cover a {
+                color: #6b6b6b;
+            }
+			#cover {
+				background: url("pictures/MLCon.jpg") black;
+			}
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">INTRODUCTION</h2>
+    </section>
+
+    <section class="slide">
+        <h2>About me</h2>
+        <ul>
+            <li>Past: led a team (9) of ML engineers
+                <ul>
+                    <li>Distributed Deep Learning</li>
+                    <li>MLonCode (similar to NLP); 3 publications</li>
+                    <li>MLOps</li>
+                </ul>
+            </li>
+            <li>Today: high performance SW engineering lifecycle analysis</li>
+            <li>Google Developer Expert in ML</li>
+            <li>Started career in 2009</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <img class="black fullslide fullslide-padding" src="pictures/decision_black.svg">
+        <img class="white fullslide fullslide-padding" src="pictures/decision_white.svg">
+    </section>
+
+    <section class="slide">
+        <h2>What is Kubeflow</h2>
+        <ul>
+            <li>ML stack from Google based on Kubernetes</li>
+            <li>Quick Jupyter</li>
+            <li>Quick Tensorflow (+ PyTorch)</li>
+            <li>Pipelines, Pachyderm</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">HARDWARE</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Scheme</h2>
+        <img class="fullwidth white-shadow" src="pictures/cluster_topology.png">
+    </section>
+
+    <section class="slide">
+        <h2>Linux</h2>
+        <ul>
+            <li>Ubuntu LTS</li>
+            <li>Broken UEFI, had to hack in kernel terminal</li>
+            <li>Disable security patches with performance overhead
+                <ul>
+                    <li><a href="https://www.zdnet.com/article/linux-meltdown-patch-up-to-800-percent-cpu-overhead-netflix-tests-show/">Up to 800% faster</a></li>
+                    <li>Requires a fully trusted environment, isolation from production, etc.</li>
+                </ul>
+            </li>
+            <li>Disable IOMMU for GPU peer-to-peer communication</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>IPMI</h2>
+        <img src="pictures/ipmi.png" class="fullheight white-shadow">
+    </section>
+
+    <section class="slide">
+        <h2>Configuration management</h2>
+        <ul>
+            <li>...yes, you need it</li>
+            <li>Options:
+                <ul class="no-bullets img-bullets">
+                    <li><img class="black" src="pictures/ansible_black.png"><img class="white" src="pictures/ansible_white.png"> Ansible
+                        <ul><li>Smooth learning curve</li></ul>
+                    </li>
+                    <li><img src="pictures/terraform.png"> Terraform
+                        <ul><li>Optimized for Kubernetes</li></ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">KUBERNETES</h2>
+    </section>
+
+    <section class="slide">
+        <h2>k0s</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Easy install</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Easy configuration</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Reasonable batteries included</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Vanilla Kubernetes</li>
+        </ul>
+        <img class="black" src="pictures/k0s-logo_black.svg">
+        <img class="white" src="pictures/k0s-logo_white.svg">
+    </section>
+
+    <section class="slide">
+        <h2>k0s commands on controller</h2>
+        <pre>
+            <code>sudo k0s install controller</code>
+            <code>sudo systemctl start k0scontroller.service</code>
+            <code>sudo k0s token create --role=worker</code>
+            <code>sudo snap install kubectl --classic</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>k0s commands on controller</h2>
+        <pre class="smaller"><code>sudo cp /var/lib/k0s/pki/admin.conf .
+sudo chown $(whoami) admin.conf
+export KUBECONFIG=$(pwd)/admin.conf
+export clusterUser=$(whoami)
+kubectl create clusterrolebinding $clusterUser-admin-binding \
+    --clusterrole=admin --user=$clusterUser
+mkdir -p ~/.kube && export KUBECONFIG=
+sudo k0s kubeconfig create --groups "system:masters" \
+    $clusterUser > ~/.kube/config</code></pre>
+        <style>
+            .smaller {
+                font-size: 80%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>k0s commands on worker</h2>
+        <pre>
+            <code>k0s install worker --token-file /path/to/token/file</code>
+            <code># debug
+sudo ctr --address /run/k0s/containerd.sock -n k8s.io</code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problems</h2>
+        <ul>
+            <li><code>kubectl logs</code> and <code>kubectl exec</code> time out with 80% chance
+                <ul class="no-bullets">
+                    <li><span class="reversed">⏎</span> Workers had 2 Ethernet interfaces, Calico required a manual override</li>
+                </ul>
+            </li>
+            <li><code>ImagePullBackOff</code> on system pods with 50% chance
+                <ul class="no-bullets">
+                    <li><span class="reversed">⏎</span> Wrong DNS setup</li>
+                </ul>
+            </li>
+        </ul>
+        <style>
+            .reversed {
+                display: inline-block;
+                transform: scale(-1, 1);
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>NVIDIA GPUs</h2>
+        <div class="horizontal-flow-center">
+        <pre class="inline-block">
+            <code>metadata:
+  spec:
+    ...
+    containers:
+    - ...
+      limits:
+        nvidia.com/gpu: 2</code>
+        </pre>
+        <pre><code># ls /dev/nvidia0
+<span class="device">/dev/nvidia0</span> <span class="device">/dev/nvidia1</span></code></pre>
+        </div>
+        <style>
+            .horizontal-flow-center {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+            .device {
+                background-color: #2e3436;
+                color: #c4a000;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>NVIDIA GPUs</h2>
+        <ol>
+            <li>Install NVIDIA driver on each worker</li>
+            <li>Add <code>nvidia-smi</code> to <code>rc.local</code> 🤦‍♂️</li>
+            <li>Install <a href="https://nvidia.github.io/nvidia-container-runtime/">nvidia-container-runtime</a></li>
+            <li>Patch <code>containerd</code> configuration on the worker nodes for <code>/run/k0s/containerd*</code></li>
+            <li>Apply daemonset from Google to support <code>nvidia.com/gpu</code> resource</li>
+            <li><code class="smaller">kubectl label nodes --all cloud.google.com/gke-accelerator=true</code></li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>NVIDIA GPUs</h2>
+        <pre class="smaller"><code>$kubectl get daemonset -n kube-system nvidia-gpu-device-plugin</code>
+<code>NAME                       DESIRED   CURRENT   READY   UP-TO-DATE
+nvidia-gpu-device-plugin   3         3         3       3</code>
+        </pre>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">DISTRIBUTED FILE SYSTEM</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">No shared files => no ML</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Options</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-times monofa" aria-hidden="true"></i>Cloud storage
+                <ul>
+                    <li>Terrible performance</li>
+                </ul>
+            </li>
+            <li><i class="fa fa-times monofa" aria-hidden="true"></i>GlusterFS
+                <ul>
+                    <li>Bad performance on many small files</li>
+                </ul>
+            </li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Hacky NFS
+                <ul>
+                    <li>Star topology, but great performance</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <img src="pictures/cross_nfs.png" class="fullslide">
+    </section>
+
+    <section class="slide">
+        <h2>Cross NFS</h2>
+        <ul>
+            <li>Everybody mounts everybody else by the same path through NFS</li>
+            <li>Join together using <a href="https://github.com/trapexit/mergerfs">mergerFS</a></li>
+            <li>Integrate with Kubernetes using <a href="https://github.com/rancher/local-path-provisioner">Rancher’s local path provisioner</a></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>File flow</h2>
+        <ul>
+            <li>Owner of the file accesses it locally</li>
+            <li>Everybody else access it through NFS</li>
+            <li>Directory structure replicates everywhere</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Pros and cons</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-plus monofa" aria-hidden="true"></i>Impossible to corrupt</li>
+            <li><i class="fa fa-plus monofa" aria-hidden="true"></i>Local file => the best performance</li>
+            <li><i class="fa fa-plus monofa" aria-hidden="true"></i>Direct NFS performance is good</li>
+            <li><i class="fa fa-plus monofa" aria-hidden="true"></i>Fast file removals</li>
+            <li><i class="fa fa-minus monofa" aria-hidden="true"></i>No fault tolerance</li>
+            <li><i class="fa fa-minus monofa" aria-hidden="true"></i>Worse performance on big remote files</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Integration with Kubernetes</h2>
+        <pre class="smaller"><code>kubectl patch storageclass local-path -p '{"metadata":
+{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'</code>
+<code>$ kubectl get storageclass
+NAME                   PROVISIONER             RECLAIMPOLICY   AGE
+local-path (default)   rancher.io/local-path   Delete          13d</code>
+</pre>
+    </section>
+    
+    <section class="slide part">
+        <h2 class="shout">KUBEFLOW</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Ways to install Kubeflow</h2>
+        <ol>
+            <li>Packaged distribution
+                <ul>
+                    <li>e.g., for a specific cloud provider: AKS, GKE, etc.</li>
+                </ul>
+            </li>
+            <li>Manifests aka "advanced", "on premises", etc.
+                <ul>
+                    <li>Istio to control traffic</li>
+                    <li>Dex to provide OpenID authentication (e.g., <a href="https://dexidp.io/docs/connectors/github/">GitHub</a>, Google, Okta, Auth0)</li>
+                </ul>
+            </li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Installation</h2>
+        <pre class="smaller"><code>export BASE_DIR=/opt
+export KF_NAME=my-kubeflow
+export KF_DIR=${BASE_DIR}/${KF_NAME}
+# Download kfctl from https://github.com/kubeflow/kfctl/releases
+kfctl apply -V -f kfctl_istio_dex.yaml</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problems</h2>
+        <ul>
+            <li><code>CrashLoopBackOff</code> in Katib
+                <ul><li>Too little timeout in the Liveness probe</li></ul>
+            </li>
+            <li>How to access the web UI?
+                <ul><li><code class="tiny">kubectl port-forward svc/istio-ingressgateway -n istio-system 8080:80</code></li></ul>
+            </li>
+            <li>How to setup GitHub auth?
+                <ul>
+                    <li>Wrestle with Dex configuration</li>
+                    <li>You need a callback URL for OAuth2</li>
+                </ul>
+            </li>
+        </ul>
+        <style>
+            .tiny {
+                font-size: 70%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <img class="fullslide" src="pictures/kubeflow_ui.png">
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">SUMMARY</h2>
+    </section>
+
+    <section class="slide">
+        <img class="black fullslide fullslide-padding" src="pictures/decision_black.svg">
+        <img class="white fullslide fullslide-padding" src="pictures/decision_white.svg">
+    </section>
+
+    <section class="slide vista" id="attack">
+        <a href="https://towardsdatascience.com/deploying-kubeflow-to-a-bare-metal-gpu-cluster-from-scratch-6865ebcde032">Medium:<br>Deploying Kubeflow to a&nbsp;Bare-Metal GPU Cluster from Scratch</a>
+        <style>
+            #attack {
+                background-color: white;
+                background-image: url("pictures/titans_final.png");
+            }
+            #attack > a {
+                position: absolute;
+                color: #202020;
+                bottom: 20px;
+                left: 20px;
+                width: 200px;
+                font-size: 12pt;
+            } 
+        </style>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@fragile.tech">vadim@fragile.tech</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">@vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">@vmarkovtsev</a></li>
+            <li><i class="fa fa-medium monofa" aria-hidden="true"></i><a href="https://medium.com/@vadimlearning">@vadimlearning</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="https://bit.ly/3qTtovQ" id="bitly">bit.ly/3qTtovQ</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+    <!-- <video src="..." loop autoplay playsinline muted></video> -->
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+    <script async src="https://kit.fontawesome.com/1271d8fdb8.js" crossorigin="anonymous"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+
+    const videoObserver = new IntersectionObserver((entries) => {
+        for (let entry of entries) {
+            if (entry.isIntersecting) {
+                if (entry.target.paused) {
+                    entry.target.play();
+                }
+            } else {
+                if (!entry.target.paused) {
+                    entry.target.pause();
+                }
+            }
+        }
+    });
+    for (let video of document.getElementsByTagName("video")) {
+        videoObserver.observe(video);
+    }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63575100-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-63575100-2');
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+@font-face {
+    font-family: "Montserrat";
+    src: url("montserrat-v18-latin-900.woff2") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("montserrat-v18-latin-regular.woff2") format("woff2");
+    font-weight: regular;
+    font-style: normal;
+}
