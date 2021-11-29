@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>API Security</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="43" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="30 November 2021, remote" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/symposium2-2021-remote" />
+    <meta property="og:title" content="API Security" />
+    <meta property="og:description" content="Athenian Symposium is an internal monthly event of the engineering team at Athenian to share knowledge of how our product works. This issue is about how we make our API secure, authenticate the users, and validate requests." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/symposium2-2021-remote/pictures/rbr2.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/symposium2-2021-remote/pictures/rbr2.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>API Security</h1>
+		<p>Vadim Markovtsev, Head of Analytics.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #FF9E68 0, #FF7427 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: unset;
+        }
+        img.black.center {
+            display: table;
+        }
+        img.white, img.white.center {
+            display: none;
+        }
+        @media not print {
+            img.black, img.black.center {
+                display: none;
+            }
+            img.white {
+                display: unset;
+            }
+            img.white.center {
+                display: table;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+           background: none !important;
+        }
+        .fullslide {
+            position: relative;
+            top: -101px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+            object-position: center;
+        }
+        .fullslide-padding {
+            width: 100%;
+            left: 0;
+            height: calc(100% - 50px);
+            object-fit: contain;
+        }
+        .fullwidth > img, img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .shower.list .slide.active {
+            box-shadow:
+                0 0 0 1px #FF7427,
+                0 0 0 20px #FF9E68,
+                0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .progress::before {
+            background: #FF7427;
+        }
+        .video-background {
+            padding: 0;
+        }
+        .video-background > video {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>API Security</h2>
+		<p>Vadim Markovtsev<br>Head of Analytics</p>
+
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 70px;
+                color: white;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+            }
+			#cover {
+				background: url("pictures/rbr2.jpg") black;
+			}
+            #cover h2:before {
+                content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="part1">
+        <h2 class="shout">Accounts and users</h2>
+        <style>
+            #part1 {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/rbr2.jpg');
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">How many account types do we have?</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">3</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Account types in our product</h2>
+        <img class="black fullslide" src="pictures/accounts_black.svg">
+        <img class="white fullslide" src="pictures/accounts_white.svg">
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">How many user types do we have?</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">5</h2>
+    </section>
+
+    <section class="slide">
+        <h2>User types in our product</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-user-circle monofa" aria-hidden="true"></i>Auth0, e.g. <code>github|2793551</code>
+                <ul>
+                    <li>ID, name, email<sup>*</sup></li>
+                </ul>
+            </li>
+            <li><i class="fa fa-user monofa" aria-hidden="true"></i>Athenian - <code>account_users</code> in sdb</li>
+            <li><i class="fa fa-user-ninja monofa" aria-hidden="true"></i>GitHub - <code>github.api_users</code> in mdb
+                <ul>
+                    <li>Name, login, email<sup>*</sup></li>
+                </ul>
+            </li>
+            <li><i class="fa fa-user-injured monofa" aria-hidden="true"></i>JIRA - <code>jira.users</code> in mdb
+                <ul><li>Name, <span class="strikeout">email</span></li></ul>
+            </li>
+            <li><i class="fa fa-user-tie monofa" aria-hidden="true"></i>Segment / Intercom - <code>athenian_api.identifies</code> in growth/postgres</li>
+        </ul>
+        <style>
+            .strikeout {
+                text-decoration: line-through;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="part2">
+        <h2 class="shout shout-smaller">Authentication</h2>
+        <style>
+            .shout-smaller {
+                font-size: 120px !important;
+            }
+            #part2 {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/rbr1.jpg');
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">How many authentication ways do we have?</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">2</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Our authentication ways</h2>
+        <div class="two-cols">
+            <ul class="no-bullets fa-bullets">
+                <li><i class="fa fa-address-card monofa" aria-hidden="true"></i>JSON Web Token (JWT)</li>
+                <li><i class="fa fa-key monofa" aria-hidden="true"></i>APIKey (PAT)</li>
+            </ul>
+            <ul class="no-bullets fa-bullets">
+                <li><i class="fa fa-github monofa" aria-hidden="true"></i>GitHub</li>
+                <li><i class="fa fa-openid monofa" aria-hidden="true"></i>OpenID Connect (aka enterprise)</li>
+            </ul>
+        </div>
+        <style>
+            div.two-cols {
+                display: flex;
+                flex-direction: row;
+            }
+            div.two-cols > * {
+                width: 50%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>JWT</h2>
+        <img class="center black fullslide fullslide-padding" src="pictures/JWT_black.svg">
+        <img class="center white fullslide fullslide-padding" src="pictures/JWT_white.svg">
+    </section>
+
+    <section class="slide">
+        <h2>APIKeys</h2>
+        <ul>
+            <li>Limited to read-only requests.</li>
+        </ul>
+        <img class="center black fullslide fullslide-padding" src="pictures/APIKey_black.svg">
+        <img class="center white fullslide fullslide-padding" src="pictures/APIKey_white.svg">
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">How many user access levels do we have?</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">4</h2>
+    </section>
+
+    <section class="slide">
+        <h2>User access levels</h2>
+        <ul class="no-bullets two-cols">
+            <li><i class="fa fa-user-secret monofa" aria-hidden="true"></i>Default<ul>
+                <li>Not authenticated</li>
+                <li>Read-only requests</li>
+            </ul></li>
+            <li><i class="fa fa-chess-pawn monofa" aria-hidden="true"></i>Regular
+                <ul>
+                    <li>Read-only requests</li>
+                    <li>Edit account's work types</li>
+                </ul>
+            </li>
+            <li><i class="fa fa-chess-rook monofa" aria-hidden="true"></i>Admin
+            <ul>
+                <li>Full control over the account</li>
+            </ul>
+            </li>
+            <li><i class="fa fa-chess-queen monofa" aria-hidden="true"></i>God
+            <ul>
+                <li>Can forge identity of any user</li>
+                <li>Allow-listed manually</li>
+            </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide vista vista-cover" id="part3">
+        <h2 class="shout">Invitations</h2>
+        <style>
+            #part3 {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/rbr6.jpg');
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">How many installation links do we have?</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">3</h2>
+    </section>
+
+    <section class="slide">
+        <h2>App links</h2>
+        <div class="two-cols">
+            <ul>
+                <li>Invitation ID is encoded inside.
+                    <ul>
+                        <li>Max number of invitations: 2<sup>24</sup></li>
+                        <li>That's 33,554,432 accounts.</li>
+                        <li>Algorithm: <a href="https://en.wikipedia.org/wiki/Format-preserving_encryption">salty aligned ffx</a>.</li>
+                    </ul>
+                </li>
+                <li>Admin or regular.</li>
+                <li>Can be disabled/enabled.</li>
+                <li><code>ATHENIAN_INVITATION_KEY</code></li>
+            </ul>
+            <img src="pictures/invite.png">
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>GitHub links</h2>
+        <img class="fullwidth" src="pictures/github_app.png">
+    </section>
+
+    <section class="slide" id="jira">
+        <h2>JIRA links</h2>
+        <img class="fullwidth" src="pictures/jira_link.png">
+        The key is the account's secret.
+        <style>
+            #jira {
+                background-color: white;
+            }
+            #jira > h2 {
+                color: #202020;
+            }
+            #jira {
+                color: #202020;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="part5">
+        <h2 class="shout">Repository access</h2>
+        <style>
+            #part5 {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/mv.jpg');
+            }
+        </style>
+    </section>
+    
+    <section class="slide">
+        <h2>Attack</h2>
+        <pre><code>curl https://api.athenian.co/v1/metrics/pull_requests --data {</code>
+<code>    "account": 1,  # 👍</code>
+<code>    "for": [{</code>
+<code>        "repositories": [</code>
+<code>            "github.com/athenianco/athenian-api",  # 👍</code>
+<code>            "github.com/client/repo"  # 😱</code>
+<code>    ]}]...}</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Defense</h2>
+        <ul>
+            <li>Look up GitHub account(s) in <code>account_github_accounts</code> (sdb).</li>
+            <li>Search every repo in <code>github.account_repos_log</code> (mdb).</li>
+            <li>Custom code on every related endpoint.</li>
+            <li>We also have JIRA.</li>
+            <li><code>athenianco/athenian-api/../../client/repo</code></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Attack</h2>
+        <pre class="smaller"><code>curl https://api.athenian.co/v1/metrics/pull_requests --data {</code>
+<code>    "account": 1,  # 👍</code>
+<code>    "for": [{</code>
+<code>        "repositories": [</code>
+<code>            "'; SELECT * FROM github.node_repository WHERE true OR name IN('"  # 😱</code>
+<code>            "github.com/athenianco/athenian-api",  # 👍</code>
+<code>    ]}]...}</code></pre>
+        <style>
+            pre.smaller {
+                font-size: 65%;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Defense</h2>
+        <p>Use ORM! We use SQLAlchemy Core.</p>
+        <pre><code>await mdb.fetch_all(</code>
+<code>    select([PullRequest])</code>
+<code>    .where(and_(</code>
+<code>        PullRequest.acc_id == account,</code>
+<code>        PullRequest.repository_full_name.in_(repos),</code>
+<code>    )))</code></pre>
+    </section>
+
+    <section class="slide vista" id="fail1">
+        <style>
+            #fail1 {
+                background-image: url('pictures/slack_fail.png');
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="fail2">
+        <style>
+            #fail2 {
+                background-image: url('pictures/slack_fail2_1.png');
+            }
+        </style>
+    </section>
+
+    <section class="slide vista" id="fail3">
+        <style>
+            #fail3 {
+                background-color: white;
+                background-image: url('pictures/slack_fail2_2.png');
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout shout-small">What does that teach us?</h2>
+    </section>
+
+    <section class="slide citation">
+        <figure>
+            <blockquote>
+                <p>We don't need paid Slack Vadim, we will not search there.</p>
+            </blockquote>
+            <figcaption>Athenian CEO circa December 2019.</figcaption>
+        </figure>
+        <style>
+            .citation {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="part4">
+        <h2 class="shout">OpenAPI validation</h2>
+        <style>
+            #part4 {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/rbr4.jpg');
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>JSON Schema</h2>
+        <img class="fullwidth" src="pictures/pepperidge.jpg">
+    </section>
+
+    <section class="slide">
+        <h2>Swagger vs. OpenAPI</h2>
+        <ul>
+            <li>OpenAPI = specification (Swagger specification before 2015)
+                <ul>
+                    <li>JSON</li>
+                    <li>YAML</li>
+                </ul>
+            </li>
+            <li>Swagger = JS tools tools to develop OpenAPI
+                <ul>
+                <li>Swagger UI at <a href="https://api.athenian.co/v1/ui">api.athenian.co/v1/ui</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide vista vista-cover" id="kong-vs-god">
+        <h2>Approaches to OpenAPI</h2>
+        <div class="two-cols">
+            <ol>
+                <li>Write code</li>
+                <li>Generate OpenAPI spec from code</li>
+            </ol>
+            <ol>
+                <li>Write OpenAPI spec</li>
+                <li>Generate code from OpenAPI spec</li>
+            </ol>
+        </div>
+        <div class="two-cols">
+            <ul class="no-bullets fa-bullets">
+                <li>👍Faster, easier to develop</li>
+                <li>👎Not in sync, poor docs</li>
+            </ul>
+            <ul class="no-bullets fa-bullets">
+                <li>👍Automatic validation</li>
+                <li>👎Autogenerated code sucks</li>
+            </ul>
+        </div>
+        <style>
+            #kong-vs-god {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/godzilla-vs-kong-fight.jpg');
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>What we check automatically</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Structure</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Missing or extra properties</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Value types</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Min/max [length, items]</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Regexp pattern</li>
+            <li><i class="fa fa-check monofa" aria-hidden="true"></i>Enum</li>
+            <li><i class="fa fa-times monofa" aria-hidden="true"></i>Date, datetime, <code>date_from < date_to</code></li>
+        </ul>
+    </section>
+
+    <section class="slide vista vista-cover" id="part6">
+        <h2 class="shout">Backdoor</h2>
+        <style>
+            #part6 {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/rbr5.jpg');
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Aka "manhole"</h2>
+        <img class="center black fullslide fullslide-padding" src="pictures/manhole_black.svg">
+        <img class="center white fullslide fullslide-padding" src="pictures/manhole_white.svg">
+    </section>
+
+    <section class="slide">
+        <h2>Super powers</h2>
+        <ul>
+            <li>Reject certain requests for certain accounts, users, IPs</li>
+            <li>Quick A/B tests</li>
+            <li>Debugging and diagnostics</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fathenianco%2Fathenian-api%2Fblob%2Fmaster%2FSECURITY.md&style=github&showLineNumbers=on"></script>
+        <style>
+            .emgithub-container {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 10px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                font-size: 50%;
+            }
+    
+            .emgithub-container code {
+                overflow-x: hidden;
+            }
+    
+            .emgithub-container td {
+                background: none !important;
+            }
+        </style>
+    </section>
+
+    <section class="slide vista vista-cover" id="part7">
+        <h2 class="shout">Thank you, and see you tomorrow</h2>
+        <style>
+            #part7 {
+                background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('pictures/danny.jpg');
+            }
+        </style>
+    </section>
+
+    <!-- <video src="..." loop autoplay playsinline muted></video> -->
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+    <script async src="https://kit.fontawesome.com/1271d8fdb8.js" crossorigin="anonymous"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+
+    const videoObserver = new IntersectionObserver((entries) => {
+        for (let entry of entries) {
+            if (entry.isIntersecting) {
+                if (entry.target.paused) {
+                    entry.target.play();
+                }
+            } else {
+                if (!entry.target.paused) {
+                    entry.target.pause();
+                }
+            }
+        }
+    });
+    for (let video of document.getElementsByTagName("video")) {
+        videoObserver.observe(video);
+    }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SMZDM18GS6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SMZDM18GS6');
+    </script>
+</body>
+</html>

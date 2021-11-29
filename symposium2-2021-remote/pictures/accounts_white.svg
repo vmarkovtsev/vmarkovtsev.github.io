@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="529px" height="192px" viewBox="-0.5 -0.5 529 192">
+    <defs/>
+    <g>
+        <rect x="178" y="30" width="160" height="50" rx="7.5" ry="7.5" fill="none" stroke="rgba(255, 255, 255, 1)" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 158px; height: 1px; padding-top: 55px; margin-left: 179px;">
+                        <div data-drawio-colors="color: rgba(255, 255, 255, 1); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">Athenian<br />
+                            <font color="#b3b3b3">(state, precomputed, persistentdata)</font>
+                        </div>
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="258" y="59" fill="rgba(255, 255, 255, 1)" font-family="Helvetica" font-size="12px" text-anchor="middle">Athenian...</text>
+        </switch>
+    </g>
+    <rect x="88" y="140" width="160" height="50" rx="7.5" ry="7.5" fill="none" stroke="rgba(255, 255, 255, 1)" pointer-events="all"/>
+    <g transform="translate(-0.5 -0.5)">
+        <switch>
+            <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 158px; height: 1px; padding-top: 165px; margin-left: 89px;">
+                    <div data-drawio-colors="color: rgba(255, 255, 255, 1); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                        <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">GitHub <font color="#b3b3b3">(metadata)</font>
+                        </div>
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="168" y="169" fill="rgba(255, 255, 255, 1)" font-family="Helvetica" font-size="12px" text-anchor="middle">GitHub (metadata)</text>
+        </switch>
+    </g>
+    <rect x="268" y="140" width="160" height="50" rx="7.5" ry="7.5" fill="none" stroke="rgba(255, 255, 255, 1)" pointer-events="all"/>
+    <g transform="translate(-0.5 -0.5)">
+        <switch>
+            <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 158px; height: 1px; padding-top: 165px; margin-left: 269px;">
+                    <div data-drawio-colors="color: rgba(255, 255, 255, 1); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                        <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">JIRA <font color="#b3b3b3">(metadata)</font>
+                        </div>
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="348" y="169" fill="rgba(255, 255, 255, 1)" font-family="Helvetica" font-size="12px" text-anchor="middle">JIRA (metadata)</text>
+        </switch>
+    </g>
+    <path d="M 218 80 Q 217.97 110 172.97 110 Q 127.97 110 127.99 133.63" fill="none" stroke="rgba(255, 255, 255, 1)" stroke-miterlimit="10" pointer-events="stroke"/>
+    <path d="M 128 138.88 L 124.49 131.89 L 127.99 133.63 L 131.49 131.88 Z" fill="rgba(255, 255, 255, 1)" stroke="rgba(255, 255, 255, 1)" stroke-miterlimit="10" pointer-events="all"/>
+    <path d="M 258 80 Q 257.97 110 232.97 110 Q 207.97 110 207.99 133.63" fill="none" stroke="rgba(255, 255, 255, 1)" stroke-miterlimit="10" pointer-events="stroke"/>
+    <path d="M 208 138.88 L 204.49 131.89 L 207.99 133.63 L 211.49 131.88 Z" fill="rgba(255, 255, 255, 1)" stroke="rgba(255, 255, 255, 1)" stroke-miterlimit="10" pointer-events="all"/>
+    <path d="M 298 80 Q 298.03 110 323.03 110 Q 348.03 110 348.01 133.63" fill="none" stroke="rgba(255, 255, 255, 1)" stroke-miterlimit="10" pointer-events="stroke"/>
+    <path d="M 348 138.88 L 344.51 131.88 L 348.01 133.63 L 351.51 131.89 Z" fill="rgba(255, 255, 255, 1)" stroke="rgba(255, 255, 255, 1)" stroke-miterlimit="10" pointer-events="all"/>
+    <rect x="8" y="90" width="150" height="30" fill="none" stroke="none" pointer-events="all"/>
+    <g transform="translate(-0.5 -0.5)">
+        <switch>
+            <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 148px; height: 1px; padding-top: 105px; margin-left: 9px;">
+                    <div data-drawio-colors="color: #B3B3B3; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                        <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(179, 179, 179); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                            <font color="#ffffff" face="monospace">account_github_accounts</font>
+                        </div>
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="83" y="109" fill="#B3B3B3" font-family="Helvetica" font-size="12px" text-anchor="middle">account_github_accounts</text>
+        </switch>
+    </g>
+    <rect x="338" y="90" width="190" height="30" fill="none" stroke="none" pointer-events="all"/>
+    <g transform="translate(-0.5 -0.5)">
+        <switch>
+            <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 188px; height: 1px; padding-top: 105px; margin-left: 339px;">
+                    <div data-drawio-colors="color: #ffffff; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                        <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                            <font face="monospace">account_jira_installations</font>
+                        </div>
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="433" y="109" fill="#ffffff" font-family="Helvetica" font-size="12px" text-anchor="middle">account_jira_installations</text>
+        </switch>
+    </g>
+    <rect x="183" y="0" width="150" height="30" fill="none" stroke="none" pointer-events="all"/>
+    <g transform="translate(-0.5 -0.5)">
+        <switch>
+            <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 148px; height: 1px; padding-top: 15px; margin-left: 184px;">
+                    <div data-drawio-colors="color: #ffffff; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                        <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                            <font face="monospace">accounts</font>
+                        </div>
+                    </div>
+                </div>
+            </foreignObject>
+            <text x="258" y="19" fill="#ffffff" font-family="Helvetica" font-size="12px" text-anchor="middle">accounts</text>
+        </switch>
+    </g>
+</g>
+<switch>
+    <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+    <a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank">
+        <text text-anchor="middle" font-size="10px" x="50%" y="100%">Viewer does not support full SVG 1.1</text>
+    </a>
+</switch>
+</svg>
