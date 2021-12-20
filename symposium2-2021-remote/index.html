@@ -272,6 +272,11 @@
             width: 100%;
             height: 100%;
         }
+        @media print {
+            .vista-cover {
+                background: none !important;
+            }
+        }
     </style>
 
 	<section class="slide vista vista-cover" id="cover">
@@ -287,7 +292,11 @@
                 margin: 30px 0 0;
                 text-align: center;
                 font-size: 70px;
-                color: white;
+            }
+            @media not print {
+                #cover h2 {
+                    color: white;
+                }
             }
             #cover p {
                 margin: 40px 0 0;
@@ -298,15 +307,17 @@
 			#cover {
 				background: url("pictures/rbr2.jpg") black;
 			}
-            #cover h2:before {
-                content: "";
-				position: absolute;
-				z-index: -1;
-				left: 0;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				background: rgba(0, 0, 0, 0.7);
+            @media not print {
+                #cover h2:before {
+                    content: "";
+                    position: absolute;
+                    z-index: -1;
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.7);
+                }
             }
         </style>
     </section>
@@ -413,7 +424,7 @@
 
     <section class="slide">
         <h2>JWT</h2>
-        <img class="center black fullslide fullslide-padding" src="pictures/JWT_black.svg">
+        <img class="center black fullwidth" src="pictures/JWT_black.svg">
         <img class="center white fullslide fullslide-padding" src="pictures/JWT_white.svg">
     </section>
 
@@ -707,7 +718,7 @@
 
     <section class="slide">
         <h2>Aka "manhole"</h2>
-        <img class="center black fullslide fullslide-padding" src="pictures/manhole_black.svg">
+        <img class="center black fullwidth" src="pictures/manhole_black.svg">
         <img class="center white fullslide fullslide-padding" src="pictures/manhole_white.svg">
     </section>
 
