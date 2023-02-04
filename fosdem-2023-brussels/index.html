@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Accelerating object serialization by using constraints</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@vadimlearning" />
+    <meta name="twitter:label1" content="Number of slides" />
+    <meta name="twitter:data1" content="???" />
+    <meta name="twitter:label2" content="Where and when" />
+    <meta name="twitter:data2" content="???" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://vmarkovtsev.github.io/fosdem-2023-brussels" />
+    <meta property="og:title" content="Accelerating object serialization by using constraints" />
+    <meta property="og:description" content="How we achieved 3x-100x faster data serialization to a binary format or to JSON using low-level Cython and Python C API." />
+    <meta property="og:image" content="https://vmarkovtsev.github.io/fosdem-2023-brussels/pictures/cover.jpg" />
+    <meta property="twitter:image" content="https://vmarkovtsev.github.io/fosdem-2023-brussels/pictures/cover.jpg" />
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="fonts/Cerebri_Sans/font.css">
+    <link rel="stylesheet" href="fonts/Source_Sans_Pro/font.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<button type="button" id="fullscreen" title="Go fullscreen" onclick="fullscreen()"><i class="fa fa-arrows-alt"></i></button>
+		<h1>Accelerating object serialization by using constraints</h1>
+		<p>Vadim Markovtsev, <a href="https://athenian.co">Athenian</a>.</p>
+	</header>
+
+	<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        -webkit-full-screen {
+            z-index: 1;
+            height: 100%;
+        }
+        :-webkit-full-screen .full section {
+            /* fix buggy Chrome offsets */
+            margin-left: -1px !important;
+            margin-top: -1px !important;
+        }
+        .slide h2 {
+            font-family: 'Cerebri Sans', sans-serif;
+            margin-left: -4px;
+        }
+        @media not print {
+            .slide {
+                color: white;
+                background: black;
+            }
+            .slide h2 {
+                color: #bababa;
+            }
+        }
+        header.caption {
+            padding-right: 134px;
+        }
+        #fullscreen {
+            float: right;
+            height: 48px;
+            width: 48px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            border: none;
+            color: #3c3d40;
+            position: fixed;
+            right: 42px;
+            top: 48px;
+        }
+        #fullscreen:hover {
+            color: #bababa;
+        }
+        #fullscreen:focus {
+            outline: none;
+        }
+        #fullscreen > i {
+            font-size: 36px;
+            text-align: center;
+        }
+        .slide p {
+            line-height: 1.25;
+        }
+        .slide::after {
+            display: none;
+        }
+        .slide li::before {
+            opacity: 1 !important;
+        }
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2.bottom {
+            position: absolute;
+            bottom: 50px;
+        }
+        .important {
+            color: red;
+        }
+        .mono {
+            font-family: monospace;
+        }
+        .success {
+            color: #a5c261;
+        }
+        .vista {
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+        .vista-cover {
+            background-size: cover !important;
+        }
+        i.fa {
+            font-style: normal;
+        }
+        ul>li::before {
+            color: white !important;
+        }
+        ul.no-bullets > li::before {
+            display: none;
+            text-indent: 0;
+        }
+        ul.no-bullets > li {
+            text-indent: 0;
+        }
+		code.inline:before, code.inline-no-offset:before {
+			display: none;
+		}
+		code.inline, code.inline-no-offset {
+			padding: 0;
+		}
+		code.inline-no-offset {
+			margin-left: 0 !important;
+			padding-left: 50px !important;
+		}
+		.part-teaser {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 400px !important;
+		}
+		.slide a {
+			background: none;
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+        @media not print {
+           .slide a {
+               color: white;
+           } 
+        }
+		.slide a:hover {
+			background: linear-gradient(to top,currentColor .09em,transparent .09em) repeat-x;
+		}
+        .monofa {
+            width: 1.5em;
+            margin-right: 0.1em;
+            display: inline-block;
+            text-align: center;
+        }
+        .fa-bullets > li {
+            margin-left: -1.6em;
+        }
+        ul.two-cols {
+            overflow: hidden;
+        }
+        ul.two-cols > li {
+            text-indent: 0;
+            float: left;
+            width: 50%;
+        }
+        .part > h2 {
+            color: white;
+            font-family: 'Cerebri Sans Extra Bold', sans-serif;;
+        }
+        .part {
+            background: radial-gradient(circle at center, #FF9E68 0, #FF7427 130%);
+        }
+        mark.important {
+            background-color: #dd0000;
+            color: white;
+            font-weight: bold;
+            margin: 0 -0.1em;
+            padding: 0.1em 0.3em 0.3em 0.3em;
+        }
+        img.black {
+            display: block;
+        }
+        img.white {
+            display: none;
+        }
+        @media not print {
+            img.black {
+                display: none;
+            }
+            img.white {
+                display: block;
+            }
+        }
+        .emoji {
+            font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+        }
+        .shout-small {
+            font-size: 70px !important;
+        }
+        .shout-small a {
+           background: none !important;
+        }
+        .fullslide {
+            position: relative;
+            top: -81px;
+            left: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 81px);
+            border: 0;
+            object-fit: contain;
+        }
+        .fullslide-padding {
+            width: 100%;
+            height: calc(100% - 50px);
+            object-fit: contain;
+        }
+        .fullwidth > img, img.fullwidth {
+            width: 100%;
+            object-fit: contain;
+            max-height: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .fullwidth > figcaption {
+            position: absolute;
+            font-size: smaller;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-90deg);
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .video-background {
+            padding: 0;
+        }
+        .video-background > video {
+            width: 100%;
+            height: 100%;
+        }
+        .progress::before {
+            background: #FF7427;
+        }
+    </style>
+
+	<section class="slide vista vista-cover" id="cover">
+		<h2>Accelerating object serialization by using constraints</h2>
+		<p>Vadim Markovtsev<br><a href="https://athenian.co">Athenian</a></p>
+
+		<style>
+            .black {
+                color: #202020;
+                font-weight: bold;
+            }
+            #cover h2 {
+                margin: 30px 0 0;
+                text-align: center;
+                font-size: 70px;
+                color: white;
+            }
+            #cover p {
+                margin: 40px 0 0;
+                text-align: center;
+                font-style: italic;
+                font-size: 20px;
+            }
+			#cover {
+				background: url("pictures/cover.jpg") black;
+			}
+			#cover h2:before {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>About me</h2>
+        <ul>
+            <li>Backend developer.</li>
+            <li>ML engineer (former Google Developer Expert).</li>
+            <li>Coded in the last 12 months: Python, Go, C/C++, JavaScript.</li>
+            <li>Work in <a href="https://athenian.co">Athenian</a>.</li>
+        </ul>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Humilating pickle</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Problem</h2>
+        <ul>
+            <li>Backend materializes a big pandas DataFrame.</li>
+            <li>Must serialize and submit that DataFrame to memcached.</li>
+            <li><code>pickle.dumps()</code>, <code>to_arrow()</code> are very slow
+                <ul>
+                    <li>Lots of string columns.</li>
+                    <li>datetime and timedelta columns.</li>
+                    <li>Nested lists and dicts.</li>
+                    <li>Nested numpy arrays of variable length, incl. <code>object</code> dtype.</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Custom binary serialization</h2>
+        <ul class="no-bullets fa-bullets">
+            <li>👎 Not portable (CPU), based on <code>memcpy</code> of the internals.</li>
+            <li>👎 Not portable (OS), assumes Linux.</li>
+            <li>👎 Not portable (interpreter), assumes CPython 3.11.x.</li>
+            <li>👎 Not backward-compatible.</li>
+            <li>👎 Not universal, doesn't support all object types.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Custom binary serialization</h2>
+        <ul class="no-bullets fa-bullets">
+            <li>👍 Compact code without feature bloat.</li>
+            <li>👍 Single-pass. Very fast. I mean it.</li>
+            <li>👍 Releases GIL (Cython: <code>nogil</code>).</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Releasing GIL</h2>
+        <ul>
+            <li>Cython C API wrappers are disabled, use raw <code>PyObject *</code>.</li>
+            <li>100% sure the models are not accessible anywhere else.</li>
+            <li>Only read-only, manually reviewed operations with the underlying objects.
+                Must reimplement the rest.</li>
+            <li>GC cannot relocate objects.</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Approach to pandas</h2>
+        <img src="pictures/pandas_black.svg" class="black fullwidth pandas-approach">
+        <img src="pictures/pandas_white.svg" class="white fullwidth pandas-approach">
+        <style>
+            .pandas-approach {
+                margin-top: 100px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>dtype object</h2>
+        <pre><code>assert PyArray_IS_C_CONTIGUOUS(arr)</code>
+        <code>assert PyArray_NDIM(arr) == 1</code>
+        <code>assert PyArray_DESCR(arr).kind == b"O"</code>
+        <code> </code>
+        <code>cdef PyObject **data = &lt;PyObject **&gt; PyArray_DATA(arr)</code>
+        <code>for i in range(PyArray_DIM(arr, 0)):</code>
+        <code>    serialize(data[i])</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>stdlib containers</h2>
+        <pre><code>for i in range(PyList_GET_SIZE(obj)):</code>
+        <code>    serialize(PyList_GET_ITEM(obj, i))</code>
+        <code> </code>
+        <code>while PyDict_Next(obj, &pos, &key, &val):</code>
+        <code>    serialize(key)</code>
+        <code>    serialize(val)</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Integers, floats</h2>
+        <pre><code>double PyFloat_AS_DOUBLE(PyObject *)</code>
+        <code>long PyLong_AsLong(PyObject *)</code>
+        <code>void PyArray_ScalarAsCtype(PyObject *scalar, void *ctype)</code>
+        <code> </code>
+        <code>memcpy(buffer, &value, sizeof(value))</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Strings</h2>
+        <p>Internal representation: smart UCS1, UCS2, or UCS4.</p>
+        <pre><code>memcpy(</code>
+        <code>    buffer,</code>
+        <code>    PyUnicode_DATA(obj),</code>
+        <code>    PyUnicode_GET_LENGTH(obj) * PyUnicode_KIND(obj)</code>
+        <code>)</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2><code>datetime</code> and <code>timedelta</code></h2>
+        <p><code>PyDateTime_CAPI</code>: internal representation is a struct, not a timestamp</p>
+        <pre><code>int PyDateTime_GET_YEAR(PyObject *)</code>
+        <code>int PyDateTime_GET_MONTH(PyObject *)</code>
+        <code>int PyDateTime_DATE_GET_SECOND(PyObject *)</code>
+        <code> </code>
+        <code>int PyDateTime_DELTA_GET_DAYS(PyObject *)</code>
+        <code>int PyDateTime_DELTA_GET_SECONDS(PyObject *)</code></pre>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">~100x* faster</h2>
+    </section>
+
+    <section class="slide vista vista-cover" id="elephant">
+        <style>
+            #elephant {
+                background-image: url('pictures/elephant.jpg');
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout shout-small">Deserialization</h2>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">Humilating json.dumps</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Model</h2>
+        <pre><code>@dataclass(slots=True)</code>
+        <code>class Movie:</code>
+        <code>    name: str</code>
+        <code>    rating: float</code>
+        <code>    actors: list[Actor]</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problem</h2>
+        <p>Typical paginated request without DB pushdown:</p>
+        <pre><code>blob = await load_from_cache(key)</code>
+        <code>movies = deserialize(blob)</code>
+        <code>selected = movies[offset:offset + limit]</code>
+        <code>return to_json(selected)</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problem</h2>
+        <p>Slow as hell with our "movies":</p>
+        <pre><code>blob = await load_from_cache(key)</code>
+        <code>movies = <span class="slow">deserialize(blob)</span></code>
+        <code>selected = movies[offset:offset + limit]</code>
+        <code>return <span class="slow">to_json(selected)</span></code></pre>
+        <style>
+            .slow {
+                border: 2px solid red;
+                border-radius: 4px;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Problem - attempt to fix</h2>
+        <p>First call:</p>
+        <pre><code>movies = await bake_movies(...)</code>
+        <code>dicts = to_json(movies)</code>
+        <code>await store_to_cache(dicts, key)</code>
+        <code>return to_json(dicts[:limit]), key</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problem - attempt to fix</h2>
+        <p>n + 1 call:</p>
+        <pre><code>blob = await load_from_cache(key)</code>
+        <code>dicts = deserialize(blob)</code>
+        <code>return to_json(dicts[offset:offset + limit]), key</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problem - attempt to fix</h2>
+        <p>First call:</p>
+        <pre><code>movies = await bake_movies(...)</code>
+        <code>dicts = <span class="slow">to_json(movies)</span></code>
+        <code>await store_to_cache(<span class="slow">serialize(dicts)</span>, key)</code>
+        <code>return to_json(dicts[:limit]), key</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problem - attempt to fix</h2>
+        <p>n + 1 call:</p>
+        <pre><code>blob = await load_from_cache(key)</code>
+        <code>dicts = <span class="slow">deserialize(blob)</span></code>
+        <code>return to_json(dicts[offset:offset + limit]), key</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2><code>to_json_vadim(movies)</code></h2>
+        <pre><code>'[<span class="toc1">{</span>"name": "RRR", ...},<span class="toc2">{</span>"name": "Up", ...},<span class="toc3">{</span>...'</code>
+        <code>[ <span class="toc1">1</span>,                  <span class="toc2">100</span>,                <span class="toc3">200</span>]</code>
+        </pre>
+        <style>
+            .toc1 {
+                color: yellow;
+            }
+            .toc2 {
+                color: #00BFFF;
+            }
+            .toc3 {
+                color: #FF1493;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Problem - my ideal solution</h2>
+        <p>First call:</p>
+        <pre><code>movies = await bake_movies(...)</code>
+        <code>blob, toc = to_json_vadim(movies)</code>
+        <code>await store_to_cache(serialize((blob, toc)), key)</code>
+        <code>selected = blob[:toc[limit] - 1]</code>
+        <code>return f'{{"key": "{key}", "movies": [{selected}]}}'</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Problem - my ideal solution</h2>
+        <p>n + 1 call:</p>
+        <pre><code>blob, toc = deserialize(await load_from_cache(key))</code>
+        <code>selected = blob[toc[offset]:toc[offset + limit] - 1]</code>
+        <code>return f'{{"key": "{key}", "movies": [{selected}]}}'</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2><code>to_json_vadim(movies)</code></h2>
+        <ol>
+            <li>Make the serialization specification.</li>
+            <li>Write each <code>movie</code> according to the spec.</li>
+            <li>Reimplement many routines:<ul>
+                <li><code>list</code>, <code>dict</code></li>
+                <li><code>int</code>, <code>float</code> to str</li>
+                <li><code>datetime</code>, <code>timedelta</code> to str</li>
+                <li><code>str</code> to str: <code>'esc"ape\n' -> r'"esc\"ape\n"'</code></li>
+            </ul></li>
+        </ol>
+    </section>
+
+    <section class="slide">
+        <h2>Main trick with __slots__</h2>
+        <img src="pictures/slots_black.svg" class="fullslide black">
+        <img src="pictures/slots_white.svg" class="fullslide white">
+    </section>
+
+    <section class="slide">
+        <h2>Serialization spec (Cython)</h2>
+        <pre><code>ctypedef struct SpecNode:</code>
+        <code>    DataType type</code>
+        <code>    uint8_t flags</code>
+        <code>    Py_ssize_t offset</code>
+        <code>    const void *key</code>
+        <code>    PyTypeObject *model</code>
+        <code>    vector[Node] nested</code></pre>
+    </section>
+
+    <section class="slide">
+        <pre><code>cdef enum DataType:</code>
+        <code>    DT_INVALID = 0            DT_DT = 7</code>
+        <code>    DT_MODEL = 1              DT_TD = 8</code>
+        <code>    DT_LIST = 2               DT_BOOL = 9</code>
+        <code>    DT_DICT = 3               DT_FREEFORM = 10</code>
+        <code>    DT_LONG = 4</code>
+        <code>    DT_FLOAT = 5</code>
+        <code>    DT_STRING = 6</code></pre>
+    </section>
+
+    <section class="slide listing">
+        <script src="https://gist.github.com/vmarkovtsev/9b3e803efa8950c909b0b14d63532e0a.js"></script>
+        <style>
+            .listing {
+                padding: 0;
+            }
+            .gist-data{
+                height: 576px;
+            }
+            .gist-meta{
+                display: none;
+            }
+            .slide tr:not(:last-of-type) > * {
+                background: transparent;
+            }
+            @media not print {
+                .gist{font-size: 18px}.gist-meta, .gist-file, .octotree_toggle, ul.comparison-list > li.title,button.button, a.button, span.button, button.minibutton, a.minibutton,span.minibutton, .clone-url-button > .clone-url-link{background: linear-gradient(#202020, #181818) !important;border-color: #383838 !important;border-radius: 0 0 3px 3px !important;text-shadow: none !important;color: #b5b5b5 !important}.markdown-format pre, .markdown-body pre, .markdown-format .highlight pre,.markdown-body .highlight pre, body.blog pre, #facebox pre, .blob-expanded,.terminal, .copyable-terminal, #notebook .input_area, .blob-code-context,.markdown-format code, body.blog pre > code, .api pre, .api code,.CodeMirror,.highlight{background-color: #1D1F21!important;color: #C5C8C6!important}.gist .blob-code{padding: 1px 10px !important;text-align: left;background: #000;border: 0}::selection{background: #24890d;color: #fff;text-shadow: none}::-moz-selection{background: #24890d;color: #fff;text-shadow: none}.blob-num{padding: 10px 8px 9px;text-align: right;color: #6B6B6B!important;border: 0}.blob-code,.blob-code-inner{color: #C5C8C6!important}.pl-c,.pl-c span{color: #969896!important;font-style: italic!important}.pl-c1{color: #DE935F!important}.pl-cce{color: #DE935F!important}.pl-cn{color: #DE935F!important}.pl-coc{color: #DE935F!important}.pl-cos{color: #B5BD68!important}.pl-e{color: #F0C674!important}.pl-ef{color: #F0C674!important}.pl-en{color: #F0C674!important}.pl-enc{color: #DE935F!important}.pl-enf{color: #F0C674!important}.pl-enm{color: #F0C674!important}.pl-ens{color: #DE935F!important}.pl-ent{color: #B294BB!important}.pl-entc{color: #F0C674!important}.pl-enti{color: #F0C674!important;font-weight: 700!important}.pl-entm{color: #C66!important}.pl-eoa{color: #B294BB!important}.pl-eoac{color: #C66!important}.pl-eoac .pl-pde{color: #C66!important}.pl-eoai{color: #B294BB!important}.pl-eoai .pl-pde{color: #B294BB!important}.pl-eoi{color: #F0C674!important}.pl-k{color: #B294BB!important}.pl-ko{color: #B294BB!important}.pl-kolp{color: #B294BB!important}.pl-kos{color: #DE935F!important}.pl-kou{color: #DE935F!important}.pl-mai .pl-sf{color: #C66!important}.pl-mb{color: #B5BD68!important;font-weight: 700!important}.pl-mc{color: #B294BB!important}.pl-mh .pl-pdh{color: #DE935F!important}.pl-mi{color: #B294BB!important;font-style: italic!important}.pl-ml{color: #B5BD68!important}.pl-mm{color: #C66!important}.pl-mp{color: #81A2BE!important}.pl-mp1 .pl-sf{color: #81A2BE!important}.pl-mq{color: #DE935F!important}.pl-mr{color: #B294BB!important}.pl-ms{color: #B294BB!important}.pl-pdb{color: #B5BD68!important;font-weight: 700!important}.pl-pdc{color: #969896!important;font-style: italic!important}.pl-pdc1{color: #DE935F!important}.pl-pde{color: #DE935F!important}.pl-pdi{color: #B294BB!important;font-style: italic!important}.pl-pds{color: #B5BD68!important}.pl-pdv{color: #C66!important}.pl-pse{color: #DE935F!important}.pl-pse .pl-s2{color: #DE935F!important}.pl-s{color: #B294BB!important}.pl-s1{color: #B5BD68!important}.pl-s2{color: #c5c8c6!important}.pl-mp .pl-s3{color: #B294BB!important}.pl-s3{color: #81a2be!important}.pl-sc{color: #c5c8c6!important}.pl-scp{color: #DE935F!important}.pl-sf{color: #DAD085!important}.pl-smc{color: #F0C674!important}.pl-smi{color: #c5c8c6!important}.pl-smp{color: #c5c8c6!important}.pl-sok{color: #B294BB!important}.pl-sol{color: #B5BD68!important}.pl-som{color: #C66!important}.pl-sr{color: #C66!important}.pl-sra{color: #B294BB!important}.pl-src{color: #B294BB!important}.pl-sre{color: #B294BB!important}.pl-st{color: #B294BB!important}.pl-stj{color: #c5c8c6!important}.pl-stp{color: #DE935F!important}.pl-sv{color: #DE935F!important}.pl-v{color: #DE935F!important}.pl-vi{color: #DE935F!important}.pl-vo{color: #C66!important}.pl-vpf{color: #DE935F!important}.pl-mi1{color: #8F9D6A!important;background: rgba(0,64,0,.5)!important}.pl-mdht{color: #8F9D6A!important;background: rgba(0,64,0,.5)!important}.pl-md{color: #C66!important;background: rgba(64,0,0,.5)!important}.pl-mdhf{color: #C66!important;background: rgba(64,0,0,.5)!important}.pl-mdr{color: #DE935F!important;font-weight: 400!important}.pl-mdh{color: #C66!important;font-weight: 400!important}.pl-mdi{color: #C66!important;font-weight: 400!important}.pl-ib{background-color: #C66!important}.pl-id{background-color: #C66!important;color: #fff!important}.pl-ii{background-color: #C66!important;color: #fff!important}.pl-iu{background-color: #C66!important}.pl-mo{color: #c5c8c6!important}.pl-mri{color: #DE935F!important}.pl-ms1{background-color: #c5c8c6!important}.pl-va{color: #DE935F!important}.pl-vpu{color: #DE935F!important}.pl-entl{color: #c5c8c6!important}.CodeMirror-gutters{background: #222!important;border-right: 1px solid #484848!important}.CodeMirror-guttermarker{color: #fff!important}.CodeMirror-guttermarker-subtle{color: #aaa!important}.CodeMirror-linenumber{color: #aaa!important}.CodeMirror-cursor{border-left: 1px solid #fff!important}.CodeMirror-activeline-background{background: #27282E!important}.CodeMirror-matchingbracket{outline: 1px solid grey!important;color: #fff!important}.cm-keyword{color: #f9ee98!important}.cm-atom{color: #FC0!important}.cm-number{color: #ca7841!important}.cm-def{color: #8DA6CE!important}.cm-variable-2,span.cm-tag{color: #607392!important}.cm-variable-3,span.cm-def{color: #607392!important}.cm-operator{color: #cda869!important}.cm-comment{color: #777!important;font-style: italic!important;font-weight: 400!important}.cm-string{color: #8f9d6a!important}.cm-string-2{color: #bd6b18!important}.cm-meta{background-color: #141414!important;color: #f7f7f7!important}.cm-builtin{color: #cda869!important}.cm-tag{color: #997643!important}.cm-attribute{color: #d6bb6d!important}.cm-header{color: #FF6400!important}.cm-hr{color: #AEAEAE!important}.cm-link{color: #ad9361!important;font-style: italic!important;text-decoration: none!important}.cm-error{border-bottom: 1px solid red!important}#notebook .highlight table{background: #1d1f21!important;color: #c5c8c6!important}.highlight .hll{background-color: #373b41!important}.highlight .c{color: #969896!important}.highlight .err{color: #c66!important}.highlight .k{color: #b294bb!important}.highlight .l{color: #de935f!important}.highlight .h,.highlight .n{color: #c5c8c6!important}.highlight .o{color: #8abeb7!important}.highlight .p{color: #c5c8c6!important}.highlight .cm{color: #969896!important}.highlight .cp{color: #969896!important}.highlight .c1{color: #969896!important}.highlight .cs{color: #969896!important}.highlight .gd{color: #c66!important}.highlight .ge{font-style: italic!important}.highlight .gh{color: #c5c8c6!important;font-weight: 700!important}.highlight .gi{color: #b5bd68!important}.highlight .gp{color: #969896!important;font-weight: 700!important}.highlight .gs{font-weight: 700!important}.highlight .gu{color: #8abeb7!important;font-weight: 700!important}.highlight .kc{color: #b294bb!important}.highlight .kd{color: #b294bb!important}.highlight .kn{color: #8abeb7!important}.highlight .kp{color: #b294bb!important}.highlight .kr{color: #b294bb!important}.highlight .kt{color: #f0c674!important}.highlight .ld{color: #b5bd68!important}.highlight .m{color: #de935f!important}.highlight .s{color: #b5bd68!important}.highlight .na{color: #81a2be!important}.highlight .nb{color: #c5c8c6!important}.highlight .nc{color: #f0c674!important}.highlight .no{color: #c66!important}.highlight .nd{color: #8abeb7!important}.highlight .ni{color: #c5c8c6!important}.highlight .ne{color: #c66!important}.highlight .nf{color: #81a2be!important}.highlight .nl{color: #c5c8c6!important}.highlight .nn{color: #f0c674!important}.highlight .nx{color: #81a2be!important}.highlight .py{color: #c5c8c6!important}.highlight .nt{color: #8abeb7!important}.highlight .nv{color: #c66!important}.highlight .ow{color: #8abeb7!important}.highlight .w{color: #c5c8c6!important}.highlight .mf{color: #de935f!important}.highlight .mh{color: #de935f!important}.highlight .mi{color: #de935f!important}.highlight .mo{color: #de935f!important}.highlight .sb{color: #b5bd68!important}.highlight .sc{color: #c5c8c6!important}.highlight .sd{color: #969896!important}.highlight .s2{color: #b5bd68!important}.highlight .se{color: #de935f!important}.highlight .sh{color: #b5bd68!important}.highlight .si{color: #de935f!important}.highlight .sx{color: #b5bd68!important}.highlight .sr{color: #b5bd68!important}.highlight .s1{color: #b5bd68!important}.highlight .ss{color: #b5bd68!important}.highlight .bp{color: #c5c8c6!important}.highlight .vc{color: #c66!important}.highlight .vg{color: #c66!important}.highlight .vi{color: #c66!important}.highlight .il{color: #de935f!important}
+            }
+        </style>
+    </section>
+
+    <section class="slide part">
+        <h2 class="shout">~100x* faster</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Model - precomputed spec</h2>
+        <pre><code class="success">@constrained_json_spec</code>
+        <code>@dataclass(slots=True)</code>
+        <code>class Movie:</code>
+        <code>    name: str</code>
+        <code>    rating: float</code>
+        <code>    actors: list[Actor]</code>
+        <code class="success">    # __json_spec__: ClassVar[PyCapsule]</code></pre>
+    </section>
+
+    <section class="slide">
+        <h2>Advice</h2>
+        <ul>
+            <li>Doing less is doing more.</li>
+            <li>Know your tools, learn internals.</li>
+            <li>Going low-level is your super weapon.</li>
+            <li>But only if you get the architecture right.</li>
+            <li>With great power come annoying consequences.</li>
+        </ul>
+    </section>
+
+	<section class="slide">
+        <h2>Thank you</h2>
+        <ul class="no-bullets fa-bullets">
+            <li><i class="fa fa-envelope monofa" aria-hidden="true"></i><a href="mailto://vadim@athenian.co">vadim@athenian.co</a></li>
+            <li><i class="fa fa-twitter monofa" aria-hidden="true"></i><a href="https://twitter.com/vadimlearning">@vadimlearning</a></li>
+            <li><i class="fa fa-github monofa" aria-hidden="true"></i><a href="https://github.com/vmarkovtsev">@vmarkovtsev</a></li>
+            <li><i class="fa fa-medium monofa" aria-hidden="true"></i><a href="https://medium.com/@vadimlearning">@vadimlearning</a></li>
+        </ul>
+        <div id="qrcode-container">
+            <img class="qrcode black" src="pictures/qrcode_black.svg">
+            <img class="qrcode white" src="pictures/qrcode_white.svg">
+            <a href="http://bit.ly/3kM6zcz" id="bitly">bit.ly/3kM6zcz</a>
+        </div>
+        <style>
+            #qrcode-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 380px;
+                position: absolute;
+                right: 81px;
+                top: 81px;
+            }
+            .qrcode {
+                height: 380px;
+            }
+            #bitly {
+                display: block;
+                font-size: 120%;
+            }
+        </style>
+    </section>
+
+    <!-- <video src="..." loop autoplay playsinline muted></video> -->
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+    <script async src="https://kit.fontawesome.com/1271d8fdb8.js" crossorigin="anonymous"></script>
+	<script>
+    function fullscreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			!document.webkitFullscreenElement) {
+            var body = document.getElementsByTagName("html")[0];
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.mozRequestFullScreen) {
+                body.mozRequestFullScreen();
+            } else if (body.webkitRequestFullScreen) {
+                body.webkitRequestFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Return";
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            document.getElementById("fullscreen").title = "Go fullscreen";
+        }
+    }
+
+    const videoObserver = new IntersectionObserver((entries) => {
+        for (let entry of entries) {
+            if (entry.isIntersecting) {
+                if (entry.target.paused) {
+                    entry.target.play();
+                }
+            } else {
+                if (!entry.target.paused) {
+                    entry.target.pause();
+                }
+            }
+        }
+    });
+    for (let video of document.getElementsByTagName("video")) {
+        videoObserver.observe(video);
+    }
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SMZDM18GS6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SMZDM18GS6');
+    </script>
+</body>
+</html>
