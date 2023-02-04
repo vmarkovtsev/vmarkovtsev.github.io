@@ -258,6 +258,9 @@
         .progress::before {
             background: #FF7427;
         }
+        .shower.list .slide.active {
+            box-shadow: 0 0 0 1px #FF7427, 0 0 0 20px #FF9E68, 0 20px 50px rgb(0 0 0 / 30%);
+        }
     </style>
 
 	<section class="slide vista vista-cover" id="cover">
@@ -308,7 +311,7 @@
     </section>
 
     <section class="slide part">
-        <h2 class="shout">Humilating pickle</h2>
+        <h2 class="shout">Humiliating pickle</h2>
     </section>
 
     <section class="slide">
@@ -424,6 +427,15 @@
         <h2 class="shout">~100x* faster</h2>
     </section>
 
+    <section class="slide vista" id="humiliated-pickle">
+        <style>
+            #humiliated-pickle {
+                background-image: url('pictures/pickle.jpg');
+                background-color: #0e110a;
+            }
+        </style>
+    </section>
+
     <section class="slide vista vista-cover" id="elephant">
         <style>
             #elephant {
@@ -437,7 +449,7 @@
     </section>
 
     <section class="slide part">
-        <h2 class="shout">Humilating json.dumps</h2>
+        <h2 class="shout">Humiliating json.dumps</h2>
     </section>
 
     <section class="slide">
@@ -477,7 +489,7 @@
         <h2>Problem - attempt to fix</h2>
         <p>First call:</p>
         <pre><code>movies = await bake_movies(...)</code>
-        <code>dicts = to_json(movies)</code>
+        <code>dicts = to_atoms(movies)</code>
         <code>await store_to_cache(dicts, key)</code>
         <code>return to_json(dicts[:limit]), key</code></pre>
     </section>
@@ -494,7 +506,7 @@
         <h2>Problem - attempt to fix</h2>
         <p>First call:</p>
         <pre><code>movies = await bake_movies(...)</code>
-        <code>dicts = <span class="slow">to_json(movies)</span></code>
+        <code>dicts = <span class="slow">to_atoms(movies)</span></code>
         <code>await store_to_cache(<span class="slow">serialize(dicts)</span>, key)</code>
         <code>return to_json(dicts[:limit]), key</code></pre>
     </section>
@@ -552,7 +564,7 @@
                 <li><code>list</code>, <code>dict</code></li>
                 <li><code>int</code>, <code>float</code> to str</li>
                 <li><code>datetime</code>, <code>timedelta</code> to str</li>
-                <li><code>str</code> to str: <code>'esc"ape\n' -> r'"esc\"ape\n"'</code></li>
+                <li><code>str</code> to str: <code>'esc"ape\n' -> r'"esc\"ape\n"'; utf8</code></li>
             </ul></li>
         </ol>
     </section>
@@ -567,11 +579,9 @@
         <h2>Serialization spec (Cython)</h2>
         <pre><code>ctypedef struct SpecNode:</code>
         <code>    DataType type</code>
-        <code>    uint8_t flags</code>
         <code>    Py_ssize_t offset</code>
-        <code>    const void *key</code>
         <code>    PyTypeObject *model</code>
-        <code>    vector[Node] nested</code></pre>
+        <code>    vector[SpecNode] nested</code></pre>
     </section>
 
     <section class="slide">
@@ -579,7 +589,7 @@
         <code>    DT_INVALID = 0            DT_DT = 7</code>
         <code>    DT_MODEL = 1              DT_TD = 8</code>
         <code>    DT_LIST = 2               DT_BOOL = 9</code>
-        <code>    DT_DICT = 3               DT_FREEFORM = 10</code>
+        <code>    DT_DICT = 3</code>
         <code>    DT_LONG = 4</code>
         <code>    DT_FLOAT = 5</code>
         <code>    DT_STRING = 6</code></pre>
